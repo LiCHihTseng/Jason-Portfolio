@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tailwindcss";
+
+/* :root {
+  color-scheme: dark;
+} */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* @font-face {
+  font-family: 'Neue Montreal Light';
+  src: url('../src/assets/fonts/NeueMontreal-Light.otf');
+}
+
+@font-face {
+  font-family: 'Neue Montreal Light Italic';
+  src: url('../src/assets/fonts/NeueMontreal-LightItalic.otf');
+
+}
+
+@font-face {
+  font-family: 'Neue Montreal Medium';
+  src: url('../src/assets/fonts/NeueMontreal-Medium.otf');
+
+}
+
+@font-face {
+  font-family: 'Neue Montreal Medium Italic';
+  src: url('../src/assets/fonts/NeueMontreal-MediumItalic.otf');
+
+}
+
+@font-face {
+  font-family: 'Neue Montreal Bold';
+  src: url('../src/assets/fonts/NeueMontreal-Bold.otf');
+
+}
+
+@font-face {
+  font-family: 'Neue Montreal Bold Italic';
+  src: url('../src/assets/fonts/NeueMontreal-BoldItalic.otf');
+
+}
+
+@font-face {
+  font-family: 'Neue Montreal Regular';
+  src: url('../src/assets/fonts/NeueMontreal-Regular.otf');
+
+} */
+
+/* @theme {
+  --font-neue-bold: 'Neue Montreal Bold', "sans-serif";
+  --font-neue-bold-t: 'Neue Montreal Bold Italic', "sans-serif";
+  --font-neue-light: 'Neue Montreal Light', "sans-serif";
+  --font-neue-light-t: 'Neue Montreal Light Italic', "sans-serif";
+  --font-neue-medium:'Neue Montreal Medium', "sans-serif";
+  --font-neue-medium-t:'Neue Montreal Medium Italic' "sans-serif";
+  --font-neue-regular: 'Neue Montreal Regular', "sans-serif";
+} */
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #e9ecf1;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+p {
+  font-family: 'Inter', sans-serif;
+  
+}
+
+.text-des{
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  
+}

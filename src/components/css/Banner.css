@@ -1,0 +1,12 @@
+/* .bullet::before {
+    content: '•';
+    margin-right: 0.5rem;
+  } */
+
+  .custom-underline {
+    border-bottom: 1px solid #111111;
+    padding-bottom: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem; /* 對應 Tailwind 的 gap-1 */
+  }

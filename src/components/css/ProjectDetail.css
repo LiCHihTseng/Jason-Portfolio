@@ -1,0 +1,27 @@
+/* 確保 ul 使用 Flexbox 並每三個 li 為一組 */
+ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* 每個 li 之間的間距 */
+  }
+  
+  /* 每個 li 的樣式 */
+  ul li {
+    flex: 0 0 calc(33.333% - 0.67rem); /* 每三個一組，減去 gap 的影響 */
+    box-sizing: border-box;
+  }
+  
+  /* 小螢幕時，每個 li 獨占一行 */
+  @media (max-width: 640px) {
+    ul li {
+      flex: 0 0 100%; /* 小螢幕時每個 li 獨占一行 */
+    }
+  }
+  
+  /* 中螢幕時，每兩個 li 一行 */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    ul li {
+      flex: 0 0 calc(50% - 0.5rem); /* 每兩個一組 */
+    }
+  }
