@@ -55,28 +55,31 @@ function About() {
         whileInView="animate"
         viewport={{ once: true, amount: 0.3 }}
       >
-<div className="grid grid-cols-1 md:grid-cols-3 ">
-  {/* h1 */}
-  <div className="order-1 md:col-span-2">
-    <h1 className="text-3xl font-bold mb-8">Li-Chih (Jason) Tseng</h1>
-  </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 ">
+          {/* h1 */}
+          <div className="order-1 md:col-span-2">
+            <h1 className="text-3xl font-bold mb-8">Li-Chih (Jason) Tseng</h1>
+          </div>
 
-  {/* Lottie 動畫 */}
-  <div className="order-2 md:order-3 flex justify-start md:justify-end">
-    <Lottie animationData={Tennis} loop={true} className="w-1/3 md:w-1/2 mt-0 md:-mt-20" />
-  </div>
+          {/* Lottie 動畫 */}
+          <div className="order-2 md:order-3 flex justify-start md:justify-end">
+            <Lottie
+              animationData={Tennis}
+              loop={true}
+              className="w-1/3 md:w-1/2 mt-0 md:-mt-20"
+            />
+          </div>
 
-  {/* p 段落 */}
-  <div className="order-3 md:order-2 md:col-span-2">
-    <p className="text-gray-600 mb-8 text-lg leading-loose">
-      I'm a designer with a coding background, passionate about creating
-      intuitive and engaging user experiences across web, mobile, and
-      interactive hardware. This page shares more about who I am and how
-      I approach design.
-    </p>
-  </div>
-</div>
-
+          {/* p 段落 */}
+          <div className="order-3 md:order-2 md:col-span-2">
+            <p className="text-gray-600 mb-8 text-lg leading-loose">
+              I'm a designer with a coding background, passionate about creating
+              intuitive and engaging user experiences across web, mobile, and
+              interactive hardware. This page shares more about who I am and how
+              I approach design.
+            </p>
+          </div>
+        </div>
 
         {sections.map((section, index) => (
           <div

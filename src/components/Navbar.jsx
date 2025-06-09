@@ -65,9 +65,9 @@ function Navbar() {
             whileTap={{ scale: 0.9 }}
           >
             {isMenuOpen ? (
-              <CloseIcon className="w-6 h-6" fontSize="medium"/>
+              <CloseIcon className="w-6 h-6" fontSize="medium" />
             ) : (
-              <SegmentIcon className="w-6 h-6" fontSize="medium"/>
+              <SegmentIcon className="w-6 h-6" fontSize="medium" />
             )}
           </motion.button>
         </div>
@@ -81,7 +81,7 @@ function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute top-16 bg-transparent overflow-hidden "
+            className="absolute top-16 bg-transparent overflow-hidden"
             style={{ right: `${buttonPosition.right}px` }}
           >
             <motion.ul
@@ -98,22 +98,21 @@ function Navbar() {
               }}
               className="space-y-2 flex flex-col items-end"
             >
-              {navItems.map((item, index) => (
+              {navItems.map((item) => (
                 <motion.li
                   key={item.label}
                   variants={{
                     hidden: { opacity: 0, y: -10 },
                     visible: { opacity: 1, y: 0 },
                   }}
-                  className="flex items-center bg-[#F8F8F8] hover:bg-[#D5D1E0] rounded-full px-4 py-2 transition-colors"
                   style={{ width: "fit-content" }}
                 >
-                  <span className="mr-2 text-[#111111]">{item.icon}</span>
                   <RouterLink
                     to={item.to}
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-[#111111] font-medium whitespace-nowrap"
+                    className="flex items-center bg-[#F8F8F8] hover:bg-[#D5D1E0] rounded-full px-4 py-2 transition-colors text-[#111111] font-medium whitespace-nowrap"
                   >
+                    <span className="mr-2">{item.icon}</span>
                     {item.label}
                   </RouterLink>
                 </motion.li>
