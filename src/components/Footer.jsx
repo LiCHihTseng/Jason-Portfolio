@@ -30,8 +30,27 @@ function Footer() {
     },
   };
 
+  const sectionVariants = {
+    initial: { opacity: 0, y: 50 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        staggerChildren: 0.2, // Stagger child elements by 0.2 seconds
+      },
+    },
+  };
+
   return (
-    <footer className={`border-t border-white/10 ${isAboutPage ? "pt-16" : "py-16"}`}>
+    <motion.footer
+      className={`border-t border-white/10 ${isAboutPage ? "pt-16" : "py-16"}`}
+      variants={sectionVariants}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.01 }}
+    >
       <div className="max-w-6xl mx-auto px-6">
         <div className="space-y-12">
           {/* Hello and Introduction Section */}
@@ -70,13 +89,13 @@ function Footer() {
             </>
           )}
           {isAboutPage && (
-          <div className="flex flex-wrap">
-            <div className="w-full md:basis-1/3">
-              <h3 className="text-4xl font-bold mb-4 text-[#111111]">
-                Get In Touch?
-              </h3>
+            <div className="flex flex-wrap">
+              <div className="w-full md:basis-1/3">
+                <h3 className="text-4xl font-bold mb-4 text-[#111111]">
+                  Get In Touch?
+                </h3>
+              </div>
             </div>
-          </div>
           )}
         </div>
 
@@ -181,7 +200,7 @@ function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
 

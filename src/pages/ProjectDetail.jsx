@@ -434,12 +434,14 @@ function ProjectDetail() {
           <motion.section
             id="design-discovery"
             className="flex flex-col gap-6 py-8 border-y border-white/10"
-            variants={sectionVariants}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.01 }}
           >
-            <div className="">
+            <motion.div
+              className=""
+              variants={sectionVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.3 }}
+            >
               <h3 className="font-semibold text-des text-[#666666] text-center">
                 05. Design Discovery
               </h3>
@@ -456,9 +458,15 @@ function ProjectDetail() {
                   {project.details.design_discovery.description.main}
                 </h2>
               </div>
-            </div>
+            </motion.div>
             {project.details.design_discovery.outcomes && (
-              <div className="space-y-4 mt-5">
+              <motion.div
+                className="space-y-4 mt-5"
+                variants={sectionVariants}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="">
                   <h5 className="text-2xl font-semibold text-center">
                     UX Outcomes
@@ -489,10 +497,16 @@ function ProjectDetail() {
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
             {project.details.design_discovery.insights && (
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                variants={sectionVariants}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, amount: 0.3 }}
+              >
                 <div className="">
                   <div>
                     <h5 className="text-2xl font-semibold text-center">
@@ -561,127 +575,149 @@ function ProjectDetail() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
-            {project.details.design_discovery.hypotheses && (
-              <div className="space-y-4">
-                <div className="">
-                  <div>
-                    <h5 className="text-2xl font-semibold text-center">
-                      Hypotheses
-                    </h5>
-                  </div>
-                  <div className="mt-5 grid grid-cols-1 md:grid-cols-3 m-5">
-                    {project.details.design_discovery.hypotheses.map(
-                      (hypothesis, idx) => (
-                        <div key={idx} className="mb-4 p-3">
-                          <h6 className="text-lg font-semibold">
-                            {hypothesis.title}
-                          </h6>
-                          <p className="text-[#111111]">
-                            {hypothesis.description}
-                          </p>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-            {project.details.design_discovery.ux_strategy && (
-              <div className="space-y-4">
-                <div className="">
-                  <div>
-                    <h5 className="text-2xl font-semibold text-center">
-                      UX Strategy
-                    </h5>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 mt-5 m-5">
-                    {project.details.design_discovery.ux_strategy.map(
-                      (strategy, idx) => (
-                        <div key={idx} className="mb-4">
-                          <h6 className="text-lg font-semibold">
-                            {strategy.title}
-                          </h6>
-                          <p className="text-[#111111]">
-                            {strategy.description}
-                          </p>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-            {project.details.design_discovery.design_concepts && (
-              <div className="space-y-4 mt-20">
-                <h5 className="text-4xl md:text-6xl font-bold text-center m-5">
-                  Design Concepts
-                </h5>
-                {project.details.design_discovery.design_concepts.map(
-                  (concept, idx) => (
-                    <div key={idx} className="mb-4 ">
-                      <h6 className="text-xl font-semibold">{concept.title}</h6>
-                      <p className="text-[#111111] text-lg">
-                        {concept.description}
-                      </p>
+            <motion.div
+              variants={sectionVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.3 }}
+            >
+              {project.details.design_discovery.hypotheses && (
+                <div className="space-y-4">
+                  <div className="">
+                    <div>
+                      <h5 className="text-2xl font-semibold text-center">
+                        Hypotheses
+                      </h5>
                     </div>
-                  )
-                )}
-              </div>
-            )}
-            {(project.details.design_discovery.imgs ||
-              project.details.design_discovery.img) && (
-              <div className="flex flex-col gap-4 mt-4">
-                {project.details.design_discovery.imgs ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {project.details.design_discovery.imgs.map((image, idx) => (
-                      <img
-                        key={idx}
-                        src={image}
-                        alt={`Design Discovery ${idx + 1}`}
-                        className={`w-full object-fit rounded-lg ${
-                          project.id === 3 ? "border-4 border-[#4BB0FF]" : ""
-                        }`}
-                        tabIndex={0}
-                      />
-                    ))}
+                    <div className="mt-5 grid grid-cols-1 md:grid-cols-3 m-5">
+                      {project.details.design_discovery.hypotheses.map(
+                        (hypothesis, idx) => (
+                          <div key={idx} className="mb-4 p-3">
+                            <h6 className="text-lg font-semibold">
+                              {hypothesis.title}
+                            </h6>
+                            <p className="text-[#111111]">
+                              {hypothesis.description}
+                            </p>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
-                ) : (
-                  <img
-                    src={project.details.design_discovery.img}
-                    alt="Design Discovery"
-                    className={`w-full object-cover rounded-lg ${
-                      project.id === 3 ? "border-4 border-[#4BB0FF]" : ""
-                    }`}
-                    tabIndex={0}
-                  />
-                )}
-              </div>
-            )}
+                </div>
+              )}
+              {project.details.design_discovery.ux_strategy && (
+                <div className="space-y-4">
+                  <div className="">
+                    <div>
+                      <h5 className="text-2xl font-semibold text-center">
+                        UX Strategy
+                      </h5>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 mt-5 m-5">
+                      {project.details.design_discovery.ux_strategy.map(
+                        (strategy, idx) => (
+                          <div key={idx} className="mb-4">
+                            <h6 className="text-lg font-semibold">
+                              {strategy.title}
+                            </h6>
+                            <p className="text-[#111111]">
+                              {strategy.description}
+                            </p>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+            <motion.div
+              variants={sectionVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.3 }}
+            >
+              {project.details.design_discovery.design_concepts && (
+                <div className="space-y-4 mt-20">
+                  <h5 className="text-4xl md:text-6xl font-bold text-center m-5">
+                    Design Concepts
+                  </h5>
+                  {project.details.design_discovery.design_concepts.map(
+                    (concept, idx) => (
+                      <div key={idx} className="mb-4 ">
+                        <h6 className="text-xl font-semibold">
+                          {concept.title}
+                        </h6>
+                        <p className="text-[#111111] text-lg">
+                          {concept.description}
+                        </p>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+              {(project.details.design_discovery.imgs ||
+                project.details.design_discovery.img) && (
+                <div className="flex flex-col gap-4 mt-4">
+                  {project.details.design_discovery.imgs ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {project.details.design_discovery.imgs.map(
+                        (image, idx) => (
+                          <img
+                            key={idx}
+                            src={image}
+                            alt={`Design Discovery ${idx + 1}`}
+                            className={`w-full object-fit rounded-lg ${
+                              project.id === 3
+                                ? "border-4 border-[#4BB0FF]"
+                                : ""
+                            }`}
+                            tabIndex={0}
+                          />
+                        )
+                      )}
+                    </div>
+                  ) : (
+                    <img
+                      src={project.details.design_discovery.img}
+                      alt="Design Discovery"
+                      className={`w-full object-cover rounded-lg ${
+                        project.id === 3 ? "border-4 border-[#4BB0FF]" : ""
+                      }`}
+                      tabIndex={0}
+                    />
+                  )}
+                </div>
+              )}
 
-            {project.details.design_discovery.recommendation && (
-              <div className="space-y-4 mt-10">
-                <h5 className="text-3xl font-bold text-center">
-                  The Recommendation
-                </h5>
-                <p className="text-[#111111] mx-2 md:mx-15 text-center text-lg">
-                  {project.details.design_discovery.recommendation}
-                </p>
-              </div>
-            )}
+              {project.details.design_discovery.recommendation && (
+                <div className="space-y-4 mt-10">
+                  <h5 className="text-3xl font-bold text-center">
+                    The Recommendation
+                  </h5>
+                  <p className="text-[#111111] mx-2 md:mx-15 text-center text-lg">
+                    {project.details.design_discovery.recommendation}
+                  </p>
+                </div>
+              )}
+            </motion.div>
           </motion.section>
 
           {/* 06. Design Enhancement */}
           <motion.section
             id="design-enhancement"
             className="flex flex-col gap-6 py-8 border-y border-white/10"
-            variants={sectionVariants}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.01 }}
           >
-            <div className="">
+            <motion.div
+              className=""
+              variants={sectionVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.01 }}
+            >
               <motion.h3 className="font-semibold text-des text-[#666666] text-center">
                 06. Design Enhancement
               </motion.h3>
@@ -695,125 +731,135 @@ function ProjectDetail() {
                   {project.details.design_enhancement.description.main}
                 </p>
               </div>
-            </div>
-
-            {project.details.design_enhancement.outcomes && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <h5 className="text-2xl font-semibold">UX Outcomes</h5>
+              {project.details.design_enhancement.outcomes && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <h5 className="text-2xl font-semibold">UX Outcomes</h5>
+                    </div>
+                    <div className="col-span-2">
+                      <ul className="list-disc pl-5 mt-4 text-[#111111]">
+                        {project.details.design_enhancement.outcomes.map(
+                          (outcome, idx) => (
+                            <li
+                              key={idx}
+                              className="mb-2 font-semibold text-lg"
+                            >
+                              {outcome}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
                   </div>
-                  <div className="col-span-2">
-                    <ul className="list-disc pl-5 mt-4 text-[#111111]">
-                      {project.details.design_enhancement.outcomes.map(
-                        (outcome, idx) => (
-                          <li key={idx} className="mb-2 font-semibold text-lg">
-                            {outcome}
-                          </li>
+                </div>
+              )}
+              {project.details.design_enhancement.ux_psychology && (
+                <div className="space-y-4 mt-10">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <h5 className="text-2xl font-semibold">
+                        UX Psychology Toolkit
+                      </h5>
+                    </div>
+                    <div className="col-span-2 grid grid-cols-1 md:grid-cols-3  gap-2">
+                      {project.details.design_enhancement.ux_psychology.map(
+                        (psych, idx) => (
+                          <div
+                            key={idx}
+                            className="mb-4 bg-[#F2F4F7] p-4 rounded-lg"
+                          >
+                            {iconList[idx % iconList.length]}{" "}
+                            {/* Cycles icons if more than icons available */}
+                            <h6 className="text-lg font-neue-medium mt-3">
+                              {psych.title}
+                            </h6>
+                            <p className="text-[#111111]">
+                              {psych.description}
+                            </p>
+                          </div>
                         )
                       )}
-                    </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </motion.div>
 
-            {project.details.design_enhancement.ux_psychology && (
-              <div className="space-y-4 mt-10">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <h5 className="text-2xl font-semibold">
-                      UX Psychology Toolkit
-                    </h5>
-                  </div>
-                  <div className="col-span-2 grid grid-cols-1 md:grid-cols-3  gap-2">
-                    {project.details.design_enhancement.ux_psychology.map(
-                      (psych, idx) => (
-                        <div
-                          key={idx}
-                          className="mb-4 bg-[#F2F4F7] p-4 rounded-lg"
-                        >
-                          {iconList[idx % iconList.length]}{" "}
-                          {/* Cycles icons if more than icons available */}
-                          <h6 className="text-lg font-neue-medium mt-3">
-                            {psych.title}
-                          </h6>
-                          <p className="text-[#111111]">{psych.description}</p>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {project.details.design_enhancement.design_principles && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <h5 className="text-2xl font-semibold">
-                      Design Principles
-                    </h5>
-                  </div>
-                  <div className="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-2">
-                    {project.details.design_enhancement.design_principles.map(
-                      (principle, idx) => (
-                        <div
-                          key={idx}
-                          className="mb-4 bg-[#C7DFED] p-4 rounded-lg"
-                        >
-                          {principleIcons[idx % principleIcons.length]}
-                          <h6 className="text-lg font-neue-medium mt-3">
-                            {principle.title}
-                          </h6>
-                          <p className="text-[#111111]">
-                            {principle.description}
-                          </p>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {project.details.design_enhancement.content_framework && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <h5 className="text-2xl font-semibold">
-                      {
-                        project.details.design_enhancement.content_framework
-                          .subheading
-                      }
-                    </h5>
-                  </div>
-                  <div className="col-span-2">
-                    <p className="text-[#111111]">
-                      {
-                        project.details.design_enhancement.content_framework
-                          .main
-                      }
-                    </p>
-                    {project.details.design_enhancement.content_framework.examples?.map(
-                      (exampleGroup, idx) => (
-                        <div key={idx} className="mb-4 space-y-4">
-                          {exampleGroup.map(([key, value], subIdx) => (
-                            <p key={subIdx} className="text-[#111111] mt-4">
-                              <strong className="text-lg">
-                                {key.charAt(0).toUpperCase() + key.slice(1)}:{" "}
-                                {/* 格式化鍵名，例如 "situation" 變為 "Situation" */}
-                              </strong>{" "}
-                              {value}
+            <motion.div
+              variants={sectionVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, amount: 0.01 }}
+            >
+              {project.details.design_enhancement.design_principles && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <h5 className="text-2xl font-semibold">
+                        Design Principles
+                      </h5>
+                    </div>
+                    <div className="col-span-2 grid grid-cols-1 md:grid-cols-3 gap-2">
+                      {project.details.design_enhancement.design_principles.map(
+                        (principle, idx) => (
+                          <div
+                            key={idx}
+                            className="mb-4 bg-[#C7DFED] p-4 rounded-lg"
+                          >
+                            {principleIcons[idx % principleIcons.length]}
+                            <h6 className="text-lg font-neue-medium mt-3">
+                              {principle.title}
+                            </h6>
+                            <p className="text-[#111111]">
+                              {principle.description}
                             </p>
-                          ))}
-                        </div>
-                      )
-                    )}
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+
+              {project.details.design_enhancement.content_framework && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <h5 className="text-2xl font-semibold">
+                        {
+                          project.details.design_enhancement.content_framework
+                            .subheading
+                        }
+                      </h5>
+                    </div>
+                    <div className="col-span-2">
+                      <p className="text-[#111111]">
+                        {
+                          project.details.design_enhancement.content_framework
+                            .main
+                        }
+                      </p>
+                      {project.details.design_enhancement.content_framework.examples?.map(
+                        (exampleGroup, idx) => (
+                          <div key={idx} className="mb-4 space-y-4">
+                            {exampleGroup.map(([key, value], subIdx) => (
+                              <p key={subIdx} className="text-[#111111] mt-4">
+                                <strong className="text-lg">
+                                  {key.charAt(0).toUpperCase() + key.slice(1)}:{" "}
+                                  {/* 格式化鍵名，例如 "situation" 變為 "Situation" */}
+                                </strong>{" "}
+                                {value}
+                              </p>
+                            ))}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </motion.div>
 
             {/* Dynamically render subsections */}
             {project.details.design_enhancement.subsections && (
@@ -821,15 +867,25 @@ function ProjectDetail() {
                 {project.details.design_enhancement.subsections.map(
                   (subsection, idx) => (
                     <div key={idx} className="space-y-12">
-                      <h5 className="text-3xl md:text-5xl font-bold text-center">
+                      <motion.h5
+                        className="text-3xl md:text-5xl font-bold text-center"
+                        variants={sectionVariants}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true, amount: 0.01 }}
+                      >
                         {subsection.title}
-                      </h5>
+                      </motion.h5>
 
                       {Object.entries(subsection.content).map(
                         ([key, section]) => (
-                          <div
+                          <motion.div
                             key={key}
                             className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start"
+                            variants={sectionVariants}
+                            initial="initial"
+                            whileInView="animate"
+                            viewport={{ once: true, amount: 0.01 }}
                           >
                             {/* Image on the left */}
                             {subsection.images[key] && (
@@ -941,7 +997,7 @@ function ProjectDetail() {
                                 </>
                               )}
                             </div>
-                          </div>
+                          </motion.div>
                         )
                       )}
                     </div>
@@ -951,7 +1007,13 @@ function ProjectDetail() {
             )}
 
             {project.details.design_enhancement.business_opportunities && (
-              <div className="space-y-20">
+              <motion.div
+                className="space-y-20"
+                variants={sectionVariants}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, amount: 0.01 }}
+              >
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-20">
                   <h5 className="text-3xl md:text-6xl font-semibold ">
                     New Business Potential Unlocked
@@ -971,7 +1033,7 @@ function ProjectDetail() {
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* {project.details.design_enhancement.img && (
