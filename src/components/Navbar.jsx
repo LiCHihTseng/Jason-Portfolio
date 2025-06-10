@@ -41,7 +41,6 @@ function Navbar() {
   const navItems = [
     { label: "Home", to: "/?scrollTo=home", icon: <HomeIcon /> },
     { label: "About", to: "/about", icon: <InfoIcon /> },
-    { label: "Contact", to: "/?scrollTo=contact", icon: <ContactMailIcon /> },
     { label: "Projects", to: "/?scrollTo=projects", icon: <WorkIcon /> },
   ].sort((a, b) => a.label.length - b.label.length);
 

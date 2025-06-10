@@ -31,7 +31,7 @@ function Footer() {
   };
 
   return (
-    <footer className="border-t border-white/10 py-16">
+    <footer className={`border-t border-white/10 ${isAboutPage ? "pt-16" : "py-16"}`}>
       <div className="max-w-6xl mx-auto px-6">
         <div className="space-y-12">
           {/* Hello and Introduction Section */}
@@ -69,6 +69,15 @@ function Footer() {
               </div>
             </>
           )}
+          {isAboutPage && (
+          <div className="flex flex-wrap">
+            <div className="w-full md:basis-1/3">
+              <h3 className="text-4xl font-bold mb-4 text-[#111111]">
+                Get In Touch?
+              </h3>
+            </div>
+          </div>
+          )}
         </div>
 
         {/* Let's Connect Section */}
@@ -79,9 +88,12 @@ function Footer() {
           <ul className="space-y-4 w-full md:basis-2/3">
             <li>
               <motion.div
-                className="flex items-center w-full"
+                className="flex items-center w-full cursor-pointer"
                 whileHover="hover"
                 initial="initial"
+                onClick={() =>
+                  (window.location.href = "mailto:zxcjason234@gmail.com")
+                }
               >
                 <MotionLink
                   to="mailto:zxcjason234@gmail.com"
@@ -104,12 +116,16 @@ function Footer() {
             <li className="border-t border-[#5656564d]"></li>
             <li>
               <motion.div
-                className="flex items-center w-full"
+                className="flex items-center w-full cursor-pointer"
                 whileHover="hover"
                 initial="initial"
+                onClick={() =>
+                  (window.location.href =
+                    "https://www.linkedin.com/in/li-chih-tseng-jason-22933319a/")
+                }
               >
                 <MotionLink
-                  to="#"
+                  to="https://www.linkedin.com/in/li-chih-tseng-jason-22933319a/"
                   className="text-xl font-medium"
                   variants={textVariants}
                 >
@@ -129,12 +145,16 @@ function Footer() {
             <li className="border-t border-[#5656564d]"></li>
             <li>
               <motion.div
-                className="flex items-center w-full"
+                className="flex items-center w-full cursor-pointer"
                 whileHover="hover"
                 initial="initial"
+                onClick={() =>
+                  (window.location.href =
+                    "https://drive.google.com/file/d/11Y2cjn01OTxNDOlTFmH17iGv6rflAWp8/view?usp=sharing")
+                }
               >
                 <MotionLink
-                  to="#"
+                  to="https://drive.google.com/file/d/11Y2cjn01OTxNDOlTFmH17iGv6rflAWp8/view?usp=sharing"
                   className="text-xl font-medium"
                   variants={textVariants}
                 >
