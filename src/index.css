@@ -3,6 +3,7 @@
 @tailwind utilities;
 @import "tailwindcss";
 
+
 /* :root {
   color-scheme: dark;
 } */
@@ -11,67 +12,152 @@ html {
   scroll-behavior: smooth;
 }
 
-
-/* @font-face {
-  font-family: 'Neue Montreal Light';
-  src: url('../src/assets/fonts/NeueMontreal-Light.otf');
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neue Montreal Light Italic';
-  src: url('../src/assets/fonts/NeueMontreal-LightItalic.otf');
-
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: 'Neue Montreal Medium';
-  src: url('../src/assets/fonts/NeueMontreal-Medium.otf');
-
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neue Montreal Medium Italic';
-  src: url('../src/assets/fonts/NeueMontreal-MediumItalic.otf');
-
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-ExtraLightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: 'Neue Montreal Bold';
-  src: url('../src/assets/fonts/NeueMontreal-Bold.otf');
-
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: 'Neue Montreal Bold Italic';
-  src: url('../src/assets/fonts/NeueMontreal-BoldItalic.otf');
-
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: 'Neue Montreal Regular';
-  src: url('../src/assets/fonts/NeueMontreal-Regular.otf');
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
 
-} */
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
 
-/* @theme {
-  --font-neue-bold: 'Neue Montreal Bold', "sans-serif";
-  --font-neue-bold-t: 'Neue Montreal Bold Italic', "sans-serif";
-  --font-neue-light: 'Neue Montreal Light', "sans-serif";
-  --font-neue-light-t: 'Neue Montreal Light Italic', "sans-serif";
-  --font-neue-medium:'Neue Montreal Medium', "sans-serif";
-  --font-neue-medium-t:'Neue Montreal Medium Italic' "sans-serif";
-  --font-neue-regular: 'Neue Montreal Regular', "sans-serif";
-} */
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('./assets/fonts/Poppins-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Rushford Printer';
+  src: url('./assets/fonts/Rushford Printed.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* 全域套用 */
 body {
-  font-family: "Inter", sans-serif;
-  background-color: #e9ecf1;
-  color: white;
+  font-family: 'Poppins', sans-serif;
+  background-color: #e5e5e5;
+
   margin: 0;
   padding: 0;
 }
 
 
+body.project-page {
+  background-color: #ffffff;
+
+}
 
 
 /* Custom scrollbar */

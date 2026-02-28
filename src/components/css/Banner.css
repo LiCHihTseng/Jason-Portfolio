@@ -1,12 +1,30 @@
-/* .bullet::before {
-    content: '•';
-    margin-right: 0.5rem;
-  } */
+.custom-underline {
+  position: relative;
+  color: #616161; /* 初始文字顏色 */
+  cursor: pointer;
+  font-weight: 600;
+}
 
-  .custom-underline {
-    border-bottom: 1px solid #111111;
-    padding-bottom: 1px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem; /* 對應 Tailwind 的 gap-1 */
-  }
+.custom-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px; /* 與文字距離 */
+  width: 100%; /* 一開始就全長底線 */
+  height: 1px;
+  background-color: #616161; /* 初始底線顏色 */
+  transition: background-color 0.3s ease;
+}
+
+.custom-underline:hover {
+  color: #FF540A; /* 滑鼠移上去時的文字顏色 */
+}
+
+.custom-underline:hover::after {
+  background-color: #FF540A; /* 滑鼠移上去時的底線顏色 */
+}
+
+@keyframes blink {
+  0%, 49% { border-color: transparent; }
+  50%, 100% { border-color: #6B7280; }
+}

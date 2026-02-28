@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight as ArrowRightIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // 導入 useNavigate
 import "./css/Banner.css";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import * as Icon from "@phosphor-icons/react";
 
 export const ArrowRight = ArrowRightIcon;
+import ScratchReveal from "./ScratchReveal";
+import Lottie from "lottie-react";
 
 function Banner() {
+  const scratchRef = useRef(null);
+  const lottieRef = useRef();
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
@@ -54,56 +60,80 @@ function Banner() {
   };
 
   return (
-    <section id="home" className="w-full py-32 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="home" className="relative w-full h-screen py-32 px-6">
+      <div className="max-w-6xl mx-auto max-h-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          className="grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
         >
-          <div className="flex items-center mb-6">
-            <div className="w-2 h-2 bg-[#111111] rounded-full mr-2"></div>
-            <span className="inline-block py-2 text-base font-medium text-[#111111] rounded-full">
-              Welcome to my Portfolio
-            </span>
+          {/* ScratchReveal - 小螢幕在上，桌機在右 */}
+          <div className="order-1 md:order-2 md:col-span-2 flex min-w-0">
+            <div
+              className="relative z-20 w-full cursor-pointer min-w-0"
+              onClick={() => lottieRef.current?.play()}
+            >
+              <ScratchReveal
+                ref={scratchRef}
+                className=" w-full max-w-[440px] md: aspect-[21/21] aspect-[21/10] mx-auto"
+              />
+
+              {/* <Lottie
+                  lottieRef={lottieRef}
+                  animationData={banner}
+                  loop={true}
+                  autoplay={false}
+                  style={{ width: "100%", height: "100%" }}
+                  rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
+                /> */}
+            </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-semibold mb-4 text-[#111111]">
-            Designing with <span className="text-black-500">Empathy</span>.
-            <br />
-            <span className="text-gray-600">
-              Turning user insights into meaningful experiences.
+          {/* 文字內容 - 小螢幕在下，桌機在左 */}
+          <div className="order-2 md:order-1 md:col-span-3">
+            <h1 className="text-2xl md:text-3xl font-medium text-[#242736] leading-[1.15] font-[Rushford_Printer]">
+              Hello, I'm
+            </h1>
+
+            <h1 className="text-7xl md:text-[100px] font-medium text-[#242736] leading-[1.15] font-[Rushford_Printer]">
+              Jason Tseng
+            </h1>
+            <span className="text-4xl md:text-[60px] font-medium text-[#808080] leading-[1.15] font-[Rushford_Printer]">
+              UI/UX & Product Designer
             </span>
-          </h1>
 
-          <div className="h-12 mb-8">
-            <h2 className="text-2xl md:text-3xl font-medium">
-              <span className="text-green-600">
-                <span className="border-r-2 border-green-600 pr-1">{text}</span>
-              </span>
-            </h2>
-          </div>
+            <div className="h-12 mb-10 mt-0">
+              <h2 className="text-xl md:text-2xl font-normal font-[Inter]">
+                <span className="text-[#808080]">
+                  Bringing digital concepts to life in ways people{" "}
+                  <span className="text-[#EC5C29]">love to use</span>
+                </span>
+              </h2>
+            </div>
 
-          <div className="flex justify-between">
-            <motion.div className="inline-flex whitespace-nowrap">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() =>
-                  (window.location.href = "mailto:zxcjason234@gmail.com")
-                }
-                className="bg-white text-black rounded-full px-6 py-3 text-sm font-medium flex items-center transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1"
-              >
-                Contact me! <ArrowRightIcon className="ml-2" />
-              </motion.button>
-            </motion.div>
-            <div className="flex items-end text-[#616161] leading-tight">
-              <span
-                className="mr-2 custom-underline cursor-pointer hover:text-black transition-colors"
-                onClick={() => navigate("/about")}
-              >
-                More about me <ArrowRightAltIcon fontSize="small" />
-              </span>
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-y-4 mt-4">
+              <motion.div className="inline-flex whitespace-nowrap">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() =>
+                    (window.location.href = "mailto:zxcjason234@gmail.com")
+                  }
+                  className="bg-[#EC5C29] text-[#ffffff] rounded-xl px-4 md:px-6 py-3 text-lg font-semibold flex items-center transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1"
+                >
+                  <Icon.At size={30} weight="bold" className="mr-2" />
+                  Contact me
+                </motion.button>
+              </motion.div>
+              <div className="flex items-end text-[#616161] leading-tight mx-2 md:mx-10 mt-0 ">
+                <span
+                  className="mr-2 custom-underline cursor-pointer hover:text-[#FF540A] transition-colors font-semibold text-lg"
+                  onClick={() => navigate("/about")}
+                >
+                  About me
+                </span>
+              </div>
             </div>
           </div>
         </motion.div>

@@ -58,12 +58,12 @@ function Footer() {
             <>
               <div className="flex flex-wrap">
                 <div className="w-full md:basis-1/3">
-                  <h3 className="text-4xl font-bold mb-4 text-[#111111]">
+                  <h3 className="text-4xl font-normal mb-4 text-[#111111]">
                     Hello.
                   </h3>
                 </div>
                 <div className="w-full md:basis-2/3">
-                  <p className="text-[#111111] text-2xl font-medium">
+                  <p className="text-[#0E1217] text-2xl font-normal">
                     Hi, I’m Jason Tseng — a designer from Taiwan with a
                     background in coding. I craft intuitive, engaging
                     experiences by blending creativity with technical know-how.
@@ -74,12 +74,12 @@ function Footer() {
 
               <div className="flex flex-wrap">
                 <div className="w-full md:basis-1/3">
-                  <h4 className="text-2xl font-semibold mb-4 text-[#111111]">
+                  <h4 className="text-2xl font-normal mb-4 text-[#0E1217]">
                     How I Can Help
                   </h4>
                 </div>
                 <div className="w-full md:basis-2/3">
-                  <p className="text-[#111111] text-xl">
+                  <p className="text-[#0E1217] text-xl">
                     With a coding background, I design with implementation in
                     mind — helping teams create practical, beautiful solutions
                     and easily collaborate with developers.
@@ -91,7 +91,7 @@ function Footer() {
           {isAboutPage && (
             <div className="flex flex-wrap">
               <div className="w-full md:basis-1/3">
-                <h3 className="text-4xl font-bold mb-4 text-[#111111]">
+                <h3 className="text-4xl font-bold mb-4 text-[#0E1217]">
                   Get In Touch?
                 </h3>
               </div>
@@ -101,7 +101,7 @@ function Footer() {
 
         {/* Let's Connect Section */}
         <div className="flex flex-wrap justify-between items-center mt-12 border-t border-b border-white/10 py-4">
-          <h4 className="text-2xl font-semibold text-[#111111] w-full md:basis-1/3">
+          <h4 className="text-2xl font-normal text-[#0E1217] w-full md:basis-1/3">
             Let's Connect
           </h4>
           <ul className="space-y-4 w-full md:basis-2/3">
@@ -116,7 +116,7 @@ function Footer() {
               >
                 <MotionLink
                   to="mailto:zxcjason234@gmail.com"
-                  className="text-xl font-medium"
+                  className="text-xl font-normal"
                   variants={textVariants}
                 >
                   Email
@@ -145,7 +145,7 @@ function Footer() {
               >
                 <MotionLink
                   to="https://www.linkedin.com/in/li-chih-tseng-jason-22933319a/"
-                  className="text-xl font-medium"
+                  className="text-xl font-normal"
                   variants={textVariants}
                 >
                   LinkedIn
@@ -169,12 +169,12 @@ function Footer() {
                 initial="initial"
                 onClick={() =>
                   (window.location.href =
-                    "https://drive.google.com/file/d/11Y2cjn01OTxNDOlTFmH17iGv6rflAWp8/view?usp=sharing")
+                    "https://drive.google.com/file/d/1gXHjKMapJTKe-WfmnOUY5YH1rA1_Sjeh/view?usp=sharing")
                 }
               >
                 <MotionLink
-                  to="https://drive.google.com/file/d/11Y2cjn01OTxNDOlTFmH17iGv6rflAWp8/view?usp=sharing"
-                  className="text-xl font-medium"
+                  to="https://drive.google.com/file/d/1gXHjKMapJTKe-WfmnOUY5YH1rA1_Sjeh/view?usp=sharing"
+                  className="text-xl font-normal"
                   variants={textVariants}
                 >
                   CV

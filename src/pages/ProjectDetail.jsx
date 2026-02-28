@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useRef, use } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Roles } from "../components/Role";
+import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
 import Lottie from "lottie-react";
 import projectsData from "./ProjectData.js"; // 匯入 projectsData
 import ChairIcon from "@mui/icons-material/Chair";
@@ -23,6 +22,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import TurnedInIcon from "@mui/icons-material/TurnedIn";
+
 function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -100,23 +100,6 @@ function ProjectDetail() {
     );
   }
 
-  if (!project || !project.details) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-[#111111]">
-        <div className="text-center">
-          <h1 className="text-3xl font-neue-bold mb-4">Project Not Found</h1>
-          <button
-            onClick={() => navigate("/")}
-            className="bg-white text-black hover:bg-purple-500 hover:text-white transition-colors rounded-full px-6 py-3 text-sm font-medium"
-            tabIndex={0}
-          >
-            Back to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // Animation variants for sections
   const sectionVariants = {
     initial: { opacity: 0, y: 50 },
@@ -146,28 +129,69 @@ function ProjectDetail() {
     "text-blue-300",
   ];
 
+  {
+    /* --- 1) 把文字與圖片配對成 cards --- */
+  }
+  const concepts = project.details.design_discovery.design_concepts || [];
+  const imgs = project.details.design_discovery.imgs || [];
+  const cards = concepts.map((c, i) => ({
+    ...c,
+    img: c.img || imgs[i] || null, // 支援：concept 自帶 img 或用 imgs 對位
+    alt: c.alt || `Design Concept ${i + 1}`,
+  }));
+
+  const lottieRef = useRef(null);
+
+  useEffect(() => {
+    if (lottieRef.current) {
+      // 設定速度
+      lottieRef.current.setSpeed(1.2);
+    }
+  }, []);
+
+  const getGradientColor = (id, isLeft) => {
+    switch (id) {
+      case 1:
+        return isLeft
+          ? "linear-gradient(to right, #ff4d4d, #ff7070)" // 紅色系 - 左
+          : "linear-gradient(to right, #ff8080, #ffb3b3)"; // 紅色系 - 右
+      case 2:
+        return isLeft
+          ? "linear-gradient(to right, #4d79ff, #70a1ff)" // 藍色系 - 左
+          : "linear-gradient(to right, #809fff, #b3c6ff)"; // 藍色系 - 右
+      case 3:
+        return isLeft
+          ? "linear-gradient(to right, #a17000, #c78c04)" // 綠色系 - 左
+          : "linear-gradient(to right, #c78c04, #ebc671)"; // 綠色系 - 右
+      default:
+        return isLeft
+          ? "linear-gradient(to right, #ff4d4d, #ff7070)" // 預設紅色系 - 左
+          : "linear-gradient(to right, #ff8080, #ffb3b3)"; // 預設紅色系 - 右
+    }
+  };
+
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6 text-[#111111] bg-white">
+    <div className="min-h-screen pt-24 pb-16 px-6 text-[#111111] ">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="space-y-[100px]"
+          className="space-y-[120px]"
         >
           {/* Project Header */}
           <div>
-            <p className="font-neue-medium text-[#111111]  mb-2 text-center">
+            <p className="font-normal text-[#242726]  mb-2 text-center">
               {project.client || "Personal Project"}
             </p>
-            <h1 className="text-3xl md:text-4xl font-bold mb-6 text-center text[#111111]">
+            <h1 className="text-3xl md:text-4xl font-medium mb-6 text-center text-[#242726]">
               {project.title}
             </h1>
             <div className="flex flex-wrap gap-2 mb-4 justify-center">
               {project.platform.map((item, index) => (
                 <span
                   key={index}
-                  className="px-3 py-2 text-lg font-medium bg-[#e9ecf1] rounded-full"
+                  className="px-6 py-2 text-lg font-normal bg-[#f6f5f5] rounded-full"
                   tabIndex={0}
                 >
                   {item}
@@ -185,26 +209,102 @@ function ProjectDetail() {
             viewport={{ once: true, amount: 0.3 }}
           >
             <div className="mt-10">
-              <h5 className="text-[#666666] text-des text-center font-bold">
+              <h5 className="text-[#666666] text-4xl md:text-5xl text-center font-semibold">
                 01. Overview
               </h5>
               <p className="font-regular text-base md:text-xl text-[#111111] mb-8 text-center mt-5 mx-5 md:mx-30">
                 {project.details.overview.description}
               </p>
             </div>
-            {project.img && (
-              <div className="bg-[#e9ecf1] rounded-xl overflow-hidden mb-8 border-2">
+            <div className="relative rounded-lg mb-8">
+              {/* 左半邊線條（往左延伸並斜向下） */}
+              <motion.div
+                initial={{ x: "0%", width: "0px" }}
+                whileInView={{ x: `calc(-45vw - 200px)`, width: "50vw" }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="absolute z-10 top-1/2 left-1/2 -translate-y-1/2"
+                style={{
+                  height: "8px",
+                  background: getGradientColor(project.id, true),
+                  transform: "rotate(-10deg)",
+                  transformOrigin: "right center",
+                  rotate: -10,
+                }}
+              />
+
+              {/* 右半邊線條（往右延伸並斜向上） */}
+              <motion.div
+                initial={{ x: "0%", width: "0px" }}
+                whileInView={{ x: `calc(2vw)`, width: "50vw" }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="absolute z-20 top-1/2 left-1/2 -translate-y-1/2"
+                style={{
+                  height: "8px",
+                  background: getGradientColor(project.id, false),
+                  transform: "rotate(10deg)",
+                  transformOrigin: "left center",
+                  rotate: -10,
+                }}
+              />
+
+              {/* Lottie 容器（動態調整邊框） */}
+              <div className="relative z-30 overflow-hidden rounded-lg border-2  flex items-center justify-center">
                 {project.img && (
-                  <div>
-                    {console.log("Animation Data:", project.img)}
-                    <Lottie
-                      animationData={project.img}
-                      loop
-                      className="w-full h-auto object-cover"
-                      tabIndex={0}
-                    />
-                  </div>
+                  <Lottie
+                    lottieRef={lottieRef}
+                    animationData={project.img}
+                    loop={false}
+                    onComplete={() => {
+                      setTimeout(() => {
+                        lottieRef.current?.goToAndPlay(0, true);
+                      }, 1000);
+                    }}
+                    style={{ width: "100%", height: "100%" }} // 撐滿父層          
+                    rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }} // 關鍵2：像 object-cover
+                  />
                 )}
+              </div>
+            </div>
+            {project.details.overview.roles && (
+              <div className="mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                  {[
+                    {
+                      title: project.details.overview.roles.role,
+                      content: project.details.overview.roles.role_content,
+                    },
+                    {
+                      title: project.details.overview.roles.team,
+                      content: project.details.overview.roles.team_content,
+                    },
+                    {
+                      title: project.details.overview.roles.year,
+                      content:
+                        project.details.overview.roles.year_content.join(", "),
+                    },
+                    {
+                      title: project.details.overview.roles.title,
+                      content: project.details.overview.roles.content,
+                    },
+                  ].map((col, colIdx) => (
+                    <div key={colIdx} className="relative px-4 py-4">
+                      {/* 垂直分隔線 */}
+
+                      <h6 className="font-semibold mb-4 text-lg">{col.title}</h6>
+                      {Array.isArray(col.content) ? (
+                        col.content.map((item, idx) => (
+                          <p key={idx} className="mt-1 text-[#6B6B76] text-lg">
+                            {item}
+                          </p>
+                        ))
+                      ) : (
+                        <p className="mt-1 text-[#6B6B76]">{col.content}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </motion.section>
@@ -221,15 +321,15 @@ function ProjectDetail() {
             <div className="">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="">
-                  <h3 className="font-semibold text-des text-[#666666]">
+                  <h3 className="font-semibold text-4xl md:text-5xl text-[#666666]">
                     02. Role
                   </h3>
                   {project.details.role.description.subheading && (
-                    <h4 className="text-4xl md:text-6xl font-bold mt-4 ">
+                    <h4 className="text-4xl md:text-6xl/16 font-semibold mt-4 ">
                       {project.details.role.description.subheading}
                     </h4>
                   )}
-                  <p className="text-[#111111] text-base md:text-lg leading-[1.5] mt-8 pr-5 md:pr-20">
+                  <p className="text-[#222231] text-base md:text-lg leading-[1.5] mt-8 pr-5 md:pr-20">
                     {project.details.role.description.main}
                   </p>
                 </div>
@@ -239,6 +339,7 @@ function ProjectDetail() {
                     src={project.details.role.img}
                     alt="Role in Project"
                     className="w-full object-fit rounded-xl mt-0 md:mt-4 bg-[#e9ecf1] p-5 md:p-15"
+                    loading="lazy"
                     tabIndex={0}
                   />
                 )}
@@ -255,7 +356,7 @@ function ProjectDetail() {
             whileInView="animate"
             viewport={{ once: true, amount: 0.1 }}
           >
-            <h3 className="font-semibold text-des text-[#666666] text-center">
+            <h3 className="font-semibold text-4xl md:text-5xl text-[#666666] text-center">
               03. Key Challenges
             </h3>
             <div className="flex flex-col gap-20 mt-5">
@@ -270,7 +371,7 @@ function ProjectDetail() {
                         <h5 className="text-xl font-semibold mt-5">
                           Challenge
                         </h5>
-                        <p className="text-[#111111] mt-4">
+                        <p className="text-[#222231] mt-4">
                           {challenge.challenge}
                         </p>
                       </div>
@@ -281,7 +382,7 @@ function ProjectDetail() {
                             {challenge.solution}
                           </p>
                         ) : (
-                          <p className="text-[#111111] mt-4">
+                          <p className="text-[#222231] mt-4">
                             {challenge.solution.main}
                           </p>
                         )}
@@ -292,12 +393,12 @@ function ProjectDetail() {
                       typeof challenge.solution !== "string" && (
                         <div className="text-center mt-10 bg-[#e9ecf1] p-2 md:p-12 rounded-lg">
                           {challenge.solution.subheading && (
-                            <h6 className="text-xl font-medium mt-4">
+                            <h6 className="text-xl font-semibold mt-4">
                               {challenge.solution.subheading}
                             </h6>
                           )}
                           {challenge.solution.principles && (
-                            <ul className="mt-4 text-[#111111] pl-0 flex flex-wrap justify-center mt-5">
+                            <ul className="text-[#111111] pl-0 flex flex-wrap justify-center mt-5 md:gap-0 gap-2">
                               {challenge.solution.principles.map(
                                 (principle, idx) => {
                                   // 定義一組不同的圖標（這裡使用 Unicode 表情符號作為範例）
@@ -315,12 +416,12 @@ function ProjectDetail() {
                                       key={idx}
                                       className={`flex items-start mt-2 ${
                                         index === 1
-                                          ? "list-none w-full sm:w-1/2 lg:w-1/3"
+                                          ? "list-none w-full sm:w-1/1 lg:w-1/2"
                                           : "list-disc pl-5 w-full"
                                       } px-2 box-border`}
                                     >
                                       {index === 1 && (
-                                        <span className="mr-2 text-[#111111] text-lg">
+                                        <span className="mr-2 text-[#111111] text-2xl">
                                           {icon}
                                         </span>
                                       )}
@@ -341,12 +442,33 @@ function ProjectDetail() {
                           src={challenge.img}
                           alt={challenge.title}
                           className="w-2/3 md:w-1/2 object-fit rounded-xl mt-4 p-5 md:p-15"
+                          loading="lazy"
                           tabIndex={0}
                         />
                       </div>
                     )}
                   </div>
                 )
+              )}
+              {/* Add key_question section below, styled like the image container */}
+              {project.details.key_challenges.key_question && (
+                <section className="mt-10">
+                  <div className="mx-auto max-w-5xl">
+                    <div className="space-y-4 text-center">
+                      {project.details.key_challenges.key_question.map(
+                        (q, i) => (
+                          <p
+                            key={i}
+                            className="
+                            text-xl md:text-2xl lg:text-4xl leading-snug md:leading-tight tracking-tight font-light text-transparent bg-clip-text bg-gradient-to-r from-[#422FFF] to-[#B3CFFF] italic"
+                          >
+                            {q}
+                          </p>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </section>
               )}
             </div>
           </motion.section>
@@ -359,28 +481,36 @@ function ProjectDetail() {
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <div className="">
-              <h3 className="font-semibold text-des text-[#666666] text-center">
-                04. Process
-              </h3>
-              <div>
+            <section id="process" className="px-4">
+              <div className="mx-auto max-w-[72ch] text-center space-y-3 md:space-y-4">
+                <h3 className="font-semibold text-4xl md:text-5xl text-[#666]">
+                  04. Process
+                </h3>
+
                 {project.details.process.description.subheading && (
-                  <h4 className="text-4xl md:text-6xl font-bold text-center m-5">
+                  <h2
+                    className="font-bold leading-tight tracking-tight
+                   text-[clamp(2rem,6vw,3.75rem)]"
+                  >
                     {project.details.process.description.subheading}
-                  </h4>
+                  </h2>
                 )}
-                <p className="text-[#111111] text-center text-lg ">
+
+                <p className="text-[#111] text-2xl leading-relaxed ">
                   {project.details.process.description.main}
                 </p>
               </div>
-            </div>
+            </section>
             {project.details.process.challenges && (
               <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 mt-5">
-                  <h5 className="text-2xl font-bold">Challenges</h5>
+                <div className="grid grid-cols-1 md:grid-cols-12 mt-5 gap-8 items-start">
+                  <h5 className="text-2xl font-bold md:col-span-3">Problems</h5>
                   {project.details.process.challenges.map(
                     (challenge, index) => (
-                      <div key={index} className="mb-4 pr-5 md:pt-0 pt-5">
+                      <div
+                        key={index}
+                        className="mb-4 pr-5 md:col-span-4 space-y-6"
+                      >
                         <h6 className="text-xl font-bold">{challenge.title}</h6>
                         <p className="text-[#111111] mt-3">
                           {challenge.description}
@@ -392,25 +522,34 @@ function ProjectDetail() {
               </div>
             )}
             {project.details.process.solution && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 mt-5">
-                  <h5 className="text-2xl font-bold">Solution</h5>
-                  <div className="col-span-2">
-                    <p className="text-[#111111] md:pt-0 pt-5">
-                      {project.details.process.solution.main}
-                    </p>
+              <div className="space-y-8 mt-10">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                  {/* 左欄：Section 標題 */}
+                  <h5 className="text-2xl font-bold md:col-span-3">
+                    How to address this
+                  </h5>
+
+                  {/* 右欄：內容 */}
+                  <div className="md:col-span-9 space-y-6">
+                    {/* 主標題（Subheading） */}
                     {project.details.process.solution.subheading && (
-                      <h6 className="text-lg font-neue-medium mt-4">
+                      <h6 className="text-xl md:text-2xl font-semibold">
                         {project.details.process.solution.subheading}
                       </h6>
                     )}
+
+                    {/* 主描述 */}
+                    <p className="text-[#111] text-lg leading-relaxed">
+                      {project.details.process.solution.main}
+                    </p>
+
+                    {/* Features 列表 */}
+                    <h2 className="text-2xl font-semibold">Key features</h2>
                     {project.details.process.solution.features && (
-                      <ul className="list-disc pl-5 mt-4 text-[#111111]">
+                      <ul className="list-disc pl-6 space-y-3 text-[#111] text-lg">
                         {project.details.process.solution.features.map(
                           (feature, idx) => (
-                            <li key={idx} className="mb-2">
-                              {feature}
-                            </li>
+                            <li key={idx}>{feature}</li>
                           )
                         )}
                       </ul>
@@ -418,12 +557,13 @@ function ProjectDetail() {
                   </div>
                 </div>
 
+                {/* 圖片 */}
                 {project.details.process.solution.img && (
                   <img
                     src={project.details.process.solution.img}
                     alt="Process Solution"
-                    className="w-full object-fit rounded-lg mt-4"
-                    tabIndex={0}
+                    className="w-full h-auto rounded-lg"
+                    loading="lazy"
                   />
                 )}
               </div>
@@ -436,29 +576,31 @@ function ProjectDetail() {
             className="flex flex-col gap-6 py-8 border-y border-white/10"
           >
             <motion.div
-              className=""
               variants={sectionVariants}
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, amount: 0.3 }}
             >
-              <h3 className="font-semibold text-des text-[#666666] text-center">
-                05. Design Discovery
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6">
-                <div>
-                  {project.details.design_discovery.description.subheading && (
-                    <h4 className="text-4xl md:text-6xl font-bold text-center md:text-left m-5">
-                      {project.details.design_discovery.description.subheading}
-                    </h4>
-                  )}
-                </div>
+              <div className="mx-auto max-w-[72ch] text-center space-y-3 md:space-y-4">
+                <h3 className="font-semibold text-4xl md:text-5xl text-[#666]">
+                  05. Design Discovery
+                </h3>
 
-                <h2 className="text-[#111111] mt-2 md:mt-8 text-lg md:text-xl font-base md:font-base">
+                {project.details.design_discovery.description.subheading && (
+                  <h2
+                    className="font-bold leading-tight tracking-tight
+                     text-[clamp(2rem,6vw,3.75rem)] [text-wrap:balance]"
+                  >
+                    {project.details.design_discovery.description.subheading}
+                  </h2>
+                )}
+
+                <p className="text-[#111] text-2xl leading-relaxed">
                   {project.details.design_discovery.description.main}
-                </h2>
+                </p>
               </div>
             </motion.div>
+
             {project.details.design_discovery.outcomes && (
               <motion.div
                 className="space-y-4 mt-5"
@@ -476,7 +618,7 @@ function ProjectDetail() {
                       (item, idx) => (
                         <div
                           key={idx}
-                          className="flex flex-col md:flex-row items-center md:items-start gap-4 bg-[#f3f5f7] p-10 rounded-2xl shadow-sm"
+                          className="flex flex-col md:flex-row items-center md:items-start gap-4 bg-[#ffffff] p-10 rounded-2xl shadow-sm"
                         >
                           {/* 左邊 emoji 圓圈（小尺寸置中） */}
                           <div className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-yellow-400 bg-white text-xl">
@@ -513,12 +655,12 @@ function ProjectDetail() {
                       Key Insights
                     </h5>
                   </div>
-                  <div className="mt-5 mb-5 pt-4 pb-8 mx-5 md:mx-20 bg-[#F2F4F5] rounded-lg">
+                  <div className="mt-5 mb-5 pt-4 pb-8 mx-5 md:mx-20 rounded-lg">
                     {project.details.design_discovery.insights.map(
                       (insight, idx) => (
                         <div
                           key={idx}
-                          className="relative bg-white  p-8 rounded-lg shadow-lg transition-all duration-300 my-2 mx-5 md:mx-10 gap-5 mt-5"
+                          className="relative bg-white  p-8 rounded-lg shadow-lg transition-all duration-300 my-4 mx-2 md:mx-2 gap-5 mt-5"
                         >
                           {/* Icon 放在右上角 */}
                           <div className="absolute -top-1 right-2">
@@ -530,7 +672,7 @@ function ProjectDetail() {
                             />
                           </div>
 
-                          <h6 className="text-base md:text-lg font-medium md:font-semibold pt-2 pb-2 px-5">
+                          <h6 className="text-base md:text-lg font-medium md:font-semibold pt-2 pb-2 px-1 md:px-5">
                             {insight.title}
                           </h6>
 
@@ -538,7 +680,7 @@ function ProjectDetail() {
                           <AnimatePresence>
                             {isExpanded && (
                               <motion.ul
-                                className=" text-[#111111] pl-5 pr-5 pb-2"
+                                className=" text-[#111111] pl-1 pr-1 md:pl-5 md:pr-5 pb-2"
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
@@ -583,7 +725,7 @@ function ProjectDetail() {
               whileInView="animate"
               viewport={{ once: true, amount: 0.3 }}
             >
-              {project.details.design_discovery.hypotheses && (
+              {/* {project.details.design_discovery.hypotheses && (
                 <div className="space-y-4">
                   <div className="">
                     <div>
@@ -591,14 +733,14 @@ function ProjectDetail() {
                         Hypotheses
                       </h5>
                     </div>
-                    <div className="mt-5 grid grid-cols-1 md:grid-cols-3 m-5">
+                    <div className="mt-5 grid grid-cols-1 md:grid-cols-3 mx-3 mb-5">
                       {project.details.design_discovery.hypotheses.map(
                         (hypothesis, idx) => (
-                          <div key={idx} className="mb-4 p-3">
-                            <h6 className="text-lg font-semibold">
+                          <div key={idx} className="mb-4 p-1 md:p-3">
+                            <h6 className="text-lg font-semibold text-center">
                               {hypothesis.title}
                             </h6>
-                            <p className="text-[#111111]">
+                            <p className="text-[#111111] text-center">
                               {hypothesis.description}
                             </p>
                           </div>
@@ -616,14 +758,14 @@ function ProjectDetail() {
                         UX Strategy
                       </h5>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 mt-5 m-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 mt-8 m-5">
                       {project.details.design_discovery.ux_strategy.map(
                         (strategy, idx) => (
                           <div key={idx} className="mb-4">
-                            <h6 className="text-lg font-semibold">
+                            <h6 className="text-lg font-semibold text-center">
                               {strategy.title}
                             </h6>
-                            <p className="text-[#111111]">
+                            <p className="text-[#111111] text-center">
                               {strategy.description}
                             </p>
                           </div>
@@ -632,78 +774,67 @@ function ProjectDetail() {
                     </div>
                   </div>
                 </div>
-              )}
+              )} */}
             </motion.div>
-            <motion.div
+            <motion.section
+              id="design-concepts"
+              aria-labelledby="dc-heading"
               variants={sectionVariants}
               initial="initial"
               whileInView="animate"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
+              className="py-16 md:py-20"
             >
-              {project.details.design_discovery.design_concepts && (
-                <div className="space-y-4 mt-20">
-                  <h5 className="text-4xl md:text-6xl font-bold text-center m-5">
+              {cards.length > 0 && (
+                <div className="mx-auto max-w-7xl px-4">
+                  <h5
+                    id="dc-heading"
+                    className="text-4xl md:text-6xl font-bold text-center mb-15"
+                  >
                     Design Concepts
                   </h5>
-                  {project.details.design_discovery.design_concepts.map(
-                    (concept, idx) => (
-                      <div key={idx} className="mb-4 ">
-                        <h6 className="text-xl font-semibold">
-                          {concept.title}
-                        </h6>
-                        <p className="text-[#111111] text-lg">
-                          {concept.description}
-                        </p>
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
-              {(project.details.design_discovery.imgs ||
-                project.details.design_discovery.img) && (
-                <div className="flex flex-col gap-4 mt-4">
-                  {project.details.design_discovery.imgs ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {project.details.design_discovery.imgs.map(
-                        (image, idx) => (
-                          <img
-                            key={idx}
-                            src={image}
-                            alt={`Design Discovery ${idx + 1}`}
-                            className={`w-full object-fit rounded-lg ${
-                              project.id === 3
-                                ? "border-4 border-[#4BB0FF]"
-                                : ""
-                            }`}
-                            tabIndex={0}
-                          />
-                        )
-                      )}
-                    </div>
-                  ) : (
-                    <img
-                      src={project.details.design_discovery.img}
-                      alt="Design Discovery"
-                      className={`w-full object-cover rounded-lg ${
-                        project.id === 3 ? "border-4 border-[#4BB0FF]" : ""
-                      }`}
-                      tabIndex={0}
-                    />
-                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                    {cards.map((card, idx) => (
+                      <article
+                        key={idx}
+                        className="flex flex-col h-full min-w-0"
+                      >
+                        <div>
+                          <h6 className="text-xl font-semibold">
+                            {card.title}
+                          </h6>
+                          <p className="text-[#111] text-lg mt-3 leading-relaxed">
+                            {card.description}
+                          </p>
+                        </div>
+                        {card.img && (
+                          <div className="mt-auto pt-6">
+                            <div className="aspect-[4/2] md:aspect-auto w-full rounded-lg">
+                              <img
+                                src={card.img}
+                                alt={card.alt}
+                                className="w-full h-full md:h-auto object-contain block"
+                                loading="lazy"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </article>
+                    ))}
+                  </div>
                 </div>
               )}
 
               {project.details.design_discovery.recommendation && (
-                <div className="space-y-4 mt-10">
-                  <h5 className="text-3xl font-bold text-center">
-                    The Recommendation
-                  </h5>
-                  <p className="text-[#111111] mx-2 md:mx-15 text-center text-lg">
+                <div className="mx-auto max-w-3xl px-4 mt-16 text-center space-y-4">
+                  <h5 className="text-3xl font-bold">The Recommendation</h5>
+                  <p className="text-[#111] text-lg leading-relaxed">
                     {project.details.design_discovery.recommendation}
                   </p>
                 </div>
               )}
-            </motion.div>
+            </motion.section>
           </motion.section>
 
           {/* 06. Design Enhancement */}
@@ -718,21 +849,26 @@ function ProjectDetail() {
               whileInView="animate"
               viewport={{ once: true, amount: 0.01 }}
             >
-              <motion.h3 className="font-semibold text-des text-[#666666] text-center">
-                06. Design Enhancement
-              </motion.h3>
-              <div>
+              <div className="mx-auto max-w-[72ch] text-center space-y-3 md:space-y-4">
+                <h3 className="font-semibold text-4xl md:text-5xl text-[#666]">
+                  06. Design Enhancement
+                </h3>
+
                 {project.details.design_enhancement.description.subheading && (
-                  <h4 className="text-4xl md:text-6xl font-bold text-center m-5">
+                  <h2
+                    className="font-bold leading-tight tracking-tight
+                 text-[clamp(2rem,6vw,3.75rem)] [text-wrap:balance]"
+                  >
                     {project.details.design_enhancement.description.subheading}
-                  </h4>
+                  </h2>
                 )}
-                <p className="text-[#111111] mx-2 md:mx-15 text-center text-lg">
+
+                <p className="text-[#111] text-2xl leading-relaxed">
                   {project.details.design_enhancement.description.main}
                 </p>
               </div>
               {project.details.design_enhancement.outcomes && (
-                <div className="space-y-4">
+                <div className="space-y-4 mt-20">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
                       <h5 className="text-2xl font-semibold">UX Outcomes</h5>
@@ -862,131 +998,192 @@ function ProjectDetail() {
             </motion.div>
 
             {/* Dynamically render subsections */}
+            {project.details.design_enhancement.at_a_glance && (
+              <motion.div
+                variants={sectionVariants}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, amount: 0.1 }}
+                className="p-6 mb-10 "
+              >
+                <h5 className="text-3xl md:text-4xl font-bold text-gray-900 text-left mb-6">
+                  At a Glance
+                </h5>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+                      {project.details.design_enhancement.at_a_glance.main}
+                    </p>
+                    <div>
+                      <h6 className="text-xl font-semibold text-gray-900">
+                        Key Features
+                      </h6>
+                      <ul className="mt-2 space-y-2">
+                        {project.details.design_enhancement.at_a_glance.features.map(
+                          (feature, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="mt-2 inline-block w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                              <span className="text-gray-900">{feature}</span>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+                  {/* Placeholder for potential image; replace with actual image if available */}
+                  <div className="hidden md:flex justify-end">
+                    {project.details.design_enhancement.images?.at_a_glance ? (
+                      <img
+                        src={
+                          project.details.design_enhancement.images.at_a_glance
+                        }
+                        alt="At a Glance Visual"
+                        className="w-full rounded-lg object-cover hover:scale-[1.02] transition-transform"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-28 md:w-50 shrink-0">
+                        <Lottie animationData={Animation} loop />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
             {project.details.design_enhancement.subsections && (
-              <div className="space-y-8 mt-20">
+              <div className="space-y-10 mt-20">
                 {project.details.design_enhancement.subsections.map(
                   (subsection, idx) => (
-                    <div key={idx} className="space-y-12">
+                    <div key={idx} className="space-y-10">
+                      {/* 區塊主標題：漸層字＋置中 */}
                       <motion.h5
-                        className="text-3xl md:text-5xl font-bold text-center"
+                        className="text-3xl md:text-5xl font-bold text-center 
+                     bg-gradient-to-r from-[#111] via-[#666] to-[#111] 
+                     bg-clip-text text-transparent"
                         variants={sectionVariants}
                         initial="initial"
                         whileInView="animate"
-                        viewport={{ once: true, amount: 0.01 }}
+                        viewport={{ once: true, amount: 0.1 }}
                       >
                         {subsection.title}
                       </motion.h5>
 
-                      {Object.entries(subsection.content).map(
-                        ([key, section]) => (
-                          <motion.div
-                            key={key}
-                            className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start"
-                            variants={sectionVariants}
-                            initial="initial"
-                            whileInView="animate"
-                            viewport={{ once: true, amount: 0.01 }}
-                          >
-                            {/* Image on the left */}
-                            {subsection.images[key] && (
-                              <div className="order-1 md:order-1">
-                                <img
-                                  src={subsection.images[key]}
-                                  alt={key
-                                    .replace("_", " ")
-                                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                                  className="w-2/3 object-fit rounded-lg"
-                                  tabIndex={0}
-                                />
-                              </div>
-                            )}
-
-                            {/* Content on the right */}
-                            <div
-                              className={`space-y-4 ${
-                                subsection.images[key]
-                                  ? "order-2 md:order-2"
-                                  : "order-1 md:col-span-2 mx-0 md:mx-10"
-                              }`}
+                      <div className="space-y-30">
+                        {Object.entries(subsection.content).map(
+                          ([key, section]) => (
+                            <motion.div
+                              key={key}
+                              variants={sectionVariants}
+                              initial="initial"
+                              whileInView="animate"
+                              viewport={{ once: true, amount: 0.12 }}
+                              className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start border-b border-gray-300 pb-8"
                             >
-                              {section.main && (
-                                <>
-                                  <h6 className="text-2xl  font-medium ">
-                                    {key
+                              {/* 左：圖片（有就顯示） */}
+                              {subsection.images[key] && (
+                                <div className="order-1 md:order-1 pr-0 md:pr-6">
+                                  <img
+                                    src={subsection.images[key]}
+                                    alt={key
                                       .replace("_", " ")
                                       .replace(/\b\w/g, (c) => c.toUpperCase())}
-                                  </h6>
-                                  <div>
-                                    <p className="text-[#111111]">
-                                      {section.main}
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-
-                              {section.features && (
-                                <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-                                  {/* Lottie 動畫區塊 */}
-                                  {!subsection.images[key] && (
-                                    <div className="order-1 md:order-2 w-1/3 md:w-1/4">
-                                      <Lottie
-                                        animationData={Animation}
-                                        loop={true}
-                                      />
-                                    </div>
-                                  )}
-
-                                  {/* 文字列表區塊 */}
-                                  <ul className="order-2 md:order-1 list-disc pl-5 mt-4 text-[#111111] w-full">
-                                    {section.features.map((feature, fIdx) => (
-                                      <li key={fIdx} className="mb-2">
-                                        {feature}
-                                      </li>
-                                    ))}
-                                  </ul>
+                                    className="w-full md:w-5/6 rounded-xl object-cover
+                              hover:scale-[1.02] transition-transform"
+                                    loading="lazy"
+                                    tabIndex={0}
+                                  />
                                 </div>
                               )}
-                              <div className="grid grid-cols-1 md:grid-cols-2">
-                                {section.anti_patterns && (
+
+                              {/* 右：文字 */}
+                              <div
+                                className={`space-y-5 ${
+                                  subsection.images[key]
+                                    ? "order-2 md:order-2"
+                                    : "order-1 md:col-span-2 mx-0 md:mx-6"
+                                }`}
+                              >
+                                {/* 小節標題 */}
+                                {section.main && (
                                   <>
-                                    {section.anti_patterns.map(
-                                      (anti_pattern, apIdx) => (
-                                        <div
-                                          key={apIdx}
-                                          className="mb-4  mr-3 mt-5"
-                                        >
-                                          <div className="">
-                                            <h6 className="text-lg font-medium">
-                                              {anti_pattern.title}
-                                            </h6>
-                                            <p className="text-[#111111] mt-2">
-                                              {anti_pattern.description}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      )
-                                    )}
+                                    <h6 className="text-xl md:text-4xl font-semibold text-[#111] pl-3">
+                                      {key
+                                        .replace("_", " ")
+                                        .replace(/\b\w/g, (c) =>
+                                          c.toUpperCase()
+                                        )}
+                                    </h6>
+                                    <p className="text-[#111]/85 md:text-xl pl-3 mb-0">
+                                      {section.main}
+                                    </p>
                                   </>
                                 )}
-                              </div>
 
-                              {section.ux_psychology && (
-                                <>
-                                  <div>
-                                    <h6 className="text-2xl font-medium">
+                                {/* Features：自訂圓點列（取代 list-disc） */}
+                                {section.features && (
+                                  <div className="flex flex-col md:flex-row justify-between items-start gap-6">
+                                    {/* 沒圖時顯示 Lottie（保留你的行為） */}
+                                    {!subsection.images[key] && (
+                                      <div className="order-1 md:order-2 w-28 md:w-32 shrink-0">
+                                        <Lottie
+                                          animationData={Animation}
+                                          loop
+                                        />
+                                      </div>
+                                    )}
+
+                                    <ul className="order-2 md:order-1 w-full space-y-2.5">
+                                      {section.features.map((feature, fIdx) => (
+                                        <li
+                                          key={fIdx}
+                                          className="flex items-start gap-3"
+                                        >
+                                          <span className="mt-2 inline-block w-2.5 h-2.5 rounded-full bg-[#4BB0FF]"></span>
+                                          <span className="text-[#111]">
+                                            {feature}
+                                          </span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {/* Anti-patterns：卡片內左右兩欄 */}
+                                {section.anti_patterns && (
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {section.anti_patterns.map((ap, apIdx) => (
+                                      <div
+                                        key={apIdx}
+                                        className="rounded-xl p-4"
+                                      >
+                                        <h6 className="text-lg md:text-xl font-semibold ">
+                                          {ap.title}
+                                        </h6>
+                                        <p className="text-[#111]/80">
+                                          {ap.description}
+                                        </p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+
+                                {/* UX Psychology：標題 + 兩欄條列 */}
+                                {section.ux_psychology && (
+                                  <div className="space-y-3">
+                                    <h6 className="text-xl md:text-2xl font-semibold pl-3 mt-5 mb-0">
                                       UX Psychology Applied
                                     </h6>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 mt-5">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                       {section.ux_psychology.map(
                                         (psych, pIdx) => (
                                           <div
                                             key={pIdx}
-                                            className="mb-4  mr-3 mt-5"
+                                            className="rounded-xl p-4"
                                           >
-                                            <h6 className="text-lg font-neue-medium">
+                                            <h6 className="text-lg md:text-xl font-semibold">
                                               {psych.title}
                                             </h6>
-                                            <p className="text-[#111111] mt-3">
+                                            <p className="text-[#111]/80 mt-2">
                                               {psych.description}
                                             </p>
                                           </div>
@@ -994,12 +1191,12 @@ function ProjectDetail() {
                                       )}
                                     </div>
                                   </div>
-                                </>
-                              )}
-                            </div>
-                          </motion.div>
-                        )
-                      )}
+                                )}
+                              </div>
+                            </motion.div>
+                          )
+                        )}
+                      </div>
                     </div>
                   )
                 )}
@@ -1008,24 +1205,37 @@ function ProjectDetail() {
 
             {project.details.design_enhancement.business_opportunities && (
               <motion.div
-                className="space-y-20"
+                className="space-y-16"
                 variants={sectionVariants}
                 initial="initial"
                 whileInView="animate"
-                viewport={{ once: true, amount: 0.01 }}
+                viewport={{ once: true, amount: 0.1 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 mt-20">
-                  <h5 className="text-3xl md:text-6xl font-semibold ">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start mt-16">
+                  {/* 左：大標題 */}
+                  <h5
+                    className="
+          md:col-span-4 min-w-0
+          font-bold leading-tight tracking-tight
+          text-3xl md:text-[clamp(2rem,5vw,3.25rem)]
+          [text-wrap:balance]
+        "
+                  >
                     New Business Potential Unlocked
                   </h5>
-                  <div className="col-span-2 mt-5">
+
+                  {/* 右：內容清單 */}
+                  <div className="md:col-span-8 min-w-0 space-y-8">
                     {project.details.design_enhancement.business_opportunities.map(
                       (opportunity, idx) => (
-                        <div key={idx} className="mb-4">
-                          <h6 className="text-xl font-semibold">
+                        <div key={idx} className="min-w-0">
+                          <h6 className="text-2xl font-semibold">
                             {opportunity.title}
                           </h6>
-                          <p className="text-[#111111] text-lg md:text-xl mt-5">
+                          <p
+                            className="text-[#111] text-lg md:text-xl mt-3 leading-relaxed
+                             max-w-[72ch] break-words [hyphens:auto]"
+                          >
                             {opportunity.description}
                           </p>
                         </div>
@@ -1056,7 +1266,7 @@ function ProjectDetail() {
             viewport={{ once: true, amount: 0.3 }}
           >
             <div className="">
-              <h3 className="font-semibold text-des text-[#FFFFFF99] text-center">
+              <h3 className="font-semibold text-4xl md:text-5xl text-[#FFFFFF99] text-center">
                 07. Closing
               </h3>
               <div>

@@ -52,8 +52,8 @@ function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
-          <RouterLink to="/" className="text-[#111111] font-bold text-xl">
-            JASON
+          <RouterLink to="/" className="text-[#111111] font-bold text-2xl   ">
+            Jason Tseng
           </RouterLink>
 
           <motion.button
