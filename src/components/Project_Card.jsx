@@ -32,7 +32,7 @@ export default function ProjectCard({ project, index }) {
         onMouseMove={onMouseMove}
         className={`group relative ${
           index === 0
-            ? "md:aspect-[4/3] aspect-[14/10] bg-[#b9b9b9]/10"
+            ? "md:aspect-[4/3] aspect-[14/10] bg-white/10"
             : "md:aspect-[4/3] aspect-[14/10] bg-white/5"
         } overflow-hidden rounded-2xl flex items-center justify-center
            `}
