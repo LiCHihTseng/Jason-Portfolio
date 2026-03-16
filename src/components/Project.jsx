@@ -6,10 +6,21 @@ import { Link } from "react-router-dom";
 import Insync from "../assets/img/test1.png";
 import yoUQuest from "../assets/img/yoUQuest.png";
 import AussieWild from "../assets/img/MacBook Air.png";
+import Chatstat from "../assets/img/Chatstat.png";
 import ProjectCard from "./Project_Card"; // 確認檔名正確
 
 // Project data
 const projects = [
+  {
+    id: 4,
+    title: "Chatstat",
+    img: Chatstat,
+    client: "Internship",
+    platform: ["Website", "Product Design"],
+    desc: "Chatstat project description...",
+    route: "/project/chatstat",
+    disabled: true,
+  },
   {
     id: 1,
     title: "InSync",
@@ -17,6 +28,8 @@ const projects = [
     client: "Design Studio",
     platform: ["Mobile App", "Physical Products"],
     desc: "An ambient home interface for effortless family coordination, InSync blends seamlessly into daily life to support family schedules and social engagement.",
+    route: "/project/1",
+    disabled: false,
   },
   {
     id: 2,
@@ -25,6 +38,8 @@ const projects = [
     client: "University Project",
     platform: ["Website", "ReactJS"],
     desc: "yoUQuest is a gamified task management platform that helps university students combat academic burnout through progress tracking, customizable goals, and break reminders, promoting balance and productivity.",
+    route: "/project/2",
+    disabled: false,
   },
   {
     id: 3,
@@ -33,7 +48,10 @@ const projects = [
     client: "Educational Platform",
     platform: ["Website", "JavaScript"],
     desc: "Aussie Wildlife is an interactive educational platform that uses game-based learning to inspire curiosity and appreciation for Australia's unique biodiversity through immersive RPG-style exploration.",
+    route: "/project/3",
+    disabled: false,
   },
+
 ];
 
 function Projects() {
