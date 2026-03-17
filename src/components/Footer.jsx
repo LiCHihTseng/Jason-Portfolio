@@ -140,11 +140,11 @@ function Footer() {
                 initial="initial"
                 onClick={() =>
                   (window.location.href =
-                    "https://www.linkedin.com/in/li-chih-tseng-jason-22933319a/")
+                    "https://www.linkedin.com/in/li-chih-tseng/")
                 }
               >
                 <MotionLink
-                  to="https://www.linkedin.com/in/li-chih-tseng-jason-22933319a/"
+                  to="https://www.linkedin.com/in/li-chih-tseng/"
                   className="text-xl font-normal"
                   variants={textVariants}
                 >
@@ -169,11 +169,11 @@ function Footer() {
                 initial="initial"
                 onClick={() =>
                   (window.location.href =
-                    "https://drive.google.com/file/d/1gXHjKMapJTKe-WfmnOUY5YH1rA1_Sjeh/view?usp=sharing")
+                    "https://drive.google.com/file/d/1jHwb37AMMcoHAgEzrhpAtSFiaAuHAjlR/view?usp=sharing")
                 }
               >
                 <MotionLink
-                  to="https://drive.google.com/file/d/1gXHjKMapJTKe-WfmnOUY5YH1rA1_Sjeh/view?usp=sharing"
+                  to="https://drive.google.com/file/d/1jHwb37AMMcoHAgEzrhpAtSFiaAuHAjlR/view?usp=sharing"
                   className="text-xl font-normal"
                   variants={textVariants}
                 >
