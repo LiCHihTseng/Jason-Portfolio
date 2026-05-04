@@ -20,7 +20,7 @@ const projects = [
     platform: ["Website", "Product Design"],
     desc: "Chatstat project description...",
     route: "/project/chatstat",
-    disabled: false,
+    disabled: true,
   },
   {
     id: 5,
@@ -30,7 +30,7 @@ const projects = [
     platform: ["Website", "Product Design"],
     desc: "Chatstat project description...",
     route: "/project/chatstat_mobile",
-    disabled: false,
+    disabled: true,
   },
   {
     id: 1,
