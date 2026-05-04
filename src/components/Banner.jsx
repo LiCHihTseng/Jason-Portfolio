@@ -10,6 +10,7 @@ import * as Icon from "@phosphor-icons/react";
 export const ArrowRight = ArrowRightIcon;
 import ScratchReveal from "./ScratchReveal";
 import Lottie from "lottie-react";
+import banner_phone from "../assets/img/avatar_phone.svg";
 
 function Banner() {
   const scratchRef = useRef(null);
@@ -18,6 +19,8 @@ function Banner() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
   const [delta, setDelta] = useState(150);
+
+  const [size, setSize] = useState({ w: 0, h: 0 });
   const toRotate = [
     "Product Designer",
     "UI/UX Designer",
@@ -60,7 +63,7 @@ function Banner() {
   };
 
   return (
-    <section id="home" className="relative w-full h-screen py-32 px-6">
+    <section id="home" className="relative w-full py-32 px-6">
       <div className="max-w-6xl mx-auto max-h-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -74,19 +77,16 @@ function Banner() {
               className="relative z-20 w-full cursor-pointer min-w-0"
               onClick={() => lottieRef.current?.play()}
             >
-              <ScratchReveal
+              {/* <ScratchReveal
                 ref={scratchRef}
                 className=" w-full max-w-[440px] md: aspect-[21/21] aspect-[21/10] mx-auto"
-              />
+              /> */}
 
-              {/* <Lottie
-                  lottieRef={lottieRef}
-                  animationData={banner}
-                  loop={true}
-                  autoplay={false}
-                  style={{ width: "100%", height: "100%" }}
-                  rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
-                /> */}
+<img
+  src={banner_phone}
+  alt="Banner phone"
+  className="w-full max-w-[440px] mx-auto"
+/>
             </div>
           </div>
 

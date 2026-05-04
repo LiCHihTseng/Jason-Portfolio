@@ -7,19 +7,30 @@ import Insync from "../assets/img/test1.png";
 import yoUQuest from "../assets/img/yoUQuest.png";
 import AussieWild from "../assets/img/MacBook Air.png";
 import Chatstat from "../assets/img/Chatstat.png";
+import Chatstat_mobile from "../assets/img/Chatstat_mobile.png";
 import ProjectCard from "./Project_Card"; // 確認檔名正確
 
 // Project data
 const projects = [
   {
     id: 4,
-    title: "Chatstat",
+    title: "Design for Chatstat Website",
     img: Chatstat,
     client: "Internship",
     platform: ["Website", "Product Design"],
     desc: "Chatstat project description...",
     route: "/project/chatstat",
-    disabled: true,
+    disabled: false,
+  },
+  {
+    id: 5,
+    title: "Chatstat Mobile",
+    img: Chatstat_mobile,
+    client: "Internship",
+    platform: ["Website", "Product Design"],
+    desc: "Chatstat project description...",
+    route: "/project/chatstat_mobile",
+    disabled: false,
   },
   {
     id: 1,
@@ -41,16 +52,16 @@ const projects = [
     route: "/project/2",
     disabled: false,
   },
-  {
-    id: 3,
-    title: "Aussie Wildlife",
-    img: AussieWild,
-    client: "Educational Platform",
-    platform: ["Website", "JavaScript"],
-    desc: "Aussie Wildlife is an interactive educational platform that uses game-based learning to inspire curiosity and appreciation for Australia's unique biodiversity through immersive RPG-style exploration.",
-    route: "/project/3",
-    disabled: false,
-  },
+  // {
+  //   id: 3,
+  //   title: "Aussie Wildlife",
+  //   img: AussieWild,
+  //   client: "Educational Platform",
+  //   platform: ["Website", "JavaScript"],
+  //   desc: "Aussie Wildlife is an interactive educational platform that uses game-based learning to inspire curiosity and appreciation for Australia's unique biodiversity through immersive RPG-style exploration.",
+  //   route: "/project/3",
+  //   disabled: false,
+  // },
 
 ];
 

@@ -16,7 +16,7 @@ function Footer() {
     initial: { rotate: 0, fill: "#111111" }, // 初始黑色
     hover: {
       rotate: 45,
-      fill: "#828282", // 懸停時與文字相同的顏色
+      fill: "#EC5C29", // 懸停時與文字相同的顏色
       transition: { duration: 0.5, ease: "easeInOut" },
     },
   };
@@ -25,7 +25,7 @@ function Footer() {
   const textVariants = {
     initial: { color: "#111111" }, // 初始黑色
     hover: {
-      color: "#828282", // 懸停時變為灰色
+      color: "#EC5C29", // 懸停時變為灰色
       transition: { duration: 0.5, ease: "easeInOut" },
     },
   };
