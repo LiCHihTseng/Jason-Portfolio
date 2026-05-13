@@ -20,7 +20,7 @@ import {
   ArrowUpRight, House
 } from "@phosphor-icons/react";
 import CHatstat_affinity from "../assets/img/Affinity_mapping.png";
-import CHatstat_userflow from "../assets/img/chatstat_userflow.jpg";
+import CHatstat_userflow from "../assets/img/Chatstat_Userflow.jpg";
 
 const ProjectDetail_Chatstat_mobile = () => {
   const location = useLocation();
