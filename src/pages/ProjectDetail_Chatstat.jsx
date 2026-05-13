@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import chatstat_banner from "../assets/img/chatstat_banner.png";
+import chatstat_banner from "../assets/img/Chatstat_mobile.png";
 
 const ProjectDetail_Chatstat = () => {
   const project = {
