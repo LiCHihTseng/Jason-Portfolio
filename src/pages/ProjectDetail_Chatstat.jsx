@@ -1,12 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Chatstat_banner from "../assets/img/Chatstat_banner.png";
+import chatstat_banner from "../assets/img/Chatstat_banner.png";
 
 const ProjectDetail_Chatstat = () => {
   const project = {
     title: "Chatstat Homepage Experience Redesign",
     platform: ["Website", "UX Design", "Product Design"],
-    img: Chatstat_banner,
+    img: chatstat_banner,
   };
 
   const improvements = [
