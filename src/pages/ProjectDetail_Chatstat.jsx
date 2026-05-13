@@ -81,18 +81,25 @@ const ProjectDetail_Chatstat = () => {
           {/* Project Meta */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { label: "Role", value: "Product Designer" },
+              { label: "Role", value: "UI/UX Designer" },
               { label: "Platform", value: "Website" },
-              { label: "Focus", value: "Homepage UX" },
-              { label: "Scope", value: "UX Improvements" },
+              { label: "Team", value: "Product & Marketing" },
+              {
+                label: "Tools",
+                value: ["Figma", "WordPress"],
+              },
+              ,
             ].map((item, index) => (
-              <div
-                key={index}
-                className="bg-[#f8f8f8] rounded-2xl p-6 border border-[#eeeeee]"
-              >
-                <p className="text-sm text-[#777777] mb-2">{item.label}</p>
-                <p className="text-lg font-medium text-[#242726]">
-                  {item.value}
+              <div key={index} className="rounded-2xl p-6 ">
+                <p className="text-xl text-[#777777] mb-2">{item.label}</p>
+                <p className="text-xl font-medium text-[#242726] ">
+                  {Array.isArray(item.value)
+                    ? item.value.map((tool, i) => (
+                        <span key={i} className="block mt-2">
+                          {tool}
+                        </span>
+                      ))
+                    : item.value}
                 </p>
               </div>
             ))}
@@ -135,7 +142,9 @@ const ProjectDetail_Chatstat = () => {
 
             <ul className="space-y-3 text-base md:text-lg text-[#444444]">
               <li>• Inconsistent CTA messaging within the hero section</li>
-              <li>• Fragmented feature communication across multiple sections</li>
+              <li>
+                • Fragmented feature communication across multiple sections
+              </li>
               <li>• Low visibility of important product features</li>
               <li>• Weak trust-building through testimonials</li>
               <li>• Inconsistent layout patterns across supporting pages</li>
@@ -176,12 +185,13 @@ const ProjectDetail_Chatstat = () => {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className=" gap-5">
               {improvements.map((item, index) => (
                 <div
                   key={index}
-                  className="rounded-3xl p-6 sm:p-8 bg-white border border-[#eeeeee] shadow-sm"
+                  className=" grid grid-cols-1 md:grid-cols-2 m-5 rounded-3xl p-6 sm:p-8 bg-white border border-[#eeeeee] shadow-sm"
                 >
+                  <div>
                   <div className="w-10 h-10 rounded-full bg-[#f6f5f5] flex items-center justify-center mb-5 text-sm font-medium">
                     {index + 1}
                   </div>
@@ -193,13 +203,23 @@ const ProjectDetail_Chatstat = () => {
                   <p className="text-base md:text-lg leading-8 text-[#444444]">
                     {item.description}
                   </p>
+                  </div>
+                 
+
+                  <div className="mt-8 overflow-hidden rounded-2xl border border-[#eeeeee]">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-auto object-cover transition duration-300 hover:scale-[1.01]"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           </section>
 
           {/* Testimonial Example */}
-          <section className="bg-[#242726] text-white rounded-3xl p-6 sm:p-8 md:p-12">
+          <section className="bg-[#242726] text-white rounded-3xl p-6 sm:p-8 md:p-12 ">
             <p className="text-sm text-white/60 mb-4">Trust Building Example</p>
 
             <blockquote className="text-xl sm:text-2xl md:text-3xl leading-relaxed font-medium mb-6">

@@ -88,7 +88,7 @@ const ProjectDetail_Chatstat_mobile = () => {
               <h5 className="text-[#666666] text-4xl md:text-5xl text-center font-semibold">
                 01. Overview
               </h5>
-              <p className="font-regular text-base md:text-xl text-[#111111] mb-8 text-center mt-5 mx-5 md:mx-30">
+              <p className="font-regular text-base md:text-lg  text-[#444444] mb-8 text-center mt-5 mx-5 md:mx-30">
                 {project.details.overview.description}
               </p>
             </div>
@@ -164,12 +164,12 @@ const ProjectDetail_Chatstat_mobile = () => {
                     <h6 className="font-semibold mb-4 text-lg">{col.title}</h6>
                     {Array.isArray(col.content) ? (
                       col.content.map((item, idx) => (
-                        <p key={idx} className="mt-1 text-[#6B6B76] text-lg">
+                        <p key={idx} className="mt-1 text-[#444444] text-lg">
                           {item}
                         </p>
                       ))
                     ) : (
-                      <p className="mt-1 text-[#6B6B76]">{col.content}</p>
+                      <p className="mt-1 text-[#444444]">{col.content}</p>
                     )}
                   </div>
                 ))}
@@ -179,29 +179,29 @@ const ProjectDetail_Chatstat_mobile = () => {
             <div className="mt-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="border-2 p-5 border-gray-200 rounded-md">
-                  <p className="text-2xl font-semibold">UX research</p>
-                  <p className="mt-4 text-lg">
+                  <p className="text-2xl font-semibold text-[#444444]">UX research</p>
+                  <p className="mt-4 text-base md:text-lg  text-[#444444]">
                     - Conducted think-aloud and task-based usability testing
                     with first-time users
                   </p>
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 text-base md:text-lg  text-[#444444]">
                     - Identified onboarding hesitation points and setup
                     confusion
                   </p>
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 text-base md:text-lg  text-[#444444]">
                     - Mapped onboarding journeys and activation flow using Miro
                     workshops
                   </p>
                 </div>
                 <div className="border-2 p-5 border-gray-200 rounded-md">
-                  <p className="text-2xl font-semibold ">Outcome</p>
-                  <p className="mt-4 text-lg">
+                  <p className="text-2xl font-semibold text-[#444444] ">Outcome</p>
+                  <p className="mt-4 text-base md:text-lg text-[#444444]">
                     - Improved clarity around onboarding steps and product value
                   </p>
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 text-base md:text-lg  text-[#444444]">
                     - Reduced hesitation during social account connection
                   </p>
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 text-base md:text-lg text-[#444444]">
                     - Helped users better understand plan differences and
                     platform capabilities
                   </p>
@@ -221,7 +221,7 @@ const ProjectDetail_Chatstat_mobile = () => {
               </h5>
 
               <div className=" ">
-                <p className="font-bold text-2xl text-[#111111] mb-4 mt-10 mx-5 p-5 md:p-5 lg:p-0">
+                <p className="font-bold text-2xl text-[#444444] mb-4 mt-10 mx-5 p-5 md:p-5 lg:p-0">
                   What We Did
                 </p>
                 <div className="m-5 bg-[#d9f9d9]  rounded-lg flex p-5 md:p-10">
@@ -266,7 +266,7 @@ const ProjectDetail_Chatstat_mobile = () => {
               </div>
 
               {/* User Quotes */}
-              <p className="font-bold text-2xl text-[#111111] mb-4 mt-10 mx-5 p-5 md:p-5 lg:p-0">
+              <p className="font-bold text-2xl text-[#444444] mb-4 mt-10 mx-5 p-5 md:p-5 lg:p-0">
                 User Quotes
               </p>
               <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -314,11 +314,11 @@ const ProjectDetail_Chatstat_mobile = () => {
             </div>
 
             <div>
-              <p className="font-bold text-2xl text-[#111111] mb-4 mt-10 mx-5 p-5 md:p-5 lg:p-0">
+              <p className="font-bold text-2xl text-[#444444] mb-4 mt-10 mx-5 p-5 md:p-5 lg:p-0">
                 User Insights
               </p>
 
-              <p className="text-xl p-5 md:p-5 lg:p-0">
+              <p className="mx-5  p-5 md:p-5 lg:p-0 text-[#444444] text-base md:text-lg ">
                 To better understand how first-time users navigated the app
                 after sign up, we conducted think-aloud testing, task-based
                 usability testing, and user interviews to observe how users
@@ -326,7 +326,7 @@ const ProjectDetail_Chatstat_mobile = () => {
                 the first time.
               </p>
 
-              <div className="mt-10 p-5 md:p-5 lg:p-0">
+              <div className="mt-10 p-5 md:p-5 lg:p-5">
                 <p className="text-[#027C2A] font-semibold text-2xl mb-4">
                   Key Research
                 </p>
@@ -371,7 +371,7 @@ const ProjectDetail_Chatstat_mobile = () => {
                     </p>
                   </div>
                   <div className="mt-6">
-                    <p className="text-[#111111] font-semibold text-xl mb-3">
+                    <p className="text-[#444444] font-semibold text-xl mb-3">
                       Supporting Observations
                     </p>
 
@@ -383,20 +383,20 @@ const ProjectDetail_Chatstat_mobile = () => {
                           className="shrink-0 mt-1"
                         />
 
-                        <p className="text-xl text-[#111111]">
+                        <p className="text-xl text-[#444444] font-medium">
                           5 out of 7 participants paused after reaching the
                           homepage and were unsure how to begin setup.
                         </p>
                       </div>
 
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-3 ">
                         <Asterisk
                           size={24}
                           color="#080808"
                           className="shrink-0 mt-1"
                         />
 
-                        <p className="text-xl text-[#111111]">
+                        <p className="text-xl text-[#444444] font-medium">
                           Several participants hesitated during social account
                           connection and reread privacy-related information
                           before continuing setup.
@@ -427,18 +427,18 @@ const ProjectDetail_Chatstat_mobile = () => {
               <h5 className="text-[#666666] text-4xl md:text-5xl text-center font-semibold">
                 03. Problem Definition
               </h5>
-              <p className="text-xl text-[#11111] mt-5 p-5 md:p-5 lg:p-0">
+              <p className="text-[#444444] text-lg md:text-xl  mt-10 p-5 md:p-5 lg:p-0">
                 Although users were able to successfully create accounts, many
                 first-time users struggled to understand how to begin setup and
                 start using Chatstat APP after entering the homepage.
               </p>
-              <p className="text-xl text-[#11111] p-5 md:p-5 lg:p-0">
+              <p className="text-lg md:text-xl text-[#444444] mt-5 p-5 md:p-5 lg:p-0">
                 Without clear setup guidance, users often became uncertain about
                 what to do next, how to add their child, or how to confidently
                 connect social accounts.
               </p>
             </div>
-            <div className="space-y-4 p-5 md:p-5 lg:p-0">
+            <div className="space-y-4 p-5 mt-10 md:p-5 lg:p-0">
               <div className="bg-[#FFF6F6] border border-[#F2CACA] rounded-2xl p-6">
                 <p className="text-[#C53030] font-semibold text-xl mb-2">
                   Unclear First-Time Activation
@@ -498,7 +498,7 @@ const ProjectDetail_Chatstat_mobile = () => {
               <h5 className="text-[#666666] text-4xl md:text-5xl text-center font-semibold">
                 04. Hypothesis / Project Goals
               </h5>
-              <p className="text-xl text-[#11111] mt-5 p-5 md:p-5 lg:p-0">
+              <p className="text-lg md:text-xl text-[#444444]  mt-10 p-5 md:p-5 lg:p-0">
                 Based on the research findings and onboarding friction observed
                 during testing, we explored how a more guided setup experience
                 could help first-time users better understand Chatstat and
@@ -572,7 +572,7 @@ const ProjectDetail_Chatstat_mobile = () => {
                 05. Design Solutions
               </h5>
 
-              <p className="text-xl text-[#111111] mt-5 p-5 md:p-5 lg:p-0">
+              <p className="text-lg md:text-xl text-[#444444] mt-6 md:mt-10  p-5 md:p-5 lg:p-0">
                 Based on the research findings, we redesigned the onboarding
                 experience to guide users progressively through setup while
                 reducing confusion during account creation, social account
@@ -680,14 +680,14 @@ const ProjectDetail_Chatstat_mobile = () => {
                         Solution
                       </p>
 
-                      <p className="text-xl text-[#111111] leading-relaxed">
+                      <p className="text-xl text-[#444444] font-medium leading-relaxed">
                         {item.solution}
                       </p>
                     </div>
 
                     {/* Key Improvements */}
                     <div>
-                      <p className="text-[#111111] font-semibold text-xl mb-4">
+                      <p className="text-[#242726] font-semibold text-xl mb-4">
                         Key Improvements
                       </p>
 
@@ -700,7 +700,7 @@ const ProjectDetail_Chatstat_mobile = () => {
                               className="shrink-0 mt-1"
                             />
 
-                            <p className="text-lg text-[#111111]">{point}</p>
+                            <p className="text-lg text-[#444444] font-medium">{point}</p>
                           </div>
                         ))}
                       </div>
@@ -728,27 +728,27 @@ const ProjectDetail_Chatstat_mobile = () => {
   viewport={{ once: true, amount: 0.3 }}
   transition={{ duration: 0.6 }}
 >
-  <div className="mt-10">
-    <h5 className="text-[#666666] text-4xl md:text-5xl text-center font-semibold">
+  <div className="mt-10 bg-[#242726] text-white rounded-3xl p-6 sm:p-8 md:p-12 m-5 md:m-5">
+    <h5 className="text-white/60  text-4xl md:text-5xl text-center font-semibold">
       06. Reflection
     </h5>
 
     <div className="mt-10 ">
-      <p className="text-xl text-[#111111] leading-relaxed pt-5 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
+      <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
         This project showed how important onboarding is in helping users
         confidently understand and activate a product for the first time.
-      </p>
+      </blockquote>
 
-      <p className="text-xl text-[#111111] leading-relaxed pt-5 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
+      <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 mt-2 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
         Through usability testing and affinity mapping, I learned that reducing
         setup uncertainty and guiding users progressively can significantly
         improve the onboarding experience.
-      </p>
+      </blockquote>
 
-      <p className="text-xl text-[#111111] leading-relaxed pt-5 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
+      <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 mt-2 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
         In future iterations, I would further explore more personalised
         onboarding experiences based on different parent needs and behaviours.
-      </p>
+      </blockquote>
     </div>
   </div>
 </motion.section>
