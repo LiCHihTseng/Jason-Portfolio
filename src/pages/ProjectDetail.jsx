@@ -20,6 +20,7 @@ import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 import ExtensionIcon from "@mui/icons-material/Extension";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { ArrowUpRight, House } from "@phosphor-icons/react";
 
 import TurnedInIcon from "@mui/icons-material/TurnedIn";
 
@@ -261,7 +262,7 @@ function ProjectDetail() {
                         lottieRef.current?.goToAndPlay(0, true);
                       }, 1000);
                     }}
-                    style={{ width: "100%", height: "100%" }} // 撐滿父層          
+                    style={{ width: "100%", height: "100%" }} // 撐滿父層
                     rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }} // 關鍵2：像 object-cover
                   />
                 )}
@@ -292,7 +293,9 @@ function ProjectDetail() {
                     <div key={colIdx} className="relative px-4 py-4">
                       {/* 垂直分隔線 */}
 
-                      <h6 className="font-semibold mb-4 text-lg">{col.title}</h6>
+                      <h6 className="font-semibold mb-4 text-lg">
+                        {col.title}
+                      </h6>
                       {Array.isArray(col.content) ? (
                         col.content.map((item, idx) => (
                           <p key={idx} className="mt-1 text-[#6B6B76] text-lg">
@@ -1328,7 +1331,7 @@ function ProjectDetail() {
           </motion.section>
 
           {/* Contact and Next Project */}
-          <div className="mt-12 flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* <div className="mt-12 flex flex-col md:flex-row justify-between items-center gap-4">
             <motion.button
               onClick={() =>
                 (window.location.href = `mailto:zxcjason234@gmail.com?subject=Inquiry about ${project.title}`)
@@ -1347,7 +1350,15 @@ function ProjectDetail() {
             >
               Next Project
             </motion.button>
-          </div>
+          </div> */}
+          <button
+            onClick={() => navigate("/")}
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#111111] text-white px-5 py-4 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+          >
+            <House size={20} weight="fill" />
+
+            <span className="text-base font-medium">Back Home</span>
+          </button>
         </motion.div>
       </div>
     </div>

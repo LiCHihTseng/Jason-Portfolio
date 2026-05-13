@@ -25,7 +25,7 @@ function AppShell() {
         <Route path="/" element={<Home />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/project/chatstat" element={<ProjectDetail_Chatstat />} />
-        <Route path="/project/chatstat" element={<ProjectDetail_Chatstat_mobile />} />
+        <Route path="/project/chatstat_mobile" element={<ProjectDetail_Chatstat_mobile />} />
         <Route path="/about" element={<About />} />
       </Routes>
       <Footer />
