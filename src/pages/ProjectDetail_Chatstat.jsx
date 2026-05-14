@@ -5,7 +5,7 @@ import DelayedLoopLottie from "../components/DelayedLoopLottie";
 import Chatstat_CTA from "../assets/img/GIF/CTA.json";
 import Chatstat_Feature from "../assets/img/Chatstat_Feature.svg";
 import Chatstat_avatar1 from "../assets/img/Chatstat_avatar1.svg";
-import Chatstat_avatar2 from "../assets/img/Chatstat_avatar2.svg";
+import Chatstat_avatar2 from "../assets/img/chatstat_avatar2.svg";
 import Chatstat_FAQ from "../assets/img/Chatstat_FAQ.svg";
 import Lottie from "lottie-react";
 import { useState } from "react";
