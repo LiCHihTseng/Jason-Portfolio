@@ -1,8 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 import chatstat_banner from "../assets/img/Chatstat_Banner.png";
-
+import DelayedLoopLottie from "../components/DelayedLoopLottie";
+import Chatstat_CTA from "../assets/img/GIF/CTA.json";
+import Chatstat_Feature from "../assets/img/Chatstat_Feature.svg";
+import Chatstat_Avatar1 from "../assets/img/Chatstat_avatar1.svg";
+import Chatstat_Avatar2 from "../assets/img/Chatstat_avatar2.svg";
+import Chatstat_FAQ from "../assets/img/Chatstat_FAQ.svg";
+import Lottie from "lottie-react";
+import { useState } from "react";
 const ProjectDetail_Chatstat = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [faqHovered, setFaqHovered] = useState(false);
   const project = {
     title: "Chatstat Homepage Experience Redesign",
     platform: ["Website", "UX Design", "Product Design"],
@@ -83,7 +92,10 @@ const ProjectDetail_Chatstat = () => {
             {[
               { label: "Role", value: "UI/UX Designer" },
               { label: "Platform", value: "Website" },
-              { label: "Team", value: "Product & Marketing" },
+              {
+                label: "Team",
+                value: ["UI/UX", "Software Engineer", "Marketing"],
+              },
               {
                 label: "Tools",
                 value: ["Figma", "WordPress"],
@@ -108,117 +120,389 @@ const ProjectDetail_Chatstat = () => {
           {/* Project Overview */}
           <section className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             <div>
-              <p className="text-sm text-[#777777] mb-2">Overview</p>
+              <p className="text-lg text-[#777777] mb-2">Overview</p>
               <h2 className="text-2xl md:text-3xl font-medium text-[#242726]">
                 Improving homepage clarity and trust
               </h2>
             </div>
 
             <div className="md:col-span-2">
-              <p className="text-base md:text-lg leading-8 text-[#444444]">
-                At Chatstat, I worked on improving the homepage experience by
-                refining content hierarchy, CTA clarity, trust-building
-                sections, and visual consistency across the website. The goal
-                was to help first-time visitors understand the product value
-                more quickly and create a clearer path toward onboarding.
+              <p className="text-lg md:text-xl leading-8 text-[#444444]">
+                At Chatstat, I worked on improving the homepage experience
+                through stakeholder feedback, UX reviews, and collaboration with
+                the marketing team.
+              </p>
+              <p className="text-lg md:text-xl leading-8 text-[#444444] mt-4">
+                The goal was to help first-time visitors better understand the
+                platform and create a clearer onboarding journey.
               </p>
             </div>
           </section>
 
           {/* Problem */}
           <section className="bg-[#f8f8f8] rounded-3xl p-6 sm:p-8 md:p-10">
-            <p className="text-sm text-[#777777] mb-2">Problem</p>
-            <h2 className="text-2xl md:text-3xl font-medium mb-6 text-[#242726]">
-              The homepage had useful information, but the user journey lacked
-              clarity.
-            </h2>
+            <p className="text-lg text-[#777777] mb-3">Problem</p>
 
-            <p className="text-base md:text-lg leading-8 text-[#444444] mb-6">
-              Although the homepage contained detailed product information,
-              several UX and communication issues made it difficult for users to
-              quickly understand the product value and navigate the experience
-              confidently.
-            </p>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+              {/* Main problem statement */}
+              <div className="lg:col-span-5">
+                <h2 className="text-lg md:text-xl lg:text-2xl font-medium leading-tight text-[#242726]">
+                  The homepage had strong product content, but the communication
+                  experience was unclear.
+                </h2>
+              </div>
 
-            <ul className="space-y-3 text-base md:text-lg text-[#444444]">
-              <li>• Inconsistent CTA messaging within the hero section</li>
-              <li>
-                • Fragmented feature communication across multiple sections
-              </li>
-              <li>• Low visibility of important product features</li>
-              <li>• Weak trust-building through testimonials</li>
-              <li>• Inconsistent layout patterns across supporting pages</li>
-            </ul>
-          </section>
-
-          {/* Challenges */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <div>
-              <p className="text-sm text-[#777777] mb-2">Challenges</p>
-              <h2 className="text-2xl md:text-3xl font-medium text-[#242726]">
-                Balancing UX improvements with business and content needs
-              </h2>
+              {/* Supporting explanation */}
+              <div className="lg:col-span-7">
+                <p className="text-base md:text-lg leading-8 text-[#444444]">
+                  Through stakeholder feedback and UX reviews, we identified
+                  several communication and usability issues that made it
+                  difficult for first-time visitors to quickly understand
+                  Chatstat’s value and move confidently through the homepage.
+                </p>
+              </div>
             </div>
 
-            <div className="md:col-span-2 space-y-5 text-base md:text-lg leading-8 text-[#444444]">
-              <p>
-                One of the main challenges was improving the homepage experience
-                without completely redesigning the existing website structure.
-              </p>
-
-              <p>
-                The project required balancing stakeholder expectations,
-                existing brand direction, marketing communication goals, and UX
-                best practices. Since the platform targeted both parents and
-                educational audiences, trust and communication tone also needed
-                careful consideration.
-              </p>
-            </div>
-          </section>
-
-          {/* Design Improvements */}
-          <section>
-            <div className="mb-10">
-              <p className="text-sm text-[#777777] mb-2">Design Improvements</p>
-              <h2 className="text-2xl md:text-3xl font-medium text-[#242726]">
-                Key areas I improved
-              </h2>
-            </div>
-
-            <div className=" gap-5">
-              {improvements.map((item, index) => (
+            {/* Issue cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
+              {[
+                {
+                  title: "CTA Clarity",
+                  desc: "Hero section CTAs used inconsistent messaging, making the primary action less clear.",
+                },
+                {
+                  title: "Feature Communication",
+                  desc: "Product features were spread across multiple sections, making the value harder to scan.",
+                },
+                {
+                  title: "Feature Visibility",
+                  desc: "Important alert-related content appeared too low in the page hierarchy.",
+                },
+                {
+                  title: "Trust Building",
+                  desc: "User and stakeholder feedback highlighted the importance of testimonials in making the platform feel more trustworthy and easier to understand for first-time visitors.",
+                },
+                {
+                  title: "Page Consistency",
+                  desc: "Supporting pages needed stronger visual and communication consistency with the homepage.",
+                },
+              ].map((item, index) => (
                 <div
                   key={index}
-                  className=" grid grid-cols-1 md:grid-cols-2 m-5 rounded-3xl p-6 sm:p-8 bg-white border border-[#eeeeee] shadow-sm"
+                  className="bg-white rounded-2xl p-5 md:p-6 border border-[#eeeeee]"
                 >
-                  <div>
-                  <div className="w-10 h-10 rounded-full bg-[#f6f5f5] flex items-center justify-center mb-5 text-sm font-medium">
-                    {index + 1}
-                  </div>
+                  <p className="text-sm text-[#777777] mb-3">0{index + 1}</p>
 
-                  <h3 className="text-xl md:text-2xl font-medium mb-4 text-[#242726]">
+                  <h3 className="text-lg md:text-xl font-medium text-[#242726] mb-3">
                     {item.title}
                   </h3>
 
-                  <p className="text-base md:text-lg leading-8 text-[#444444]">
-                    {item.description}
+                  <p className="text-base leading-7 text-[#555555]">
+                    {item.desc}
                   </p>
-                  </div>
-                 
-
-                  <div className="mt-8 overflow-hidden rounded-2xl border border-[#eeeeee]">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-auto object-cover transition duration-300 hover:scale-[1.01]"
-                    />
-                  </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* Testimonial Example */}
+          {/* Challenges */}
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {/* Left */}
+            <div>
+              <p className="text-sm text-[#777777] mb-2">Challenges</p>
+
+              <h2 className="text-2xl md:text-3xl font-medium leading-tight text-[#242726]">
+                Aligning UX clarity with marketing communication
+              </h2>
+            </div>
+
+            {/* Right */}
+            <div className="md:col-span-2 space-y-6">
+              {/* Highlight */}
+              <div className="pl-5">
+                <p className="text-lg md:text-xl leading-8 text-[#444444]">
+                  The challenge wasn’t only improving the UI — it was deciding
+                  how information should be communicated more clearly while
+                  maintaining the platform’s existing brand and marketing voice.
+                </p>
+              </div>
+
+              {/* Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-[#f8f8f8] rounded-2xl p-5">
+                  <p className="text-sm text-[#777777] mb-2">Collaboration</p>
+
+                  <p className="text-base leading-7 text-[#444444]">
+                    Worked closely with the marketing team to refine messaging,
+                    testimonials, and homepage communication.
+                  </p>
+                </div>
+
+                <div className="bg-[#f8f8f8] rounded-2xl p-5">
+                  <p className="text-sm text-[#777777] mb-2">
+                    Communication Focus
+                  </p>
+
+                  <p className="text-base leading-7 text-[#444444]">
+                    Prioritized trust-building, onboarding clarity, and
+                    user-friendly language for parents and educational
+                    audiences.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          {/* Design Improvements */}
+          <section>
+            <div className="mb-14">
+              <p className="text-sm text-[#777777] mb-3">Design Improvements</p>
+              <h2 className="text-3xl md:text-4xl font-medium text-[#242726] leading-tight">
+                Key areas I improved
+              </h2>
+            </div>
+
+            <div className="space-y-28">
+              {/* 01 CTA Clarity */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                <div className="lg:col-span-4">
+                  <div className="w-12 h-12 rounded-full bg-[#f6f5f5] flex items-center justify-center mb-6 text-sm font-medium">
+                    01
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-medium mb-6 text-[#242726] leading-tight">
+                    CTA Clarity
+                  </h3>
+
+                  <p className="text-lg leading-8 text-[#555555]">
+                    Unified the hero section CTA messaging to reduce decision
+                    friction and create a clearer conversion path for first-time
+                    visitors.
+                  </p>
+                </div>
+
+                <div className="lg:col-span-8">
+                  <div className="">
+                    <Lottie
+                      animationData={Chatstat_CTA}
+                      delay={5000}
+                      width="100%"
+                      height="100%"
+                    />
+                  </div>
+                  <div className="mt-5 bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-white/50">
+                    <p className="text-xs uppercase tracking-wide text-[#777777] mb-2">
+                      UX Decision
+                    </p>
+
+                    <h4 className="text-base md:text-lg font-medium text-[#242726] mb-2">
+                      Unified CTA messaging
+                    </h4>
+
+                    <p className="text-sm leading-6 text-[#555555]">
+                      Updated the homepage CTA wording to create a more
+                      consistent onboarding flow. “Get Started” and “Sign Up”
+                      were revised into clearer trial-focused actions such as
+                      “Start Your Free Trial” and “Try It Free.”
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 02 Feature Communication & Visibility */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                <div className="lg:col-span-8 order-2 lg:order-1">
+                  <div
+                    className="relative overflow-hidden rounded-3xl bg-[#fafafa]"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    <img
+                      src={Chatstat_Feature}
+                      alt="Chatstat feature communication improvement"
+                      className="w-full h-auto object-cover"
+                    />
+                    <motion.div
+                      initial={{
+                        opacity: 0,
+                        x: 80,
+                      }}
+                      animate={{
+                        opacity: isHovered ? 1 : 0,
+                        x: isHovered ? 0 : 80,
+                      }}
+                      transition={{
+                        duration: 0.45,
+                        ease: "easeOut",
+                      }}
+                      className="absolute top-4 right-4 md:top-6 md:right-6 max-w-[300px] bg-[#242726]/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-white/10"
+                    >
+                      <p className="text-xs uppercase tracking-wide text-[#9ca3af] mb-2">
+                        Annotation
+                      </p>
+
+                      <h4 className="text-base md:text-lg font-medium text-white mb-2">
+                        Clearer feature grouping
+                      </h4>
+
+                      <p className="text-sm leading-6 text-white/80">
+                        Grouped product features into scannable sections and
+                        surfaced key safety-related content earlier in the
+                        homepage hierarchy.
+                      </p>
+                    </motion.div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-4 order-1 lg:order-2">
+                  <div className="w-12 h-12 rounded-full bg-[#f6f5f5] flex items-center justify-center mb-6 text-sm font-medium">
+                    02
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-medium mb-6 text-[#242726] leading-tight">
+                    Feature Communication & Visibility
+                  </h3>
+
+                  <p className="text-lg leading-8 text-[#555555]">
+                    Reorganized homepage features into clearer content groupings
+                    to improve scanability and help users understand Chatstat’s
+                    core value more quickly.
+                  </p>
+                </div>
+              </div>
+
+              {/* 03 Trust Building Through Testimonials */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                <div className="lg:col-span-4">
+                  <div className="w-12 h-12 rounded-full bg-[#f6f5f5] flex items-center justify-center mb-6 text-sm font-medium">
+                    03
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-medium mb-6 text-[#242726] leading-tight">
+                    Trust Building Through Testimonials
+                  </h3>
+
+                  <p className="text-lg leading-8 text-[#555555]">
+                    Collaborated with the marketing team to transform parent
+                    interview insights into more authentic, relatable, and
+                    trust-focused homepage messaging.
+                  </p>
+                </div>
+
+                <div className="lg:col-span-8 ">
+                  <div className="rounded-3xl border border-[#eeeeee] text-black p-4 md:p-8">
+                    <p className="text-sm text-[#111111] mb-5">
+                      Trust Building Example
+                    </p>
+
+                    <blockquote className="text-lg md:text-xl leading-relaxed font-medium mb-8 text-[#555555]">
+                      “Chatstat has been a game-changer for my family’s online
+                      safety. Its AI flags risks, helping me talk openly with my
+                      kids and feel confident they’re protected.”
+                    </blockquote>
+                    <div className="flex">
+                      <img
+                        className="round-xl mr-3"
+                        src={Chatstat_Avatar1}
+                      ></img>
+                      <div>
+                        <p className="text-black/70">Oliver</p>
+                        <p>Father of two kids</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rounded-3xl border border-[#eeeeee] text-black p-4 md:p-8 mt-4">
+                    <p className="text-sm text-[#111111] mb-5">
+                      Trust Building Example
+                    </p>
+
+                    <blockquote className="text-lg md:text-xl leading-relaxed font-medium mb-8 text-[#555555]">
+                      “Chatstat has been a game-changer for my family’s online
+                      safety. Its AI flags risks, helping me talk openly with my
+                      kids and feel confident they’re protected.”
+                    </blockquote>
+                    <div className="flex">
+                      <img
+                        className="round-xl mr-3"
+                        src={Chatstat_Avatar2}
+                      ></img>
+                      <div>
+                        <p className="text-black/70">Jessica, Nurses</p>
+                        <p>Mother of one</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 04 FAQ & Page Consistency */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+                <div className="lg:col-span-8 order-2 lg:order-1">
+                  <div
+                    className="relative overflow-hidden rounded-3xl border border-[#eeeeee] bg-[#fafafa]"
+                    onMouseEnter={() => setFaqHovered(true)}
+                    onMouseLeave={() => setFaqHovered(false)}
+                  >
+                    <motion.img
+                      src={Chatstat_FAQ}
+                      alt="Chatstat FAQ layout improvement"
+                      animate={{
+                        scale: faqHovered ? 1.02 : 1,
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut",
+                      }}
+                      className="w-full h-auto object-cover"
+                    />
+
+                    <motion.div
+                      initial={{ opacity: 0, x: -80 }}
+                      animate={{
+                        opacity: faqHovered ? 1 : 0,
+                        x: faqHovered ? 0 : -80,
+                      }}
+                      transition={{
+                        duration: 0.45,
+                        ease: "easeOut",
+                      }}
+                      className="absolute bottom-4 left-4 md:bottom-6 md:left-6 max-w-[280px] bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-white/50"
+                    >
+                      <p className="text-xs uppercase tracking-wide text-[#777777] mb-2">
+                        UX Pattern
+                      </p>
+
+                      <h4 className="text-base md:text-lg font-medium text-[#242726] mb-2">
+                        Familiar Q&A layout
+                      </h4>
+
+                      <p className="text-sm leading-6 text-[#555555]">
+                        Improved readability by using a more familiar
+                        question-and-answer structure.
+                      </p>
+                    </motion.div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-4 order-1 lg:order-2">
+                  <div className="w-12 h-12 rounded-full bg-[#f6f5f5] flex items-center justify-center mb-6 text-sm font-medium">
+                    04
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-medium mb-6 text-[#242726] leading-tight">
+                    FAQ & Page Consistency
+                  </h3>
+
+                  <p className="text-lg leading-8 text-[#555555]">
+                    Redesigned the FAQ into a familiar question-and-answer
+                    layout and improved visual consistency across supporting
+                    pages.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Testimonial Example
           <section className="bg-[#242726] text-white rounded-3xl p-6 sm:p-8 md:p-12 ">
             <p className="text-sm text-white/60 mb-4">Trust Building Example</p>
 
@@ -229,46 +513,47 @@ const ProjectDetail_Chatstat = () => {
             </blockquote>
 
             <p className="text-white/70">— Jessica, mother of two</p>
-          </section>
+          </section> */}
 
           {/* Outcome */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <div>
-              <p className="text-sm text-[#777777] mb-2">Outcome</p>
-              <h2 className="text-2xl md:text-3xl font-medium text-[#242726]">
-                A clearer direction for future homepage iterations
-              </h2>
-            </div>
+          <section className="border-t border-[#eeeeee] pt-14">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+              {/* Left */}
+              <div className="lg:col-span-4">
+                <p className="text-sm text-[#777777] mb-3">Project Impact</p>
 
-            <div className="md:col-span-2">
-              <p className="text-base md:text-lg leading-8 text-[#444444] mb-6">
-                The proposed redesign direction helped align stakeholders around
-                a clearer homepage communication strategy and established a
-                stronger foundation for future UX iterations.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  "CTA clarity",
-                  "Information hierarchy",
-                  "Content scanability",
-                  "Trust-building communication",
-                  "Cross-page consistency",
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-[#f8f8f8] rounded-2xl px-5 py-4 text-[#242726]"
-                  >
-                    {item}
-                  </div>
-                ))}
+                <h2 className="text-2xl md:text-3xl font-medium leading-tight text-[#242726]">
+                  Creating a clearer and more trustworthy homepage experience
+                </h2>
               </div>
 
-              <p className="text-base md:text-lg leading-8 text-[#444444] mt-6">
-                While the final version was not fully deployed at the time, the
-                project helped shape future UX discussions and provided a more
-                user-centered direction for the homepage experience.
-              </p>
+              {/* Right */}
+              <div className="lg:col-span-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    "Improved CTA clarity",
+                    "Clearer feature communication",
+                    "Better content scanability",
+                    "Stronger trust-focused messaging",
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-[#f8f8f8] rounded-2xl px-5 py-5"
+                    >
+                      <p className="text-base md:text-lg text-[#242726]">
+                        {item}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-base md:text-lg leading-8 text-[#555555] mt-8">
+                  Although the redesign direction was not fully deployed during
+                  the project timeline, it helped align stakeholders around a
+                  clearer communication strategy and established a stronger
+                  foundation for future homepage iterations.
+                </p>
+              </div>
             </div>
           </section>
 
