@@ -4,8 +4,8 @@ import chatstat_banner from "../assets/img/Chatstat_Banner.png";
 import DelayedLoopLottie from "../components/DelayedLoopLottie";
 import Chatstat_CTA from "../assets/img/GIF/CTA.json";
 import Chatstat_Feature from "../assets/img/Chatstat_Feature.svg";
-import Chatstat_Avatar1 from "../assets/img/Chatstat_avatar1.svg";
-import Chatstat_Avatar2 from "../assets/img/Chatstat_avatar2.svg";
+import Chatstat_avatar1 from "../assets/img/Chatstat_avatar1.svg";
+import Chatstat_avatar2 from "../assets/img/Chatstat_avatar2.svg";
 import Chatstat_FAQ from "../assets/img/Chatstat_FAQ.svg";
 import Lottie from "lottie-react";
 import { useState } from "react";
@@ -402,7 +402,7 @@ const ProjectDetail_Chatstat = () => {
                     <div className="flex">
                       <img
                         className="round-xl mr-3"
-                        src={Chatstat_Avatar1}
+                        src={Chatstat_avatar1}
                       ></img>
                       <div>
                         <p className="text-black/70">Oliver</p>
@@ -423,7 +423,7 @@ const ProjectDetail_Chatstat = () => {
                     <div className="flex">
                       <img
                         className="round-xl mr-3"
-                        src={Chatstat_Avatar2}
+                        src={Chatstat_avatar2}
                       ></img>
                       <div>
                         <p className="text-black/70">Jessica, Nurses</p>
