@@ -38,7 +38,7 @@ function Home() {
           <ScrollPanel key={panel.number} panel={panel} />
         ))}
       </section>
-      <WhatICanDo className="mb-40"/>
+      <WhatICanDo />
     </main>
   );
 }
