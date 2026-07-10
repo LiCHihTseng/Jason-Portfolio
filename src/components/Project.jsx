@@ -1,6 +1,5 @@
 "use client";
 import Insync_lottie from "../assets/img/GIF/Insync_lottie.json"
-import Insync from "../assets/img/test1.png";
 import yoUQuest from "../assets/img/GIF/yoUQuest_card.json";
 import Chatstat from "../assets/img/Chatstat.png";
 import Chatstat_mobile from "../assets/img/Chatstat_mobile.png";
