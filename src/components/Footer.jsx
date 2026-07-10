@@ -1,207 +1,202 @@
-import { useLocation, Link } from "react-router-dom";
+"use client";
+
+import { useRef } from "react";
+import gsap from "gsap";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { motion } from "framer-motion";
+import CurveReveal from "./CurveReveal";
+import ProfileImage from "../assets/img/profile.jpg";
 
-// 使用 motion 對 ArrowOutwardIcon 進行動畫包裝
-const MotionArrowOutwardIcon = motion(ArrowOutwardIcon);
-// 使用 motion 對 Link 進行動畫包裝
-const MotionLink = motion(Link);
+export default function Footer() {
+  const buttonRef = useRef(null);
+  const buttonBgRef = useRef(null);
+  const buttonTextRef = useRef(null);
+  const arrowRef = useRef(null);
 
-function Footer() {
-  const location = useLocation();
-  const isAboutPage = location.pathname === "/about";
-
-  // 定義動畫變體，使用 fill 屬性控制 SVG 顏色
-  const arrowVariants = {
-    initial: { rotate: 0, fill: "#111111" }, // 初始黑色
-    hover: {
+  const handleButtonEnter = () => {
+    gsap.to(buttonRef.current, {
+      scale: 1.08,
+      duration: 0.45,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonBgRef.current, {
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonTextRef.current, {
+      color: "#111111",
+      duration: 0.3,
+      overwrite: "auto",
+    });
+  
+    gsap.to(arrowRef.current, {
       rotate: 45,
-      fill: "#EC5C29", // 懸停時與文字相同的顏色
-      transition: { duration: 0.5, ease: "easeInOut" },
-    },
+      x: 4,
+      y: -4,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
   };
-
-  // 定義文字的動畫變體，控制文字顏色
-  const textVariants = {
-    initial: { color: "#111111" }, // 初始黑色
-    hover: {
-      color: "#EC5C29", // 懸停時變為灰色
-      transition: { duration: 0.5, ease: "easeInOut" },
-    },
-  };
-
-  const sectionVariants = {
-    initial: { opacity: 0, y: 50 },
-    animate: {
-      opacity: 1,
+  
+  const handleButtonLeave = () => {
+    gsap.to(buttonRef.current, {
+      scale: 1,
+      duration: 0.45,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonBgRef.current, {
+      scale: 0,
+      duration: 0.5,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonTextRef.current, {
+      color: "#ffffff",
+      duration: 0.3,
+      overwrite: "auto",
+    });
+  
+    gsap.to(arrowRef.current, {
+      rotate: 0,
+      x: 0,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        staggerChildren: 0.2, // Stagger child elements by 0.2 seconds
-      },
-    },
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
   };
+
+  const handleMagneticMove = (e) => {
+    const button = buttonRef.current;
+    if (!button) return;
+  
+    const rect = button.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+  
+    const distanceX = e.clientX - centerX;
+    const distanceY = e.clientY - centerY;
+  
+    gsap.to(button, {
+      x: distanceX * 0.28,
+      y: distanceY * 0.28,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonTextRef.current, {
+      x: distanceX * 0.1,
+      y: distanceY * 0.1,
+      duration: 0.4,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  };
+  
+  const handleMagneticLeave = () => {
+    gsap.to(buttonRef.current, {
+      x: 0,
+      y: 0,
+      scale: 1,
+      duration: 0.7,
+      ease: "elastic.out(1, 0.35)",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonTextRef.current, {
+      x: 0,
+      y: 0,
+      color: "#ffffff",
+      duration: 0.5,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  
+    gsap.to(buttonBgRef.current, {
+      scale: 0,
+      duration: 0.5,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  };
+  const footerLinks = [
+    {
+      name: "Email",
+      href: "mailto:zxcjason234@gmail.com",
+    },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/in/li-chih-tseng/",
+    },
+    {
+      name: "CV",
+      href: "https://drive.google.com/file/d/1jHwb37AMMcoHAgEzrhpAtSFiaAuHAjlR/view?usp=sharing",
+    },
+  ];
 
   return (
-    <motion.footer
-      className={`border-t border-white/10 ${isAboutPage ? "pt-16" : "py-16"}`}
-      variants={sectionVariants}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, amount: 0.01 }}
-    >
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="space-y-12">
-          {/* Hello and Introduction Section */}
-          {!isAboutPage && (
-            <>
-              <div className="flex flex-wrap">
-                <div className="w-full md:basis-1/3">
-                  <h3 className="text-4xl font-normal mb-4 text-[#111111]">
-                    Hello.
-                  </h3>
-                </div>
-                <div className="w-full md:basis-2/3">
-                  <p className="text-[#0E1217] text-2xl font-normal">
-                    Hi, I’m Jason Tseng — a designer from Taiwan with a
-                    background in coding. I craft intuitive, engaging
-                    experiences by blending creativity with technical know-how.
-                    This site was fully designed and coded with love ❤️.
-                  </p>
-                </div>
-              </div>
+    <CurveReveal maskColor="#ffffff">
+      <footer className="relative overflow-hidden bg-[#1d1e20] text-white">
+      <div className="w-full  max-w-[2000px] mx-auto px-6 py-16 md:py-20">
 
-              <div className="flex flex-wrap">
-                <div className="w-full md:basis-1/3">
-                  <h4 className="text-2xl font-normal mb-4 text-[#0E1217]">
-                    How I Can Help
-                  </h4>
-                </div>
-                <div className="w-full md:basis-2/3">
-                  <p className="text-[#0E1217] text-xl">
-                    With a coding background, I design with implementation in
-                    mind — helping teams create practical, beautiful solutions
-                    and easily collaborate with developers.
-                  </p>
-                </div>
-              </div>
-            </>
-          )}
-          {isAboutPage && (
-            <div className="flex flex-wrap">
-              <div className="w-full md:basis-1/3">
-                <h3 className="text-4xl font-bold mb-4 text-[#0E1217]">
-                  Get In Touch?
-                </h3>
-              </div>
+          {/* Main heading */}
+          <div className="max-w-6xl">
+            <div className="flex items-start gap-5 md:gap-8">
+              <img src={ProfileImage} alt="Jason Tseng" className="mt-2 h-16 w-16 shrink-0 rounded-full object-cover sm:h-20 sm:w-20 md:h-24 md:w-24 lg:h-28 lg:w-28" />
+
+              <h2 className="max-w-5xl text-[clamp(3.5rem,8vw,8rem)] font-normal leading-[0.9] tracking-[-0.06em]">
+                Let&apos;s work
+                <br />
+                together
+              </h2>
             </div>
-          )}
-        </div>
+          </div>
 
-        {/* Let's Connect Section */}
-        <div className="flex flex-wrap justify-between items-center mt-12 border-t border-b border-white/10 py-4">
-          <h4 className="text-2xl font-normal text-[#0E1217] w-full md:basis-1/3">
-            Let's Connect
-          </h4>
-          <ul className="space-y-4 w-full md:basis-2/3">
-            <li>
-              <motion.div
-                className="flex items-center w-full cursor-pointer"
-                whileHover="hover"
-                initial="initial"
-                onClick={() =>
-                  (window.location.href = "mailto:zxcjason234@gmail.com")
-                }
-              >
-                <MotionLink
-                  to="mailto:zxcjason234@gmail.com"
-                  className="text-xl font-normal"
-                  variants={textVariants}
-                >
-                  Email
-                </MotionLink>
-                <motion.div
-                  className="ml-auto"
-                  style={{ transformOrigin: "center" }}
-                >
-                  <MotionArrowOutwardIcon
-                    className="ml-2"
-                    variants={arrowVariants}
-                  />
-                </motion.div>
-              </motion.div>
-            </li>
-            <li className="border-t border-[#5656564d]"></li>
-            <li>
-              <motion.div
-                className="flex items-center w-full cursor-pointer"
-                whileHover="hover"
-                initial="initial"
-                onClick={() =>
-                  (window.location.href =
-                    "https://www.linkedin.com/in/li-chih-tseng/")
-                }
-              >
-                <MotionLink
-                  to="https://www.linkedin.com/in/li-chih-tseng/"
-                  className="text-xl font-normal"
-                  variants={textVariants}
-                >
-                  LinkedIn
-                </MotionLink>
-                <motion.div
-                  className="ml-auto"
-                  style={{ transformOrigin: "center" }}
-                >
-                  <MotionArrowOutwardIcon
-                    className="ml-2"
-                    variants={arrowVariants}
-                  />
-                </motion.div>
-              </motion.div>
-            </li>
-            <li className="border-t border-[#5656564d]"></li>
-            <li>
-              <motion.div
-                className="flex items-center w-full cursor-pointer"
-                whileHover="hover"
-                initial="initial"
-                onClick={() =>
-                  (window.location.href =
-                    "https://drive.google.com/file/d/1jHwb37AMMcoHAgEzrhpAtSFiaAuHAjlR/view?usp=sharing")
-                }
-              >
-                <MotionLink
-                  to="https://drive.google.com/file/d/1jHwb37AMMcoHAgEzrhpAtSFiaAuHAjlR/view?usp=sharing"
-                  className="text-xl font-normal"
-                  variants={textVariants}
-                >
-                  CV
-                </MotionLink>
-                <motion.div
-                  className="ml-auto"
-                  style={{ transformOrigin: "center" }}
-                >
-                  <MotionArrowOutwardIcon
-                    className="ml-2 text-xl"
-                    variants={arrowVariants}
-                  />
-                </motion.div>
-              </motion.div>
-            </li>
-          </ul>
-        </div>
+          {/* Line + circular button */}
+          <div className="relative mt-20 md:mt-28">
+            <div className="h-px w-full bg-white/15" />
 
-        {/* Copyright Section */}
-        <div className="mt-16 pt-8 border-t border-white/10">
-          <p className="text-[#111111]/50 text-sm">
-            © {new Date().getFullYear()} ALL RIGHTS RESERVED
-          </p>
+            <a ref={buttonRef} href="mailto:zxcjason234@gmail.com" onMouseMove={handleMagneticMove} onMouseEnter={handleButtonEnter} onMouseLeave={handleMagneticLeave} className="absolute right-[5%] top-1/2 z-20 flex h-36 w-36 -translate-y-1/2 items-center justify-center overflow-hidden rounded-full bg-[#Ec5c29] sm:h-40 sm:w-40 md:right-[8%] md:h-48 md:w-48 lg:h-52 lg:w-52 will-change-transform" aria-label="Get in touch">
+  <span ref={buttonBgRef} className="absolute inset-0 scale-0 rounded-full bg-white" />
+  <span ref={buttonTextRef} className="relative z-10 text-sm font-medium text-white sm:text-base will-change-transform">Get in touch</span>
+</a>
+
+          </div>
+
+          {/* Contact pills */}
+          <div className="mt-24 flex flex-wrap gap-3 sm:gap-4 md:mt-20 md:max-w-[70%]">
+            {footerLinks.map((link) => {
+              const isExternal = !link.href.startsWith("mailto:");
+
+              return (
+                <a key={link.name} href={link.href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined} className="group flex min-w-[150px] items-center justify-between gap-6 rounded-full border border-white/20 px-6 py-4 text-sm text-white transition-all duration-300 hover:border-[#EC5C29] hover:bg-[#EC5C29] hover:text-white sm:min-w-[180px] sm:px-8 sm:py-5 sm:text-base">
+                  <span>{link.name}</span>
+                  <ArrowOutwardIcon className="transition-transform duration-300 group-hover:rotate-45" sx={{ fontSize: 20 }} />
+                </a>
+              );
+            })}
+          </div>
+
+          {/* Bottom section */}
+          <div className="mt-28 flex flex-col gap-8 border-t border-white/10 pt-8 md:mt-36 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/40">Version</p>
+              <p className="mt-3 text-sm text-white/90">© {new Date().getFullYear()} Edition</p>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-    </motion.footer>
+      </footer>
+    </CurveReveal>
   );
 }
-
-export default Footer;

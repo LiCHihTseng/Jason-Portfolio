@@ -9,7 +9,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import InfoIcon from "@mui/icons-material/Info";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import CloseIcon from "@mui/icons-material/Close";
-
+import Navicon from "../assets/img/Nav-icon.svg";
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -51,11 +51,10 @@ function Navbar() {
       }`}
     >
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          <RouterLink to="/" className="text-[#111111] font-bold text-2xl   ">
-            Jason Tseng
+        <div className="flex justify-between items-center h-16 mt-4 mb-4">
+          <RouterLink to="/" className="text-[#111111] font-bold text-2xl">
+            <img src={Navicon} alt="Logo" className="w-40"/>
           </RouterLink>
-
           <motion.button
             ref={buttonRef}
             onClick={() => setIsMenuOpen(!isMenuOpen)}

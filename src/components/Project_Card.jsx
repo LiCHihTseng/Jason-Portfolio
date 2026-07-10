@@ -2,8 +2,13 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
 import AnimatedArrowButton from "./AnimatedArrowButton";
 import * as Icon from "@phosphor-icons/react";
+
+// 判斷 img 是 Lottie 的 JSON 資料(物件),還是一般圖片路徑(字串)
+const isLottieData = (src) =>
+  src && typeof src === "object" && ("v" in src || "layers" in src);
 
 export default function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
@@ -19,6 +24,8 @@ export default function ProjectCard({ project, index }) {
       y: e.clientY - rect.top,
     });
   };
+
+  const useLottie = isLottieData(project.img);
 
   const CardContent = (
     <div
@@ -48,14 +55,25 @@ export default function ProjectCard({ project, index }) {
         </div>
       )}
 
-      {/* 主圖 */}
-      <img
-        src={project.img}
-        alt={project.title}
-        className={`w-full md:object-contain object-cover object-bottom rounded-lg transition-transform duration-500 ${
-          isHovered && !project.disabled ? "scale-105" : ""
-        }`}
-      />
+      {/* 主圖:依照 project.img 的資料型態,決定要渲染 Lottie 還是 <img> */}
+      {useLottie ? (
+        <Lottie
+          animationData={project.img}
+          loop
+          autoplay
+          className={`w-full md:object-contain object-cover object-bottom rounded-lg transition-transform duration-500 ${
+            isHovered && !project.disabled ? "scale-105" : ""
+          }`}
+        />
+      ) : (
+        <img
+          src={project.img}
+          alt={project.title}
+          className={`w-full md:object-contain object-cover object-bottom rounded-lg transition-transform duration-500 ${
+            isHovered && !project.disabled ? "scale-105" : ""
+          }`}
+        />
+      )}
     </div>
   );
 

@@ -4,6 +4,7 @@
 @import "tailwindcss";
 
 
+
 /* :root {
   color-scheme: dark;
 } */
@@ -145,9 +146,25 @@ html {
   font-style: normal;
 }
 /* 全域套用 */
+@keyframes scrollDotMove {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+.scroll-dot {
+  animation: scrollDotMove 1.5s ease-in-out infinite;
+}
+
+
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f3f3f3;
+  background-color: #ffffff;
 
   margin: 0;
   padding: 0;
