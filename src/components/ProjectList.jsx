@@ -91,12 +91,18 @@ export default function ProjectList({ projects }) {
                 }}
               >
                 <Link
-                  to={`/project/${project.id}`}
-                 
+                  to={project.disabled ? "" : project.route}
+                  onClick={(e) => {
+                    if (project.disabled) e.preventDefault();
+                  }}
                   onMouseEnter={() => handleHover(project.id, index)}
                   onMouseLeave={() => setHoveredId(null)}
                   onMouseMove={handleMouseMove}
-                  className="relative flex items-center justify-between border-b border-gray-200 py-25 cursor-pointer"
+                  className={`relative flex items-center justify-between border-b border-gray-200 py-25 ${
+                    project.disabled
+                      ? "cursor-not-allowed opacity-60"
+                      : "cursor-pointer"
+                  }`}
                 >
                   <motion.h2
                     animate={{
@@ -181,8 +187,10 @@ export default function ProjectList({ projects }) {
             </div>
 
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-20 h-20 rounded-full bg-[#ffffff] flex items-center justify-center shadow-sm">
-                <span className="text-[#111111] text-sm font-medium">View</span>
+              <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-sm">
+                <span className="text-[#111111] text-sm font-medium text-center leading-tight">
+                  {hoveredProject.disabled ? "Coming Soon" : "View"}
+                </span>
               </div>
             </div>
           </motion.div>

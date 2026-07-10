@@ -8,20 +8,21 @@ import vrFurniture from "../assets/img/GIF/iFurniture.json";
 import ProjectList from "./ProjectList";
 import AussieWIldlife from "../assets/img/AussieWildlife.png";
 const projects = [
-
   {
     id: 4,
     title: "Chatstat",
     img: Chatstat,
     category: "Interaction & Development",
     route: "/project/chatstat",
+    disabled: false,
   },
   {
     id: 5,
     title: "Chatstat Mobile",
     img: Chatstat_mobile,
-    category: "User Reserach & Development",
+    category: "User Research & Development",
     route: "/project/chatstat_mobile",
+    disabled: false,
   },
   {
     id: 2,
@@ -29,6 +30,7 @@ const projects = [
     img: yoUQuest,
     category: "Design & Development",
     route: "/project/2",
+    disabled: false,
   },
   {
     id: 1,
@@ -36,12 +38,15 @@ const projects = [
     img: Insync_lottie,
     category: "Design & Development",
     route: "/project/1",
+    disabled: false,
   },
-  {id:3,
-    title:"AussieWildlife",
-    img:AussieWIldlife,
-    category: "RPG & Child game",
-    route:"project/3"
+  {
+    id: 3,
+    title: "AussieWildlife",
+    img: AussieWIldlife,
+    category: "RPG & Child Game",
+    route: "/project/3",
+    disabled: false,
   },
   {
     id: 6,
@@ -49,9 +54,8 @@ const projects = [
     img: vrFurniture,
     category: "XR & Unity 3D",
     route: "/project/XR",
+    disabled: true,
   },
-
-  
 ];
 
 function Projects() {
