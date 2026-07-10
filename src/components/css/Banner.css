@@ -13,7 +13,7 @@
   width: 100%; /* 一開始就全長底線 */
   height: 1px;
   background-color: #616161; /* 初始底線顏色 */
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .custom-underline:hover {
