@@ -54,12 +54,16 @@ const sloganLineTwo = [
 function RollingSyllable({ children }) {
   return (
     <span className="rolling-syllable relative inline-block h-[1em] overflow-hidden align-top">
-      <span className="syllable-current block leading-none">{children}</span>
-      <span className="syllable-next absolute left-0 top-0 block leading-none">{children}</span>
+      <span className="syllable-current block leading-none will-change-transform">
+        {children}
+      </span>
+
+      <span className="syllable-next absolute inset-0 block w-full leading-none will-change-transform">
+        {children}
+      </span>
     </span>
   );
 }
-
 function RollingLine({ words, className = "" }) {
   return (
     <span className={`flex flex-wrap justify-center ${className}`}>
@@ -86,14 +90,24 @@ export default function SkillsGrid() {
 
   useLayoutEffect(() => {
     const context = gsap.context(() => {
-      const syllableGroups = gsap.utils.toArray(".rolling-syllable", sloganRef.current);
+      const syllableGroups = gsap.utils.toArray(
+        ".rolling-syllable",
+        sloganRef.current
+      );
   
       syllableGroups.forEach((group) => {
         const current = group.querySelector(".syllable-current");
         const next = group.querySelector(".syllable-next");
   
-        gsap.set(current, { yPercent: 0 });
-        gsap.set(next, { yPercent: 110 });
+        gsap.set(current, {
+          y: 0,
+          force3D: true,
+        });
+  
+        gsap.set(next, {
+          y: () => group.getBoundingClientRect().height,
+          force3D: true,
+        });
       });
   
       const timeline = gsap.timeline({
@@ -112,19 +126,36 @@ export default function SkillsGrid() {
   
         const startTime = index * 0.22;
   
-        timeline.to(current, {
-          yPercent: -110,
-          duration: 0.5,
-          ease: "none",
-        }, startTime);
+        timeline.to(
+          current,
+          {
+            y: () => -group.getBoundingClientRect().height,
+            duration: 0.5,
+            ease: "none",
+            force3D: true,
+          },
+          startTime
+        );
   
-        timeline.fromTo(next, {
-          yPercent: 110,
-        }, {
-          yPercent: 0,
-          duration: 0.5,
-          ease: "none",
-        }, startTime);
+        timeline.fromTo(
+          next,
+          {
+            y: () => group.getBoundingClientRect().height,
+          },
+          {
+            y: 0,
+            duration: 0.5,
+            ease: "none",
+            force3D: true,
+            immediateRender: false,
+          },
+          startTime
+        );
+      });
+  
+      // 等待 Poppins 等網頁字型載入，再重新計算 ScrollTrigger
+      document.fonts.ready.then(() => {
+        ScrollTrigger.refresh();
       });
     }, sectionRef);
   

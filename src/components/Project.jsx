@@ -1,9 +1,9 @@
 "use client";
-import Insync_lottie from "../assets/img/GIF/Insync_lottie.json"
-import yoUQuest from "../assets/img/GIF/yoUQuest_card.json";
+import InSyncVideo from "../assets/img/MP4/InSync.mp4";
+import yoUQuestVideo from "../assets/img/MP4/yoUQest.mp4";
 import Chatstat from "../assets/img/Chatstat.png";
 import Chatstat_mobile from "../assets/img/Chatstat_mobile.png";
-import vrFurniture from "../assets/img/GIF/iFurniture.json";
+import XRVideo from "../assets/img/MP4/XR.mp4";
 import ProjectList from "./ProjectList";
 import AussieWIldlife from "../assets/img/AussieWildlife.png";
 const projects = [
@@ -26,7 +26,8 @@ const projects = [
   {
     id: 2,
     title: "yoUQuest",
-    img: yoUQuest,
+    img: yoUQuestVideo,
+    mediaType: "video",
     category: "Design & Development",
     route: "/project/2",
     disabled: false,
@@ -34,7 +35,8 @@ const projects = [
   {
     id: 1,
     title: "InSync",
-    img: Insync_lottie,
+    img: InSyncVideo,
+    mediaType: "video",
     category: "Design & Development",
     route: "/project/1",
     disabled: false,
@@ -50,7 +52,8 @@ const projects = [
   {
     id: 6,
     title: "IFurniture",
-    img: vrFurniture,
+    img: XRVideo,
+    mediaType: "video",
     category: "XR & Unity 3D",
     route: "/project/XR",
     disabled: true,

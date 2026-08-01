@@ -1,23 +1,26 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion as Motion,
+  AnimatePresence,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import ProjectCard from "./Project_Card";
-import CurveReveal from "./CurveReveal";
-
-// helper: decide if a source is a Lottie JSON file
-const isLottie = (src) =>
-  typeof src === "string" && src.toLowerCase().endsWith(".json");
 
 export default function ProjectList({ projects }) {
   const [hoveredId, setHoveredId] = useState(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isDesktop, setIsDesktop] = useState(true);
 
   const prevIndexRef = useRef(null);
   const [direction, setDirection] = useState(1);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const previewX = useTransform(mouseX, (value) => value - 240);
+  const previewY = useTransform(mouseY, (value) => value - 170);
 
   const isLottie = (src) =>
     src && typeof src === "object" && ("v" in src || "layers" in src);
@@ -28,9 +31,40 @@ export default function ProjectList({ projects }) {
     window.addEventListener("resize", checkWidth);
     return () => window.removeEventListener("resize", checkWidth);
   }, []);
+   // 從這裡開始加入圖片預載
+  useEffect(() => {
+    const mediaElements = [];
+  
+    projects.forEach((project) => {
+      if (project.mediaType === "video") {
+        const video = document.createElement("video");
+        video.preload = "auto";
+        video.muted = true;
+        video.src = project.img;
+        video.load();
+        mediaElements.push(video);
+      } else if (typeof project.img === "string") {
+        const image = new Image();
+        image.src = project.img;
+        image.decode?.().catch(() => {});
+        mediaElements.push(image);
+      }
+    });
+  
+    return () => {
+      mediaElements.forEach((media) => {
+        if (media instanceof HTMLVideoElement) {
+          media.removeAttribute("src");
+          media.load();
+        }
+      });
+      mediaElements.length = 0;
+    };
+  }, [projects]);
 
   const handleMouseMove = (e) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
   };
 
   const handleHover = (id, index) => {
@@ -64,7 +98,7 @@ export default function ProjectList({ projects }) {
 
   return (
     <div className="relative max-w-8xl mx-20 md:mx-40 px-6">
-      <motion.div
+      <Motion.div
         initial={{ opacity: 0, x: -60 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "0px 0px -30% 0px" }}
@@ -79,17 +113,7 @@ export default function ProjectList({ projects }) {
             const isHovered = hoveredId === project.id;
 
             return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, x: -60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "0px 0px -30% 0px" }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.12,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-              >
+              <div key={project.id}>
                 <Link
                   to={project.disabled ? "" : project.route}
                   onClick={(e) => {
@@ -104,7 +128,7 @@ export default function ProjectList({ projects }) {
                       : "cursor-pointer"
                   }`}
                 >
-                  <motion.h2
+                  <Motion.h2
                     animate={{
                       color: isHovered ? "#9CA3AF" : "#111111",
                       x: isHovered ? -40 : 0,
@@ -113,9 +137,9 @@ export default function ProjectList({ projects }) {
                     className="text-6xl md:text-8xl font-normal tracking-tight select-none"
                   >
                     {project.title}
-                  </motion.h2>
+                  </Motion.h2>
 
-                  <motion.span
+                  <Motion.span
                     animate={{
                       color: isHovered ? "#9CA3AF" : "#111111",
                       x: isHovered ? 40 : 0,
@@ -124,18 +148,18 @@ export default function ProjectList({ projects }) {
                     className="text-lg select-none"
                   >
                     {project.category}
-                  </motion.span>
+                  </Motion.span>
                 </Link>
-              </motion.div>
+              </div>
             );
           })}
         </div>
-      </motion.div>
+      </Motion.div>
 
       {/* ---------- Floating preview box ---------- */}
       <AnimatePresence>
         {hoveredProject && (
-          <motion.div
+          <Motion.div
             key="preview-box"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -146,29 +170,40 @@ export default function ProjectList({ projects }) {
             }}
             style={{
               position: "fixed",
-              top: mousePos.y,
-              left: mousePos.x,
-              translateX: "-50%",
-              translateY: "-50%",
+              top: 0,
+              left: 0,
+              x: previewX,
+              y: previewY,
+              willChange: "transform, opacity",
             }}
             className="z-50 w-[480px] h-[340px] rounded-md overflow-hidden bg-gray-100 pointer-events-none shadow-xl"
           >
             <div className="relative w-full h-full overflow-hidden">
               <AnimatePresence
                 initial={false}
-                custom={direction}
+                
                 mode="popLayout"
               >
-                <motion.div
+                <Motion.div
                   key={hoveredProject.id}
                   custom={direction}
                   initial={{ y: direction > 0 ? "100%" : "-100%" }}
                   animate={{ y: "0%" }}
                   exit={{ y: direction > 0 ? "-100%" : "100%" }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0 w-full h-full"
                 >
-                  {isLottie(hoveredProject.img) ? (
+                  {hoveredProject.mediaType === "video" ? (
+                    <video
+                      src={hoveredProject.img}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : isLottie(hoveredProject.img) ? (
                     <Lottie
                       animationData={hoveredProject.img}
                       loop
@@ -182,7 +217,7 @@ export default function ProjectList({ projects }) {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   )}
-                </motion.div>
+                </Motion.div>
               </AnimatePresence>
             </div>
 
@@ -193,7 +228,7 @@ export default function ProjectList({ projects }) {
                 </span>
               </div>
             </div>
-          </motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
     </div>

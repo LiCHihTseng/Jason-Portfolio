@@ -1,7 +1,6 @@
 // components/ProjectCard.jsx
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import AnimatedArrowButton from "./AnimatedArrowButton";
 import * as Icon from "@phosphor-icons/react";
@@ -13,26 +12,15 @@ const isLottieData = (src) =>
 export default function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-
-  const onMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    setCursorPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
   const useLottie = isLottieData(project.img);
+  const useVideo = project.mediaType === "video";
 
   const CardContent = (
     <div
       ref={cardRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onMouseMove={onMouseMove}
       className={`group relative ${
         index === 0
           ? "md:aspect-[4/3] aspect-[14/10] bg-white/10"
@@ -56,7 +44,19 @@ export default function ProjectCard({ project, index }) {
       )}
 
       {/* 主圖:依照 project.img 的資料型態,決定要渲染 Lottie 還是 <img> */}
-      {useLottie ? (
+      {useVideo ? (
+        <video
+          src={project.img}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className={`w-full h-full md:object-contain object-cover object-bottom rounded-lg transition-transform duration-500 ${
+            isHovered && !project.disabled ? "scale-105" : ""
+          }`}
+        />
+      ) : useLottie ? (
         <Lottie
           animationData={project.img}
           loop
