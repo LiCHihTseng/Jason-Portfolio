@@ -8,10 +8,7 @@ import lottie1 from "../assets/img/GIF/2.json";
 import lottie2 from "../assets/img/GIF/3.json";
 import lottie3 from "../assets/img/GIF/5.json";
 import lottie4 from "../assets/img/GIF/yoUQuest_card.json";
-import ThreeCardProfile from "../assets/img/ThreeCardProfile.png";
-import Story_Solve from "../assets/img/Story_Solve.jpg";
-import Story_Design from "../assets/img/Story_Design.jpg";
-import Story_Dev from "../assets/img/Story_Dev.jpg";
+
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
 
