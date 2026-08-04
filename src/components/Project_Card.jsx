@@ -1,9 +1,8 @@
 // components/ProjectCard.jsx
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import AnimatedArrowButton from "./AnimatedArrowButton";
-import * as Icon from "@phosphor-icons/react";
 
 // 判斷 img 是 Lottie 的 JSON 資料(物件),還是一般圖片路徑(字串)
 const isLottieData = (src) =>
@@ -12,9 +11,31 @@ const isLottieData = (src) =>
 export default function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [shouldLoadAnimatedMedia, setShouldLoadAnimatedMedia] = useState(false);
 
   const useLottie = isLottieData(project.img);
   const useVideo = project.mediaType === "video";
+  const usesAnimatedMedia = useVideo || useLottie;
+
+  useEffect(() => {
+    if (!usesAnimatedMedia || project.disabled) return;
+
+    const card = cardRef.current;
+    if (!card) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        setShouldLoadAnimatedMedia(true);
+        observer.disconnect();
+      },
+      { rootMargin: "200px 0px" }
+    );
+
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, [project.disabled, usesAnimatedMedia]);
 
   const CardContent = (
     <div
@@ -44,7 +65,7 @@ export default function ProjectCard({ project, index }) {
       )}
 
       {/* 主圖:依照 project.img 的資料型態,決定要渲染 Lottie 還是 <img> */}
-      {useVideo ? (
+      {useVideo && shouldLoadAnimatedMedia ? (
         <video
           src={project.img}
           autoPlay
@@ -56,7 +77,7 @@ export default function ProjectCard({ project, index }) {
             isHovered && !project.disabled ? "scale-105" : ""
           }`}
         />
-      ) : useLottie ? (
+      ) : useLottie && shouldLoadAnimatedMedia ? (
         <Lottie
           animationData={project.img}
           loop
@@ -65,13 +86,20 @@ export default function ProjectCard({ project, index }) {
             isHovered && !project.disabled ? "scale-105" : ""
           }`}
         />
-      ) : (
+      ) : !usesAnimatedMedia ? (
         <img
           src={project.img}
           alt={project.title}
+          loading="lazy"
+          decoding="async"
           className={`w-full md:object-contain object-cover object-bottom rounded-lg transition-transform duration-500 ${
             isHovered && !project.disabled ? "scale-105" : ""
           }`}
+        />
+      ) : (
+        <div
+          className="h-full w-full animate-pulse bg-gray-100"
+          aria-hidden="true"
         />
       )}
     </div>

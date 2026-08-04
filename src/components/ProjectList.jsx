@@ -13,7 +13,11 @@ import ProjectCard from "./Project_Card";
 
 export default function ProjectList({ projects }) {
   const [hoveredId, setHoveredId] = useState(null);
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === "undefined"
+      ? true
+      : window.matchMedia("(min-width: 1024px)").matches
+  );
 
   const prevIndexRef = useRef(null);
   const [direction, setDirection] = useState(1);
@@ -26,53 +30,27 @@ export default function ProjectList({ projects }) {
     src && typeof src === "object" && ("v" in src || "layers" in src);
 
   useEffect(() => {
-    const checkWidth = () => setIsDesktop(window.innerWidth >= 1024);
-    checkWidth();
-    window.addEventListener("resize", checkWidth);
-    return () => window.removeEventListener("resize", checkWidth);
-  }, []);
-   // 從這裡開始加入圖片預載
-  useEffect(() => {
-    const mediaElements = [];
-  
-    projects.forEach((project) => {
-      if (project.mediaType === "video") {
-        const video = document.createElement("video");
-        video.preload = "auto";
-        video.muted = true;
-        video.src = project.img;
-        video.load();
-        mediaElements.push(video);
-      } else if (typeof project.img === "string") {
-        const image = new Image();
-        image.src = project.img;
-        image.decode?.().catch(() => {});
-        mediaElements.push(image);
-      }
-    });
-  
-    return () => {
-      mediaElements.forEach((media) => {
-        if (media instanceof HTMLVideoElement) {
-          media.removeAttribute("src");
-          media.load();
-        }
-      });
-      mediaElements.length = 0;
-    };
-  }, [projects]);
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
+    const updateLayout = (event) => setIsDesktop(event.matches);
 
+    setIsDesktop(desktopQuery.matches);
+    desktopQuery.addEventListener("change", updateLayout);
+
+    return () => desktopQuery.removeEventListener("change", updateLayout);
+  }, []);
   const handleMouseMove = (e) => {
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
   };
 
-  const handleHover = (id, index) => {
+  const handleHover = (project, index) => {
+    if (project.disabled) return;
+
     if (prevIndexRef.current !== null && prevIndexRef.current !== index) {
       setDirection(index > prevIndexRef.current ? 1 : -1);
     }
     prevIndexRef.current = index;
-    setHoveredId(id);
+    setHoveredId(project.id);
   };
 
   const hoveredProject = projects.find((p) => p.id === hoveredId);
@@ -84,10 +62,11 @@ export default function ProjectList({ projects }) {
           Recent Work
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-min">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <ProjectCard
               key={project.id}
               project={project}
+              index={index}
               size={project.size || "md"}
             />
           ))}
@@ -119,9 +98,9 @@ export default function ProjectList({ projects }) {
                   onClick={(e) => {
                     if (project.disabled) e.preventDefault();
                   }}
-                  onMouseEnter={() => handleHover(project.id, index)}
+                  onMouseEnter={() => handleHover(project, index)}
                   onMouseLeave={() => setHoveredId(null)}
-                  onMouseMove={handleMouseMove}
+                  onMouseMove={project.disabled ? undefined : handleMouseMove}
                   className={`relative flex items-center justify-between border-b border-gray-200 py-25 ${
                     project.disabled
                       ? "cursor-not-allowed opacity-60"
@@ -200,7 +179,7 @@ export default function ProjectList({ projects }) {
                       loop
                       muted
                       playsInline
-                      preload="auto"
+                      preload="metadata"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   ) : isLottie(hoveredProject.img) ? (
@@ -214,6 +193,9 @@ export default function ProjectList({ projects }) {
                     <img
                       src={hoveredProject.img}
                       alt={hoveredProject.title}
+                      decoding="async"
+                      width="480"
+                      height="340"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   )}
