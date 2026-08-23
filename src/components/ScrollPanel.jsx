@@ -134,7 +134,7 @@ export default function ScrollPanel({ panel }) {
         </div>
 
         <div ref={imageWrapperRef} className="relative min-h-80 h-full w-full overflow-hidden rounded-lg shadow-2xl">
-          <div ref={imageInnerRef} className="absolute inset-x-0" style={{ top: "-15%", height: "130%", backgroundImage: `url(${panel.image})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+          <div ref={imageInnerRef} className="absolute inset-x-0 will-change-transform" style={{ top: "-15%", height: "130%", backgroundImage: `url(${panel.image})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         </div>
       </div>
     </section>

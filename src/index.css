@@ -9,10 +9,6 @@
   color-scheme: dark;
 } */
 
-html {
-  scroll-behavior: smooth;
-}
-
 @font-face {
   font-family: 'Poppins';
   src: url('./assets/fonts/Poppins-Thin.ttf') format('truetype');

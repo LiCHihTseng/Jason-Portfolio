@@ -1,14 +1,6 @@
-import { useState, useEffect } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight as ArrowRightIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // 導入 useNavigate
 import "./css/Banner.css";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-
-export const ArrowRight = ArrowRightIcon;
-import ScratchReveal from "./ScratchReveal";
-import Lottie from "lottie-react";
 import banner_phone from "../assets/img/ThreeCardProfile.png";
 import AnimatedText from "./icons/AnimatedText";
 import { At, ArrowDownIcon } from "@phosphor-icons/react";
@@ -16,55 +8,9 @@ import gsap from "gsap";
 import Wheel from "../assets/img/wheel.svg?react";
 
 function Banner() {
-  const scratchRef = useRef(null);
   const wheelRef = useRef(null);
   const lottieRef = useRef();
-  const [loopNum, setLoopNum] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [text, setText] = useState("");
-  const [delta, setDelta] = useState(150);
 
-  const [size, setSize] = useState({ w: 0, h: 0 });
-  const toRotate = [
-    "Product Designer",
-    "UI/UX Designer",
-    "Web & Mobile Developer",
-  ];
-  const period = 1000;
-  const navigate = useNavigate(); // 使用 useNavigate
-
-  useEffect(() => {
-    const ticker = setInterval(() => {
-      tick();
-    }, delta);
-
-    return () => {
-      clearInterval(ticker);
-    };
-  }, [text]);
-
-  const tick = () => {
-    const i = loopNum % toRotate.length;
-    const fullText = toRotate[i];
-    const updatedText = isDeleting
-      ? fullText.substring(0, text.length - 1)
-      : fullText.substring(0, text.length + 1);
-
-    setText(updatedText);
-
-    if (isDeleting) {
-      setDelta(100);
-    }
-
-    if (!isDeleting && updatedText === fullText) {
-      setIsDeleting(true);
-      setDelta(period);
-    } else if (isDeleting && updatedText === "") {
-      setIsDeleting(false);
-      setLoopNum(loopNum + 1);
-      setDelta(150);
-    }
-  };
   useEffect(() => {
     const anim = gsap.to(wheelRef.current, {
       rotation: 360,
@@ -76,11 +22,6 @@ function Banner() {
 
     return () => anim.kill();
   }, []);
-
-  const [rotate, setRotate] = useState({
-    x: 0,
-    y: 0,
-  });
 
   return (
     <section
