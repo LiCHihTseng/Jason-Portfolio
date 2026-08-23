@@ -6,23 +6,25 @@ function AnimatedText({
   highlightWords = [],
   delay = 0,
   trailingElement = null, // 新增:插在最後一個詞後面的額外元素(例如圖示)
+  onComplete, // 整段文字(含所有子項)播完後觸發
 }) {
   const words = text.split(" ");
 
   // 共用的 variants,讓 trailingElement 也能套用跟文字一樣的進場動畫節奏,
   // 不用另外寫一套動畫邏輯,直接沿用現有的 hidden/visible 定義
+  // 只動 opacity 與 y(transform),兩者都能交給合成器,不會觸發重排/重繪。
+  // 原本還animate了 filter: blur(),但 filter 沒辦法合成,每一幀都要重繪
+  // 整段文字 —— 那才是這段動畫會卡的主因。
   const wordVariants = {
     hidden: {
       opacity: 0,
-      y: 20,
-      filter: "blur(8px)",
+      y: 16,
     },
     visible: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: {
-        duration: 0.8,
+        duration: 0.5,
         ease: [0.22, 1, 0.36, 1],
       },
     },
@@ -37,10 +39,11 @@ function AnimatedText({
         visible: {
           transition: {
             delayChildren: delay,
-            staggerChildren: 0.15,
+            staggerChildren: 0.06,
           },
         },
       }}
+      onAnimationComplete={onComplete}
       className={className}
     >
       {words.map((word, index) => {

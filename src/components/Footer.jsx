@@ -2,17 +2,26 @@
 
 import { useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import CurveReveal from "./CurveReveal";
 import ProfileImage from "../assets/img/profile.jpg";
 
+gsap.registerPlugin(useGSAP);
+
 export default function Footer() {
+  const footerRef = useRef(null);
   const buttonRef = useRef(null);
   const buttonBgRef = useRef(null);
   const buttonTextRef = useRef(null);
   const arrowRef = useRef(null);
 
-  const handleButtonEnter = () => {
+  // 這些 tween 是在滑鼠事件裡建立的,也就是 useGSAP 跑完「之後」才產生,
+  // 不包 contextSafe 的話不會被登記進 context,元件卸載時不會被 revert,
+  // 還在跑的 tween 會繼續對已經移除的節點動作。
+  const { contextSafe } = useGSAP({ scope: footerRef });
+
+  const handleButtonEnter = contextSafe(() => {
     gsap.to(buttonRef.current, {
       scale: 1.08,
       duration: 0.45,
@@ -41,40 +50,9 @@ export default function Footer() {
       ease: "power3.out",
       overwrite: "auto",
     });
-  };
+  });
   
-  const handleButtonLeave = () => {
-    gsap.to(buttonRef.current, {
-      scale: 1,
-      duration: 0.45,
-      ease: "power3.out",
-      overwrite: "auto",
-    });
-  
-    gsap.to(buttonBgRef.current, {
-      scale: 0,
-      duration: 0.5,
-      ease: "power3.out",
-      overwrite: "auto",
-    });
-  
-    gsap.to(buttonTextRef.current, {
-      color: "#ffffff",
-      duration: 0.3,
-      overwrite: "auto",
-    });
-  
-    gsap.to(arrowRef.current, {
-      rotate: 0,
-      x: 0,
-      y: 0,
-      duration: 0.4,
-      ease: "power3.out",
-      overwrite: "auto",
-    });
-  };
-
-  const handleMagneticMove = (e) => {
+  const handleMagneticMove = contextSafe((e) => {
     const button = buttonRef.current;
     if (!button) return;
   
@@ -100,9 +78,9 @@ export default function Footer() {
       ease: "power3.out",
       overwrite: "auto",
     });
-  };
+  });
   
-  const handleMagneticLeave = () => {
+  const handleMagneticLeave = contextSafe(() => {
     gsap.to(buttonRef.current, {
       x: 0,
       y: 0,
@@ -127,7 +105,7 @@ export default function Footer() {
       ease: "power3.out",
       overwrite: "auto",
     });
-  };
+  });
   const footerLinks = [
     {
       name: "Email",
@@ -145,7 +123,7 @@ export default function Footer() {
 
   return (
     <CurveReveal maskColor="#ffffff">
-      <footer className="relative overflow-hidden bg-[#1d1e20] text-white">
+      <footer ref={footerRef} className="relative overflow-hidden bg-[#1d1e20] text-white">
       <div className="w-full  max-w-[2000px] mx-auto px-6 py-16 md:py-20">
 
           {/* Main heading */}

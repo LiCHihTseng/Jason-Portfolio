@@ -1,13 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import "./css/Banner.css";
-import banner_phone from "../assets/img/ThreeCardProfile.png";
+import banner_phone from "../assets/img/avatar.avif";
 import AnimatedText from "./icons/AnimatedText";
 import { At, ArrowDownIcon } from "@phosphor-icons/react";
 import gsap from "gsap";
 import Wheel from "../assets/img/wheel.svg?react";
 
 function Banner() {
+  // 標題全部播完才顯示 Scroll Down,不用手動算延遲時間
+  const [introDone, setIntroDone] = useState(false);
   const wheelRef = useRef(null);
   const lottieRef = useRef();
 
@@ -36,13 +38,11 @@ function Banner() {
     >
       <div className="max-w-6xl mx-auto w-full">
         <motion.div className="grid grid-cols-1 md:grid-cols-1 gap-6 md:gap-8 lg:gap-10 items-center">
-          {/* ScratchReveal - 小螢幕在上，桌機在右 */}
           <div className="order-1 md:order-2 md:col-span-2 flex min-w-0">
             <div
               className="relative z-20 w-full cursor-pointer min-w-0"
               onClick={() => lottieRef.current?.play()}
-            >
-            </div>
+            ></div>
           </div>
 
           {/* 文字內容 - 小螢幕在下，桌機在左 */}
@@ -90,7 +90,7 @@ function Banner() {
               <div className="flex items-center gap-2 sm:gap-3">
                 <AnimatedText
                   text="Product Designer bridging design, technology, and user needs."
-                  delay={0.6}
+                  delay={0.45}
                   trailingElement={
                     <div
                       ref={wheelRef}
@@ -110,7 +110,8 @@ function Banner() {
                 <AnimatedText
                   text="Bringing digital concepts to life in ways people love to use"
                   highlightWords={["love", "to", "use"]}
-                  delay={2}
+                  delay={1}
+                  onComplete={() => setIntroDone(true)}
                   className="
     text-xl
     sm:text-lg
@@ -129,8 +130,8 @@ function Banner() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  delay: 4,
-                  duration: 0.8,
+                  delay: 1.9,
+                  duration: 0.6,
                 }}
                 className="inline-flex whitespace-nowrap"
               >
@@ -155,11 +156,10 @@ function Banner() {
           opacity: 0,
         }}
         animate={{
-          opacity: 1,
+          opacity: introDone ? 1 : 0,
         }}
         transition={{
-          delay: 2,
-          duration: 1,
+          duration: 0.6,
         }}
         className="
     absolute

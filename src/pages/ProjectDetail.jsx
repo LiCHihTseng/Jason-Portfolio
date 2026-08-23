@@ -5,12 +5,14 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
 import Lottie from "lottie-react";
 import projectsData from "./ProjectData.js"; // 匯入 projectsData
+import ProjectHero from "../components/ProjectHero";
+import { heroImageFor } from "../components/Project";
 import ChairIcon from "@mui/icons-material/Chair";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import GroupIcon from "@mui/icons-material/Group";
 import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import Animation from "../assets/img/GIF/Animation.json";
+import Animation from "../assets/img/GIF/Animation.json?url";
 
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
@@ -29,6 +31,7 @@ function ProjectDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const myRef = useRef(null);
+  const contentRef = useRef(null);
   const [activeSection, setActiveSection] = useState(null);
 
   const variants = {
@@ -173,11 +176,24 @@ function ProjectDetail() {
 
   return (
     <div className="min-h-screen pt-24 pb-16 px-6 text-[#111111] ">
+      <ProjectHero
+        src={heroImageFor(`/project/${id}`)}
+        alt={project?.title}
+        className="-mt-24 -mx-6 mb-12"
+      />
+
       <div className="max-w-6xl mx-auto">
         <motion.div
+          ref={contentRef}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          // 動畫跑完 framer-motion 會留下 transform: translateY(0px),
+          // 那會讓底下 position: fixed 的「Back Home」按鈕改以這一層為定位基準,
+          // 結果按鈕不會固定在視窗右下角,而是跟著內容一起捲走。動畫結束就清掉。
+          onAnimationComplete={() => {
+            if (contentRef.current) contentRef.current.style.transform = "none";
+          }}
           className="space-y-[120px]"
         >
           {/* Project Header */}
@@ -254,8 +270,13 @@ function ProjectDetail() {
               <div className="relative z-30 overflow-hidden rounded-lg border-2  flex items-center justify-center">
                 {project.img && (
                   <Lottie
+                    // lottie-react 只在 animationData / loop 改變時才會重新初始化。
+                    // 這裡用的是 path,切換 /project/:id 時 path 變了它也不會重載,
+                    // 動畫會一直停在第一支。用 key 強制重新掛載。
+                    key={project.img}
                     lottieRef={lottieRef}
-                    animationData={project.img}
+                    path={project.img}
+                    autoplay
                     loop={false}
                     onComplete={() => {
                       setTimeout(() => {
@@ -1046,7 +1067,7 @@ function ProjectDetail() {
                       />
                     ) : (
                       <div className="w-28 md:w-50 shrink-0">
-                        <Lottie animationData={Animation} loop />
+                        <Lottie path={Animation} loop autoplay />
                       </div>
                     )}
                   </div>
@@ -1129,7 +1150,8 @@ function ProjectDetail() {
                                     {!subsection.images[key] && (
                                       <div className="order-1 md:order-2 w-28 md:w-32 shrink-0">
                                         <Lottie
-                                          animationData={Animation}
+                                          path={Animation}
+                                          autoplay
                                           loop
                                         />
                                       </div>

@@ -2,6 +2,7 @@ import {
   lazy,
   Suspense,
   useEffect,
+  useState,
 } from "react";
 import {
   HashRouter as Router,
@@ -13,6 +14,8 @@ import {
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import PageTransition from "./components/PageTransition";
+import LoadingScreen from "./components/LoadingScreen";
 import { LenisProvider } from "./components/LenisContext";
 
 // 每個頁面只在使用者進入時下載
@@ -28,19 +31,13 @@ const XR = lazy(() => import("./pages/XR"));
 const About = lazy(() => import("./pages/About"));
 
 function PageLoading() {
-  return (
-    <main
-      className="min-h-screen flex items-center justify-center"
-      aria-busy="true"
-      aria-live="polite"
-    >
-      <p className="text-gray-500">Loading...</p>
-    </main>
-  );
+  // 首次載入由 LoadingScreen 蓋住,換頁時的 chunk 等待不需要再閃一次文字
+  return <main className="min-h-screen" aria-busy="true" aria-live="polite" />;
 }
 
 function AppShell() {
   const location = useLocation();
+  const [booting, setBooting] = useState(true);
 
   useEffect(() => {
     const isProjectPage = location.pathname.startsWith("/project/");
@@ -53,11 +50,14 @@ function AppShell() {
 
   return (
     <div>
+      {booting ? <LoadingScreen onFinish={() => setBooting(false)} /> : null}
+
       <ScrollToTop />
       <Navbar />
 
-      <Suspense fallback={<PageLoading />}>
-        <Routes>
+      <PageTransition>
+        <Suspense fallback={<PageLoading />}>
+          <Routes>
           <Route path="/" element={<Home />} />
           <Route
             path="/project/chatstat"
@@ -69,9 +69,10 @@ function AppShell() {
           />
           <Route path="/project/XR" element={<XR />} />
           <Route path="/project/:id" element={<ProjectDetail />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </Suspense>
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Suspense>
+      </PageTransition>
 
       <Footer />
     </div>

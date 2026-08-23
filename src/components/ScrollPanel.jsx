@@ -64,6 +64,7 @@ export default function ScrollPanel({ panel }) {
           trigger: sectionRef.current,
           start: "top 75%",
           once: true,
+          refreshPriority: 1,
         },
       });
 
@@ -107,6 +108,7 @@ export default function ScrollPanel({ panel }) {
           start: "top bottom",
           end: "bottom top",
           scrub: 0.6,
+          refreshPriority: 1,
         },
       });
     }, sectionRef);

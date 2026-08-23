@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import Lottie from "lottie-react";
 
 const DelayedLoopLottie = ({
-  animationData,
+  path,
   delay = 5000,
   width = "30%",
   height = "40%",
@@ -28,7 +28,7 @@ const DelayedLoopLottie = ({
     <div className="w-fit rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
           <Lottie
       lottieRef={ref}
-      animationData={animationData}
+      path={path}
       autoplay={true}
       loop={false}
       onComplete={handleComplete}

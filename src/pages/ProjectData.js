@@ -1,4 +1,4 @@
-import InsyncAnimation from "../assets/img/GIF/InSync.json";
+import InsyncAnimation from "../assets/img/GIF/InSync.json?url";
 import InsyncRole from "../assets/img/InSync_Role.avif";
 import InsyncChallenge from "../assets/img/InSync_Challenge.avif";
 import InsyncProjectTimeline from "../assets/img/InSync_Project_Timeline.png";
@@ -10,7 +10,7 @@ import InsyncProject_Schedule from "../assets/img/InSync_Design_2.png";
 import Insync_familyNote from "../assets/img/Family_note.png";
 import Insync_QuickTip from "../assets/img/InSync_Schedule.png";
 
-import YoUQuest_Banner from "../assets/img/GIF/yoUQuest_banner.json";
+import YoUQuest_Banner from "../assets/img/GIF/yoUQuest_banner.json?url";
 import WellBeing from "../assets/img/WellBeing.png";
 import Overwhelming from "../assets/img/overwhelming.png";
 import UQ_User_Flow from "../assets/img/UQ_User_Flow.jpg";
@@ -23,7 +23,7 @@ import UQ_Break from "../assets/img/Battle_pass_Break.png";
 import UQ_mountain from "../assets/img/Mountains.png";
 import UQ_unlock from "../assets/img/Battle_pass_Finished.png";
 
-import AussieBanner from "../assets/img/GIF/AussieWildlife.json";
+import AussieBanner from "../assets/img/GIF/AussieWildlife.json?url";
 import Education from "../assets/img/Education.png";
 import Challenge from "../assets/img/Challenge.png";
 import User_flow from "../assets/img/Education_User_Flow.jpg";

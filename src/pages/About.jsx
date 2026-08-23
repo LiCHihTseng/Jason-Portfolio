@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { motion, AnimatePresence } from "framer-motion"; // 導入 AnimatePresence
 import Lottie from "lottie-react";
-import Tennis from "../assets/img/GIF/Tennis.json";
+import Tennis from "../assets/img/GIF/Tennis.json?url";
 
 function About() {
   // 定義各區塊的內容和初始狀態
@@ -64,7 +64,8 @@ function About() {
           {/* Lottie 動畫 */}
           <div className="order-2 md:order-3 flex justify-start md:justify-end">
             <Lottie
-              animationData={Tennis}
+              path={Tennis}
+              autoplay
               loop={true}
               className="w-1/3 md:w-1/2 mt-0 md:-mt-20"
             />

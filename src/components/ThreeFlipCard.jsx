@@ -15,7 +15,26 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 // 全部用預設的 SVG renderer。試過 canvas renderer,但 lottie-web 5.13 畫不出
 // 有 track matte (tt:1) 的檔案 —— Dashboard.json 與 5.json 在 canvas 下整張
 // 都是全透明的,所以不要再改成 canvas。
-const LOTTIE_SEQUENCE = [dashboard_video, lottie2, lottie3, lottie4];
+//
+// scale:各支的畫板比例不同(1.38 / 1.60 / 1.49 / 1.76),在固定的 16:10 框裡
+// 用 meet 塞進去之後,填滿的方向不一樣,看起來就大小不一。實測「可見像素」
+// 佔整個框的比例:
+//     Dashboard 93% 寬 / 100% 高      3.json   100% 寬 / 100% 高
+//     5.json    86% 寬 / 100% 高      yoUQuest 100% 寬 /  91% 高
+//
+// 下面這組倍率把「可見面積」拉齊到約 93%,幅度小、不會超出框、不會壓到標題,
+// 但也因為幅度小,剩下的形狀差異修不掉。
+// 想改成「等寬」(視覺上齊左右邊)就換成這組:
+//     Dashboard 1.075 / 3.json 1.0 / 5.json 1.163 / yoUQuest 1.0
+// 但 5.json 的高度會變成 116%,上下各溢出約 8%,有機會壓到下面的標題,要先看過。
+//
+// 這是暫時的補償。AE 重新輸出成同一個合成尺寸之後,整組 scale 可以直接拿掉。
+const LOTTIE_SEQUENCE = [
+  { src: dashboard_video, scale: 1.0 },
+  { src: lottie2, scale: 0.97 },
+  { src: lottie3, scale: 1.04 },
+  { src: lottie4, scale: 1.01 },
+];
 const nextClip = (i) => (i + 1) % LOTTIE_SEQUENCE.length;
 
 
@@ -95,52 +114,66 @@ export default function ScrollStory() {
   useEffect(() => {
     if (!isReady) return;
 
-    const ctx = gsap.context(() => {
-      const headlineSplit = SplitText.create(headlineRef.current, {
-        type: "chars",
-        charsClass: "char",
-      });
-      gsap.set(eyebrowRef.current, { autoAlpha: 0, y: -10 });
-      gsap.set(headlineSplit.chars, { autoAlpha: 0 });
-      gsap.set(headlineSplit.chars, {
-        yPercent: () => gsap.utils.random(-150, 150),
-        xPercent: () => gsap.utils.random(-80, 80),
-        rotation: () => gsap.utils.random(-90, 90),
-      });
-      gsap.set(subheadRef.current, { autoAlpha: 0, y: 20 });
+    let cancelled = false;
 
-      const introTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: introRootRef.current,
-          start: "top 70%",
-          once: true,
-        },
-      });
+    const ctx = gsap.context((self) => {
+      // Poppins 是自訂字型。SplitText 若在字型載入前切字,會用 fallback 字型
+      // 量測每個字元的位置,等 Poppins 換上來時整排字會位移。等字型就緒再切。
+      // self.add() 讓非同步建立的動畫仍然登記進這個 context,卸載時才會被 revert。
+      document.fonts.ready.then(() => {
+        if (cancelled) return;
+        self.add(() => {
+          const headlineSplit = SplitText.create(headlineRef.current, {
+            type: "chars",
+            charsClass: "char",
+            // 只切 chars 時每個字母都是獨立元素,窄螢幕會從單字中間折行。
+            // smartWrap 會把單字包進 white-space: nowrap,官方建議的做法。
+            smartWrap: true,
+          });
+          gsap.set(eyebrowRef.current, { autoAlpha: 0, y: -10 });
+          gsap.set(headlineSplit.chars, { autoAlpha: 0 });
+          gsap.set(headlineSplit.chars, {
+            yPercent: () => gsap.utils.random(-150, 150),
+            xPercent: () => gsap.utils.random(-80, 80),
+            rotation: () => gsap.utils.random(-90, 90),
+          });
+          gsap.set(subheadRef.current, { autoAlpha: 0, y: 20 });
 
-      introTl
-        .to(
-          eyebrowRef.current,
-          { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          0
-        )
-        .to(
-          headlineSplit.chars,
-          {
-            autoAlpha: 1,
-            yPercent: 0,
-            xPercent: 0,
-            rotation: 0,
-            ease: "back.out(1.7)",
-            duration: 0.8,
-            stagger: { amount: 0.4, from: "random" },
-          },
-          0.2
-        )
-        .to(
-          subheadRef.current,
-          { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
-          0.6
-        );
+          const introTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: introRootRef.current,
+              start: "top 70%",
+              once: true,
+              refreshPriority: 0, // 頁面順序:這一段在 ScrollPanel / WhatICanDo 之前
+            },
+          });
+
+          introTl
+            .to(
+              eyebrowRef.current,
+              { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+              0
+            )
+            .to(
+              headlineSplit.chars,
+              {
+                autoAlpha: 1,
+                yPercent: 0,
+                xPercent: 0,
+                rotation: 0,
+                ease: "back.out(1.7)",
+                duration: 0.8,
+                stagger: { amount: 0.4, from: "random" },
+              },
+              0.2
+            )
+            .to(
+              subheadRef.current,
+              { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" },
+              0.6
+            );
+        });
+      });
 
       requestAnimationFrame(() => {
         const stageRect = photoStageRef.current.getBoundingClientRect();
@@ -158,7 +191,9 @@ export default function ScrollStory() {
             start: "top 100%",
             end: "top 20%",
             scrub: 0.6,
-           
+            // 這個 ScrollTrigger 建立在 requestAnimationFrame 裡,會變成最後才建立,
+            // 但它其實位在頁面很前面 —— 必須明講 refresh 的優先順序。
+            refreshPriority: 0,
           },
         });
       });
@@ -184,6 +219,7 @@ export default function ScrollStory() {
       window.addEventListener("resize", measure, { passive: true });
 
       return () => {
+        cancelled = true;
         window.removeEventListener("mousemove", handleMouseMove);
         window.removeEventListener("resize", measure);
       };
@@ -218,11 +254,12 @@ export default function ScrollStory() {
                     className={`absolute inset-0 ${
                       slot === activeSlot ? "z-10 opacity-100" : "z-0 opacity-0"
                     }`}
+                    style={{ transform: `scale(${LOTTIE_SEQUENCE[clip].scale})` }}
                   >
                     <Lottie
                       key={clip}
                       lottieRef={slotRefs[slot]}
-                      path={LOTTIE_SEQUENCE[clip]}
+                      path={LOTTIE_SEQUENCE[clip].src}
                       loop={false}
                       autoplay={slot === activeSlot}
                       onComplete={() => handleLottieComplete(slot)}

@@ -1,7 +1,8 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import ReactIcon from "../assets/img/react.svg?react";
@@ -14,7 +15,7 @@ import MotionIcon from "../assets/img/motion.svg?react";
 import Vercel from "../assets/img/vercel.svg?react";
 import GAIcon from "../assets/img/greensock.svg?react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const bigSkills = [
   { id: 1, name: "React", Icon: ReactIcon },
@@ -88,8 +89,7 @@ export default function SkillsGrid() {
 
   const [hoveredId, setHoveredId] = useState(null);
 
-  useLayoutEffect(() => {
-    const context = gsap.context(() => {
+  const { contextSafe } = useGSAP(() => {
       const syllableGroups = gsap.utils.toArray(
         ".rolling-syllable",
         sloganRef.current
@@ -117,6 +117,9 @@ export default function SkillsGrid() {
           end: "bottom 15%",
           scrub: 1,
           invalidateOnRefresh: true,
+          // 這個元件用 useLayoutEffect,會比其他用 useEffect 的元件更早建立
+          // ScrollTrigger,但它其實是頁面最後一段 —— 明確指定 refresh 順序。
+          refreshPriority: 2,
         },
       });
   
@@ -157,13 +160,10 @@ export default function SkillsGrid() {
       document.fonts.ready.then(() => {
         ScrollTrigger.refresh();
       });
-    }, sectionRef);
-  
-    return () => context.revert();
-  }, []);
+  }, { scope: sectionRef });
 
 
-  const handleCellEnter = (id, multiColor) => {
+  const handleCellEnter = contextSafe((id, multiColor) => {
     const cell = cellRefs.current[id];
     const container = containerRef.current;
     const highlight = highlightRef.current;
@@ -197,9 +197,9 @@ export default function SkillsGrid() {
     }
 
     setHoveredId(id);
-  };
+  });
 
-  const handleCellLeave = (id, multiColor) => {
+  const handleCellLeave = contextSafe((id, multiColor) => {
     if (!multiColor && iconRefs.current[id]) {
       gsap.to(iconRefs.current[id], {
         color: "#000000",
@@ -208,9 +208,9 @@ export default function SkillsGrid() {
         overwrite: "auto",
       });
     }
-  };
+  });
 
-  const handleContainerLeave = () => {
+  const handleContainerLeave = contextSafe(() => {
     if (highlightRef.current) {
       gsap.to(highlightRef.current, {
         opacity: 0,
@@ -230,7 +230,7 @@ export default function SkillsGrid() {
     }
 
     setHoveredId(null);
-  };
+  });
 
   const renderCell = ({ id, name, Icon, multiColor }, size) => (
     <div key={id} ref={(element) => (cellRefs.current[id] = element)} onMouseEnter={() => handleCellEnter(id, multiColor)} onMouseLeave={() => handleCellLeave(id, multiColor)} className={`flex items-center justify-center border-r border-b border-gray-200 bg-white cursor-pointer ${size === "lg" ? "h-40 sm:h-40 md:h-40 lg:h-100 xl:h-120" : "aspect-square"}`}>

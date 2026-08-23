@@ -8,7 +8,6 @@ import {
   useTransform,
 } from "framer-motion";
 import { Link } from "react-router-dom";
-import Lottie from "lottie-react";
 import ProjectCard from "./Project_Card";
 
 export default function ProjectList({ projects }) {
@@ -27,9 +26,6 @@ export default function ProjectList({ projects }) {
   const previewX = useTransform(mouseX, (value) => value - 240);
   const previewY = useTransform(mouseY, (value) => value - 170);
 
-  const isLottie = (src) =>
-    src && typeof src === "object" && ("v" in src || "layers" in src);
-
   useEffect(() => {
     const desktopQuery = window.matchMedia("(min-width: 1024px)");
     const updateLayout = (event) => setIsDesktop(event.matches);
@@ -39,53 +35,22 @@ export default function ProjectList({ projects }) {
 
     return () => desktopQuery.removeEventListener("change", updateLayout);
   }, []);
-  // 第一次 hover 會等一下,是因為預覽用的 <video>/<img> 到那一刻才被建立,
-  // 當場才開始抓 0.7–5.4MB 的檔案。桌機版在清單捲進畫面後,趁瀏覽器閒置
-  // 先把這些檔案抓進 HTTP cache,hover 當下就只是讀快取,不必再等網路。
-  // 只在桌機做(浮動預覽本來就只有桌機有),而且是 idle 時才跑,不會跟
-  // 首屏資源搶頻寬。
+  // 預覽圖是 hover 當下才建立 <img>,第一次會等網路。桌機版趁瀏覽器 idle
+  // 先把這幾張讀進快取(全部加起來不到 1MB),hover 當下就只是讀快取。
   useEffect(() => {
     if (!isDesktop) return;
 
-    // 使用者開了省流量模式或連線很慢時就不要偷抓 ~9.6MB 的預覽檔
-    const conn = navigator.connection;
-    if (conn && (conn.saveData || /2g/.test(conn.effectiveType || ""))) return;
+    const warmCache = () => {
+      projects.forEach((project) => {
+        new Image().src = project.img;
+      });
+    };
 
-    const node = listRef.current;
-    if (!node) return;
-
-    let idleId;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-
-        const warmCache = () => {
-          projects
-            .filter((p) => !p.disabled && typeof p.img === "string")
-            .forEach((p) => {
-              if (p.mediaType === "video") {
-                // 要把 body 讀完,瀏覽器才會真的把檔案存進快取
-                fetch(p.img).then((r) => r.blob()).catch(() => {});
-              } else {
-                new Image().src = p.img;
-              }
-            });
-        };
-
-        idleId = window.requestIdleCallback
-          ? window.requestIdleCallback(warmCache, { timeout: 2000 })
-          : setTimeout(warmCache, 200);
-      },
-      { rootMargin: "300px 0px" }
-    );
-
-    observer.observe(node);
+    const idleId = window.requestIdleCallback
+      ? window.requestIdleCallback(warmCache, { timeout: 2000 })
+      : setTimeout(warmCache, 300);
 
     return () => {
-      observer.disconnect();
-      if (idleId == null) return;
       if (window.cancelIdleCallback) window.cancelIdleCallback(idleId);
       else clearTimeout(idleId);
     };
@@ -225,33 +190,14 @@ export default function ProjectList({ projects }) {
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0 w-full h-full"
                 >
-                  {hoveredProject.mediaType === "video" ? (
-                    <video
-                      src={hoveredProject.img}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : isLottie(hoveredProject.img) ? (
-                    <Lottie
-                      animationData={hoveredProject.img}
-                      loop
-                      autoplay
-                      className="w-full h-full"
-                    />
-                  ) : (
-                    <img
-                      src={hoveredProject.img}
-                      alt={hoveredProject.title}
-                      decoding="async"
-                      width="480"
-                      height="340"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  )}
+                  <img
+                    src={hoveredProject.img}
+                    alt={hoveredProject.title}
+                    decoding="async"
+                    width="480"
+                    height="340"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 </Motion.div>
               </AnimatePresence>
             </div>

@@ -3,12 +3,14 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
 import Lottie from "lottie-react";
-import Chatstat_mobile_Banner from "../assets/img/GIF/Onboarding_mobile.json";
-import Chatstat_1 from "../assets/img/GIF/Chatstat_1.json";
-import Chatstat_2 from "../assets/img/GIF/Chatstat_2.json";
-import Chatstat_3 from "../assets/img/GIF/Chatstat_3.json";
-import Chatstat_4 from "../assets/img/GIF/Chatstat_4.json";
+import Chatstat_mobile_Banner from "../assets/img/GIF/Onboarding_mobile.json?url";
+import Chatstat_1 from "../assets/img/GIF/Chatstat_1.json?url";
+import Chatstat_2 from "../assets/img/GIF/Chatstat_2.json?url";
+import Chatstat_3 from "../assets/img/GIF/Chatstat_3.json?url";
+import Chatstat_4 from "../assets/img/GIF/Chatstat_4.json?url";
 import DelayedLoopLottie from "../components/DelayedLoopLottie";
+import ProjectHero from "../components/ProjectHero";
+import { heroImageFor } from "../components/Project";
 import {
   ChatTeardropDotsIcon,
   NotepadIcon,
@@ -49,6 +51,12 @@ const ProjectDetail_Chatstat_mobile = () => {
 
   return (
     <div className="min-h-screen pt-24 pb-16 text-[#111111] ">
+      <ProjectHero
+        src={heroImageFor("/project/chatstat_mobile")}
+        alt={project.title}
+        className="-mt-24 mb-12"
+      />
+
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,7 +138,8 @@ const ProjectDetail_Chatstat_mobile = () => {
                 {project.img && (
                   <Lottie
                     lottieRef={heroLottieRef}
-                    animationData={Chatstat_mobile_Banner}
+                    path={Chatstat_mobile_Banner}
+                    autoplay
                     loop={false}
                     style={{ width: "120%", height: "80%" }}
                     rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
@@ -710,7 +719,7 @@ const ProjectDetail_Chatstat_mobile = () => {
                   {/* RIGHT VISUAL */}
                   <div className="rounded-2xl overflow-hidden flex justify-center p-8 ">
                     <DelayedLoopLottie
-                      animationData={item.image}
+                      path={item.image}
                       delay={item.delay}
                       width="100%"
                       height="100%"

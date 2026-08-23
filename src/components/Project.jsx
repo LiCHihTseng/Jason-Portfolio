@@ -1,12 +1,12 @@
 "use client";
-import InSyncVideo from "../assets/img/MP4/InSync.mp4";
-import yoUQuestVideo from "../assets/img/MP4/yoUQest.mp4";
-import Chatstat from "../assets/img/Chatstat.png";
-import Chatstat_mobile from "../assets/img/Chatstat_mobile.png";
-import XRVideo from "../assets/img/MP4/XR.mp4";
+import InSyncVideo from "../assets/img/Insync.avif";
+import yoUQuestVideo from "../assets/img/yoUQuest.avif";
+import Chatstat from "../assets/img/Chatstat.avif";
+import Chatstat_mobile from "../assets/img/Chatstat_mobile.avif";
+// import XRVideo from "../assets/img/MP4/XR.mp4";
 import ProjectList from "./ProjectList";
 import AussieWIldlife from "../assets/img/AussieWildlife.png";
-const projects = [
+export const projects = [
   {
     id: 4,
     title: "Chatstat",
@@ -27,7 +27,6 @@ const projects = [
     id: 2,
     title: "yoUQuest",
     img: yoUQuestVideo,
-    mediaType: "video",
     category: "Design & Development",
     route: "/project/2",
     disabled: false,
@@ -36,7 +35,6 @@ const projects = [
     id: 1,
     title: "InSync",
     img: InSyncVideo,
-    mediaType: "video",
     category: "Design & Development",
     route: "/project/1",
     disabled: false,
@@ -49,16 +47,21 @@ const projects = [
     route: "/project/3",
     disabled: false,
   },
-  {
-    id: 6,
-    title: "IFurniture",
-    img: XRVideo,
-    mediaType: "video",
-    category: "XR & Unity 3D",
-    route: "/project/XR",
-    disabled: true,
-  },
+  // {
+  //   id: 6,
+  //   title: "IFurniture",
+  //   img: XRVideo,
+  //   mediaType: "video",
+  //   category: "XR & Unity 3D",
+  //   route: "/project/XR",
+  //   disabled: true,
+  // },
 ];
+
+// 詳細頁的主視覺用的就是這裡的同一張圖(桌機 hover 預覽那張)。
+// 桌機版 ProjectList 的 <Link> 沒有帶 state,所以詳細頁只能靠 route 反查。
+export const heroImageFor = (route) =>
+  projects.find((project) => project.route === route)?.img;
 
 function Projects() {
   return (
