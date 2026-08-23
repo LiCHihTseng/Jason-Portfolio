@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import "./css/Banner.css";
-import banner_phone from "../assets/img/avatar.avif";
+import banner_phone from "../assets/img/Avatar.avif";
 import AnimatedText from "./icons/AnimatedText";
 import { At, ArrowDownIcon } from "@phosphor-icons/react";
 import gsap from "gsap";
