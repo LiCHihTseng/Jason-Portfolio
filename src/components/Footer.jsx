@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import CurveReveal from "./CurveReveal";
 import ProfileImage from "../assets/img/profile.jpg";
 
@@ -158,7 +158,7 @@ export default function Footer() {
               return (
                 <a key={link.name} href={link.href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined} className="group flex min-w-[150px] items-center justify-between gap-6 rounded-full border border-white/20 px-6 py-4 text-sm text-white transition-all duration-300 hover:border-[#EC5C29] hover:bg-[#EC5C29] hover:text-white sm:min-w-[180px] sm:px-8 sm:py-5 sm:text-base">
                   <span>{link.name}</span>
-                  <ArrowOutwardIcon className="transition-transform duration-300 group-hover:rotate-45" sx={{ fontSize: 20 }} />
+                  <ArrowUpRight className="transition-transform duration-300 group-hover:rotate-45" size={20} />
                 </a>
               );
             })}

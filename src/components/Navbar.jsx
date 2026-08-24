@@ -1,14 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { Briefcase, House, Info, List, X } from "@phosphor-icons/react";
 import { Link as RouterLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import SegmentIcon from "@mui/icons-material/Segment";
-import HomeIcon from "@mui/icons-material/Home";
-import WorkIcon from "@mui/icons-material/Work";
-import InfoIcon from "@mui/icons-material/Info";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
-import CloseIcon from "@mui/icons-material/Close";
 import Navicon from "../assets/img/Nav-icon.svg";
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,9 +34,9 @@ function Navbar() {
   }, []);
 
   const navItems = [
-    { label: "Home", to: "/?scrollTo=home", icon: <HomeIcon /> },
-    { label: "About", to: "/about", icon: <InfoIcon /> },
-    { label: "Projects", to: "/?scrollTo=projects", icon: <WorkIcon /> },
+    { label: "Home", to: "/?scrollTo=home", icon: <House /> },
+    { label: "About", to: "/about", icon: <Info /> },
+    { label: "Projects", to: "/?scrollTo=projects", icon: <Briefcase /> },
   ].sort((a, b) => a.label.length - b.label.length);
 
   return (
@@ -63,9 +58,9 @@ function Navbar() {
             whileTap={{ scale: 0.9 }}
           >
             {isMenuOpen ? (
-              <CloseIcon className="w-6 h-6" fontSize="medium" />
+              <X className="w-6 h-6" size={24} />
             ) : (
-              <SegmentIcon className="w-6 h-6" fontSize="medium" />
+              <List className="w-6 h-6" size={24} />
             )}
           </motion.button>
         </div>

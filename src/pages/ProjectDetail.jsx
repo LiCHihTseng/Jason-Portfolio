@@ -7,24 +7,10 @@ import Lottie from "lottie-react";
 import projectsData from "./ProjectData.js"; // 匯入 projectsData
 import ProjectHero from "../components/ProjectHero";
 import { heroImageFor } from "../components/Project";
-import ChairIcon from "@mui/icons-material/Chair";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import GroupIcon from "@mui/icons-material/Group";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import Animation from "../assets/img/GIF/Animation.json?url";
 
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import DesignServicesIcon from "@mui/icons-material/DesignServices";
-import InsightsIcon from "@mui/icons-material/Insights";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
-import ExtensionIcon from "@mui/icons-material/Extension";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { ArrowUpRight, House } from "@phosphor-icons/react";
+import { ArrowUpRight, BookmarkSimple, Brain, CaretDown, CaretUp, ChartLineUp, House, Lightbulb, LightbulbFilament, MagicWand, PencilRuler, PuzzlePiece, Sparkle, Users, Wrench } from "@phosphor-icons/react";
 
-import TurnedInIcon from "@mui/icons-material/TurnedIn";
 
 function ProjectDetail() {
   const { id } = useParams();
@@ -50,19 +36,19 @@ function ProjectDetail() {
     },
   };
   const iconList = [
-    <LightbulbIcon fontSize="large" />,
-    <PsychologyIcon fontSize="large" />,
-    <GroupIcon fontSize="large" />,
-    <EmojiObjectsIcon fontSize="large" />,
+    <Lightbulb size={32} />,
+    <Brain size={32} />,
+    <Users size={32} />,
+    <LightbulbFilament size={32} />,
   ];
 
   const principleIcons = [
-    <AutoAwesomeIcon fontSize="large" />,
-    <DesignServicesIcon fontSize="large" />,
-    <InsightsIcon fontSize="large" />,
-    <EngineeringIcon fontSize="large" />,
-    <TipsAndUpdatesIcon fontSize="large" />,
-    <ExtensionIcon fontSize="large" />,
+    <Sparkle size={32} />,
+    <PencilRuler size={32} />,
+    <ChartLineUp size={32} />,
+    <Wrench size={32} />,
+    <MagicWand size={32} />,
+    <PuzzlePiece size={32} />,
   ];
 
   // Get project from location state or fallback to finding it in the data
@@ -688,11 +674,11 @@ function ProjectDetail() {
                         >
                           {/* Icon 放在右上角 */}
                           <div className="absolute -top-1 right-2">
-                            <TurnedInIcon
+                            <BookmarkSimple
                               className={`${
                                 iconColors[idx % iconColors.length]
                               } text-xl`}
-                              fontSize="large"
+                              size={32}
                             />
                           </div>
 
@@ -733,9 +719,9 @@ function ProjectDetail() {
                         aria-label="Toggle Details"
                       >
                         {isExpanded ? (
-                          <KeyboardArrowUpIcon fontSize="medium" />
+                          <CaretUp size={24} />
                         ) : (
-                          <KeyboardArrowDownIcon fontSize="medium" />
+                          <CaretDown size={24} />
                         )}
                       </button>
                     </div>

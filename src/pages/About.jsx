@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion"; // 導入 AnimatePresence
 import Lottie from "lottie-react";
 import Tennis from "../assets/img/GIF/Tennis.json?url";
@@ -100,7 +100,7 @@ function About() {
                 transition={{ duration: 0.3, ease: "easeInOut" }} // 按鈕旋轉動畫
                 className="text-gray-500 hover:text-gray-700 focus:outline-none"
               >
-                <AddIcon fontSize="medium" />
+                <Plus size={24} />
               </motion.button>
             </div>
             <AnimatePresence>

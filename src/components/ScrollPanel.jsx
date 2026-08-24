@@ -4,9 +4,9 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import StorySolve from "../assets/img/Story_Solve.jpg";
-import StoryDesign from "../assets/img/Story_Design.jpg";
-import StoryDev from "../assets/img/Story_Dev.jpg";
+import StorySolve from "../assets/img/story_solve.avif";
+import StoryDesign from "../assets/img/story_design.avif";
+import StoryDev from "../assets/img/story_dev.avif";
 
 gsap.registerPlugin(ScrollTrigger);
 
