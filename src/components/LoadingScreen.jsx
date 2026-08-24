@@ -30,7 +30,7 @@ const PLACEMENTS = [
 ];
 
 // 數字爬完的時間。疊圖是跟著數字走的,所以這個值也決定了疊上去的節奏。
-const COUNT_DURATION = 3.2;
+const COUNT_DURATION = 2;
 
 export default function LoadingScreen({ onFinish }) {
   /*
@@ -63,6 +63,11 @@ export default function LoadingScreen({ onFinish }) {
     };
   }, []);
 
+  // React 的 loading 已經接手,移掉 index.html 裡的靜態開場畫面
+  useEffect(() => {
+    document.getElementById("boot-shell")?.remove();
+  }, []);
+
   // 載入期間鎖住捲動
   useEffect(() => {
     const previous = document.body.style.overflow;
@@ -81,21 +86,27 @@ export default function LoadingScreen({ onFinish }) {
       duration: COUNT_DURATION,
       ease: "power1.inOut",
       onUpdate: () => {
-        const allLoaded = loadedRef.current >= SLIDES.length;
-        const capped = allLoaded ? counter.value : Math.min(counter.value, 92);
+        /*
+          刻意「不」等圖片下載完。那些照片是裝飾性的,而在 Lighthouse 模擬的
+          慢速 4G 上,這幾張加起來要十幾秒 —— 卡著等它們會直接把 LCP 拖垮。
+          進度照時間走完,圖片到了自然會補上。
+        */
+        const value = counter.value;
 
         if (percentRef.current) {
-          percentRef.current.textContent = `${Math.round(capped)}%`;
+          percentRef.current.textContent = `${Math.round(value)}%`;
         }
 
-        // 傳入同值時 React 會略過,所以整段實際只重繪 4 次
-        setVisibleCount(
-          SLIDES.filter(
-            (_, index) => capped >= STACK_START + index * STACK_STEP
-          ).length
-        );
+        // 只顯示「已經載好」的張數,避免出現破圖
+        const arrived = Math.min(loadedRef.current, SLIDES.length);
+        const byProgress = SLIDES.filter(
+          (_, index) => value >= STACK_START + index * STACK_STEP
+        ).length;
 
-        if (capped >= 100) setDone(true);
+        // 傳入同值時 React 會略過,所以整段實際只重繪幾次
+        setVisibleCount(Math.min(arrived, byProgress));
+
+        if (value >= 100) setDone(true);
       },
     });
 

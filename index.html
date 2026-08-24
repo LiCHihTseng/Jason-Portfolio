@@ -31,13 +31,33 @@
   <!-- 字體導入 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap"
-    rel="stylesheet">
+  <!--
+    非阻擋式載入字型:先以 media="print" 讓瀏覽器不把它算進阻擋算繪的資源,
+    載完再切回 all。搭配 display=swap,文字不會因為等字型而看不見。
+  -->
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+  </noscript>
 </head>
 
 
-<body>
+<body style="margin:0;background:#0e0e0e">
+  <!--
+    這是純 HTML 的開場畫面。這個站是 CSR SPA —— 沒有它的話,
+    瀏覽器要等 CSS + 所有 JS chunk 下載並執行完、React 掛載之後才會有第一次繪製,
+    在慢速行動網路上就是 5 秒起跳的 First Contentful Paint。
+    有了它,HTML 一到就能上畫面;React 的 LoadingScreen 掛載後會把它移除。
+  -->
+  <div id="boot-shell"
+    style="position:fixed;inset:0;background:#0e0e0e;z-index:99;display:flex;align-items:flex-end;justify-content:center">
+    <p
+      style="margin:0 0 40px;font:italic 700 18px/1.2 system-ui,sans-serif;color:rgba(255,255,255,.85)">
+      0%</p>
+  </div>
+
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
