@@ -53,14 +53,17 @@ function Navbar() {
           <motion.button
             ref={buttonRef}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="main-menu"
             className="text-[#111111] rounded-full p-2 transition-colors bg-[#F8F8F8]"
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6" size={24} />
+              <X className="w-6 h-6" size={24} aria-hidden="true" />
             ) : (
-              <List className="w-6 h-6" size={24} />
+              <List className="w-6 h-6" size={24} aria-hidden="true" />
             )}
           </motion.button>
         </div>
@@ -70,6 +73,7 @@ function Navbar() {
         {isMenuOpen && (
           <motion.div
             key="dropdown"
+            id="main-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}

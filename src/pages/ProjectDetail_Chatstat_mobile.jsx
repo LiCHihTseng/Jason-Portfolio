@@ -1,7 +1,7 @@
 import React from "react";
-import { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
 import Chatstat_mobile_Banner from "../assets/img/GIF/Onboarding_mobile.json?url";
 import Chatstat_1 from "../assets/img/GIF/Chatstat_1.json?url";

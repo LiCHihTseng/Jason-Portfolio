@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
 import projectsData from "./ProjectData.js"; // 匯入 projectsData
 import ProjectHero from "../components/ProjectHero";
@@ -15,26 +15,8 @@ import { ArrowUpRight, BookmarkSimple, Brain, CaretDown, CaretUp, ChartLineUp, H
 function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const myRef = useRef(null);
   const contentRef = useRef(null);
-  const [activeSection, setActiveSection] = useState(null);
 
-  const variants = {
-    initial: {
-      y: 100,
-      opacity: 0,
-    },
-    animate: {
-      x: 0,
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-        staggerChildren: 0.1,
-      },
-    },
-  };
   const iconList = [
     <Lightbulb size={32} />,
     <Brain size={32} />,
@@ -60,18 +42,21 @@ function ProjectDetail() {
     console.log("Project from Data:", project);
   }, [id, project]);
 
-  // Handle section navigation
-  const scrollToSection = (section) => {
-    setActiveSection(section);
-    document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
-  };
+  /*
+    這三個 hook 必須放在下面「找不到專案就提早 return」之前。
+    放在後面的話,找不到專案時它們不會被呼叫,找得到時才會 ——
+    同一個元件在不同 render 之間的 hook 數量就會不一致,React 會出錯。
+    (/project/:id 是同一個路由元件,換 id 不會重新掛載。)
+    它們都不依賴 project,所以往上搬是安全的。
+  */
+  const [isExpanded, setIsExpanded] = useState(false);
+  const lottieRef = useRef(null);
 
-  // Handle next project navigation
-  const handleNextProject = () => {
-    const currentId = Number.parseInt(id);
-    const nextId = currentId < projectsData.length ? currentId + 1 : 1;
-    navigate(`/project/${nextId}`); // 直接導航，不傳 state
-  };
+  useEffect(() => {
+    if (lottieRef.current) {
+      lottieRef.current.setSpeed(1.2);
+    }
+  }, []);
 
   if (!project || !project.details) {
     return (
@@ -104,14 +89,9 @@ function ProjectDetail() {
     },
   };
 
-  const childVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-  };
 
   const emojis = ["🧭", "🔍", "🧠", "📝", "🎨", "🚀"];
 
-  const [isExpanded, setIsExpanded] = useState(false);
   const iconColors = [
     "text-red-300",
     "text-purple-300",
@@ -130,14 +110,7 @@ function ProjectDetail() {
     alt: c.alt || `Design Concept ${i + 1}`,
   }));
 
-  const lottieRef = useRef(null);
 
-  useEffect(() => {
-    if (lottieRef.current) {
-      // 設定速度
-      lottieRef.current.setSpeed(1.2);
-    }
-  }, []);
 
   const getGradientColor = (id, isLeft) => {
     switch (id) {

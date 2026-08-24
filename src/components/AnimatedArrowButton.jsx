@@ -1,9 +1,16 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "@phosphor-icons/react";
 
+/*
+  這是純裝飾的箭頭:沒有 onClick,而且被放在 <Link> 裡面。
+  用 <button> 的話會變成「互動元素巢狀在互動元素內」(無效 HTML),
+  而且螢幕閱讀器會唸出一個沒有名字的按鈕。
+  改成非互動元素並 aria-hidden —— 外層的 Link 已經說明了目的地。
+*/
 const AnimatedArrowButton = ({ isHovered = false }) => {
   return (
-    <motion.button
+    <motion.div
+      aria-hidden="true"
       animate={{
         backgroundColor: isHovered ? "#ffffff" : "#ffffff",
         width: isHovered ? 48 : 24, // 48px = w-12, 24px = w-6
@@ -20,7 +27,7 @@ const AnimatedArrowButton = ({ isHovered = false }) => {
       >
         <ArrowUpRight className="w-5 h-5 -rotate-45" />
       </motion.span>
-    </motion.button>
+    </motion.div>
   );
 };
 

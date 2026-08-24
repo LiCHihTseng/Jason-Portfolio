@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 import userflow from "../assets/img/vrFurniture.png";
 import miro from "../assets/img/vrFurniture.png";
@@ -8,7 +7,6 @@ import prototype2 from "../assets/img/vrFurniture.png";
 import prototype3 from "../assets/img/vrFurniture.png";
 
 const XR = () => {
-  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
