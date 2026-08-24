@@ -5,6 +5,7 @@ import Projects from "../components/Project";
 import WhatICanDo from "../components/WhatICanDo";
 import WhatIBring from "../components/WhatIBring";
 import ScrollPanel, { PANELS } from "../components/ScrollPanel";
+import DeferUntilNear from "../components/DeferUntilNear";
 function Home() {
   const location = useLocation();
 
@@ -33,12 +34,19 @@ function Home() {
       <Banner />
       <WhatIBring />
       <Projects />
-      <section className="">
-        {PANELS.map((panel) => (
-          <ScrollPanel key={panel.number} panel={panel} />
-        ))}
-      </section>
-      <WhatICanDo />
+      {/* 這兩段都在首屏以下,但掛載時會建立 ScrollTrigger、量尺寸,
+          擠在啟動時會拉高 TBT —— 延到接近視窗再掛。 */}
+      <DeferUntilNear minHeight="200vh">
+        <section className="">
+          {PANELS.map((panel) => (
+            <ScrollPanel key={panel.number} panel={panel} />
+          ))}
+        </section>
+      </DeferUntilNear>
+
+      <DeferUntilNear minHeight="120vh">
+        <WhatICanDo />
+      </DeferUntilNear>
     </main>
   );
 }
