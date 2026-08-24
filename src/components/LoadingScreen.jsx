@@ -19,6 +19,8 @@ const SLIDES = projects
 // 第一張不在 0% 就出現 —— 先留一小段空白,再一張一張長出來,最後一張落在 92%
 const STACK_START = 8;
 const STACK_END = 92;
+const STACK_STEP = (STACK_END - STACK_START) / Math.max(SLIDES.length - 1, 1);
+
 const PLACEMENTS = [
   { x: "-5%", y: "3%", rotate: -7 },
   { x: "6%", y: "-4%", rotate: 5 },
@@ -31,7 +33,13 @@ const PLACEMENTS = [
 const COUNT_DURATION = 3.2;
 
 export default function LoadingScreen({ onFinish }) {
-  const [shown, setShown] = useState(0);
+  /*
+    百分比每一幀都在變。若走 React state,3.2 秒會觸發約 190 次重繪,
+    而那正好落在 Total Blocking Time 的量測視窗裡。
+    改成直接寫 DOM;React 只負責「疊了幾張」,那個整段只變 4 次。
+  */
+  const percentRef = useRef(null);
+  const [visibleCount, setVisibleCount] = useState(0);
   const [done, setDone] = useState(false);
   const loadedRef = useRef(0);
   const reduceMotion = useReducedMotion();
@@ -75,18 +83,24 @@ export default function LoadingScreen({ onFinish }) {
       onUpdate: () => {
         const allLoaded = loadedRef.current >= SLIDES.length;
         const capped = allLoaded ? counter.value : Math.min(counter.value, 92);
-        setShown(Math.round(capped));
+
+        if (percentRef.current) {
+          percentRef.current.textContent = `${Math.round(capped)}%`;
+        }
+
+        // 傳入同值時 React 會略過,所以整段實際只重繪 4 次
+        setVisibleCount(
+          SLIDES.filter(
+            (_, index) => capped >= STACK_START + index * STACK_STEP
+          ).length
+        );
+
+        if (capped >= 100) setDone(true);
       },
     });
 
     return () => tween.kill();
   }, []);
-
-  useEffect(() => {
-    if (shown < 100) return;
-    const timer = setTimeout(() => setDone(true), 320);
-    return () => clearTimeout(timer);
-  }, [shown]);
 
   // 保險:進度或動畫萬一卡住,也不能讓整站永遠停在黑畫面
   useEffect(() => {
@@ -94,19 +108,11 @@ export default function LoadingScreen({ onFinish }) {
     return () => clearTimeout(failsafe);
   }, []);
 
-  // 疊幾張跟著百分比走 —— 這是「一張一張慢慢疊上去」的關鍵,
-  // 綁在圖片載入事件上的話,有快取時會五張一起蹦出來。
-  const stackStep =
-    (STACK_END - STACK_START) / Math.max(SLIDES.length - 1, 1);
-  const visibleCount = SLIDES.filter(
-    (_, index) => shown >= STACK_START + index * stackStep
-  ).length;
-
   return (
     <Motion.div
       role="status"
       aria-live="polite"
-      aria-label={`Loading ${shown}%`}
+      aria-label="Loading"
       initial={{ y: 0 }}
       animate={{ y: done ? "-100%" : 0 }}
       transition={
@@ -149,8 +155,11 @@ export default function LoadingScreen({ onFinish }) {
         })}
       </div>
 
-      <p className="absolute bottom-10 left-0 right-0 text-center text-lg font-bold italic tabular-nums text-white/85 md:bottom-14">
-        {shown}%
+      <p
+        ref={percentRef}
+        className="absolute bottom-10 left-0 right-0 text-center text-lg font-bold italic tabular-nums text-white/85 md:bottom-14"
+      >
+        0%
       </p>
     </Motion.div>
   );
