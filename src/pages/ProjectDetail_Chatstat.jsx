@@ -7,7 +7,7 @@ import { heroImageFor } from "../components/Project";
 import chatstat_banner from "../assets/img/Chatstat_Banner.png";
 import Chatstat_CTA from "../assets/img/GIF/CTA.json?url";
 import Chatstat_Feature from "../assets/img/Chatstat_Feature.svg";
-import Chatstat_avatar1 from "../assets/img/Chatstat_avatar1.svg";
+import Chatstat_avatar1 from "../assets/img/Chatstat_avatar1.webp";
 import Chatstat_FAQ from "../assets/img/Chatstat_FAQ.svg";
 
 /*
