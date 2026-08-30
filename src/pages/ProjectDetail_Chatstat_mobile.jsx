@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
-import Chatstat_mobile_Banner from "../assets/img/GIF/Onboarding_mobile.json?url";
+import Chatstat_mobile_Banner from "../assets/img/onboarding-banner.avif";
 import Chatstat_1 from "../assets/img/GIF/Chatstat_1.json?url";
 import Chatstat_2 from "../assets/img/GIF/Chatstat_2.json?url";
 import Chatstat_3 from "../assets/img/GIF/Chatstat_3.json?url";
@@ -19,7 +19,8 @@ import {
   CreditCard,
   Asterisk,
   Target,
-  ArrowUpRight, House
+  ArrowUpRight,
+  House,
 } from "@phosphor-icons/react";
 import CHatstat_affinity from "../assets/img/Affinity_mapping.png";
 import CHatstat_userflow from "../assets/img/Chatstat_Userflow.jpg";
@@ -27,7 +28,7 @@ import CHatstat_userflow from "../assets/img/Chatstat_Userflow.jpg";
 const ProjectDetail_Chatstat_mobile = () => {
   const location = useLocation();
   const heroLottieRef = useRef();
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -136,13 +137,10 @@ const ProjectDetail_Chatstat_mobile = () => {
               {/* Lottie 容器（動態調整邊框） */}
               <div className="relative z-30 overflow-hidden rounded-lg flex items-center justify-center">
                 {project.img && (
-                  <Lottie
-                    lottieRef={heroLottieRef}
-                    path={Chatstat_mobile_Banner}
-                    autoplay
-                    loop={false}
-                    style={{ width: "120%", height: "80%" }}
-                    rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
+                  <img
+                    src={Chatstat_mobile_Banner}
+                    alt={project.title}
+                    style={{ width: "120%", height: "80%", objectFit: "cover" }}
                   />
                 )}
               </div>
@@ -188,7 +186,9 @@ const ProjectDetail_Chatstat_mobile = () => {
             <div className="mt-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="border-2 p-5 border-gray-200 rounded-md">
-                  <p className="text-2xl font-semibold text-[#444444]">UX research</p>
+                  <p className="text-2xl font-semibold text-[#444444]">
+                    UX research
+                  </p>
                   <p className="mt-4 text-base md:text-lg  text-[#444444]">
                     - Conducted think-aloud and task-based usability testing
                     with first-time users
@@ -203,7 +203,9 @@ const ProjectDetail_Chatstat_mobile = () => {
                   </p>
                 </div>
                 <div className="border-2 p-5 border-gray-200 rounded-md">
-                  <p className="text-2xl font-semibold text-[#444444] ">Outcome</p>
+                  <p className="text-2xl font-semibold text-[#444444] ">
+                    Outcome
+                  </p>
                   <p className="mt-4 text-base md:text-lg text-[#444444]">
                     - Improved clarity around onboarding steps and product value
                   </p>
@@ -709,7 +711,9 @@ const ProjectDetail_Chatstat_mobile = () => {
                               className="shrink-0 mt-1"
                             />
 
-                            <p className="text-lg text-[#444444] font-medium">{point}</p>
+                            <p className="text-lg text-[#444444] font-medium">
+                              {point}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -732,47 +736,47 @@ const ProjectDetail_Chatstat_mobile = () => {
           </motion.section>
 
           <motion.section
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, amount: 0.3 }}
-  transition={{ duration: 0.6 }}
->
-  <div className="mt-10 bg-[#242726] text-white rounded-3xl p-6 sm:p-8 md:p-12 m-5 md:m-5">
-    <h5 className="text-white/60  text-4xl md:text-5xl text-center font-semibold">
-      06. Reflection
-    </h5>
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="mt-10 bg-[#242726] text-white rounded-3xl p-6 sm:p-8 md:p-12 m-5 md:m-5">
+              <h5 className="text-white/60  text-4xl md:text-5xl text-center font-semibold">
+                06. Reflection
+              </h5>
 
-    <div className="mt-10 ">
-      <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
-        This project showed how important onboarding is in helping users
-        confidently understand and activate a product for the first time.
-      </blockquote>
+              <div className="mt-10 ">
+                <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
+                  This project showed how important onboarding is in helping
+                  users confidently understand and activate a product for the
+                  first time.
+                </blockquote>
 
-      <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 mt-2 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
-        Through usability testing and affinity mapping, I learned that reducing
-        setup uncertainty and guiding users progressively can significantly
-        improve the onboarding experience.
-      </blockquote>
+                <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 mt-2 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
+                  Through usability testing and affinity mapping, I learned that
+                  reducing setup uncertainty and guiding users progressively can
+                  significantly improve the onboarding experience.
+                </blockquote>
 
-      <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 mt-2 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
-        In future iterations, I would further explore more personalised
-        onboarding experiences based on different parent needs and behaviours.
-      </blockquote>
-    </div>
-  </div>
-</motion.section>
+                <blockquote className="text-xl text-white/60  font-medium leading-relaxed pt-5 mt-2 md:pt-5 lg:pt-0 px-5 md:px-5 lg:px-0">
+                  In future iterations, I would further explore more
+                  personalised onboarding experiences based on different parent
+                  needs and behaviours.
+                </blockquote>
+              </div>
+            </div>
+          </motion.section>
         </motion.div>
 
         <button
-  onClick={() => navigate("/")}
-  className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#111111] text-white px-5 py-4 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
->
-  <House size={20} weight="fill" />
+          onClick={() => navigate("/")}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#111111] text-white px-5 py-4 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+        >
+          <House size={20} weight="fill" />
 
-  <span className="text-base font-medium">
-    Back Home
-  </span>
-</button>
+          <span className="text-base font-medium">Back Home</span>
+        </button>
       </div>
     </div>
   );

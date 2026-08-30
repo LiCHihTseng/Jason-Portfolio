@@ -9,8 +9,23 @@ import ProjectHero from "../components/ProjectHero";
 import { heroImageFor } from "../components/Project";
 import Animation from "../assets/img/GIF/Animation.json?url";
 
-import { ArrowUpRight, BookmarkSimple, Brain, CaretDown, CaretUp, ChartLineUp, House, Lightbulb, LightbulbFilament, MagicWand, PencilRuler, PuzzlePiece, Sparkle, Users, Wrench } from "@phosphor-icons/react";
-
+import {
+  ArrowUpRight,
+  BookmarkSimple,
+  Brain,
+  CaretDown,
+  CaretUp,
+  ChartLineUp,
+  House,
+  Lightbulb,
+  LightbulbFilament,
+  MagicWand,
+  PencilRuler,
+  PuzzlePiece,
+  Sparkle,
+  Users,
+  Wrench,
+} from "@phosphor-icons/react";
 
 function ProjectDetail() {
   const { id } = useParams();
@@ -50,6 +65,7 @@ function ProjectDetail() {
     它們都不依賴 project,所以往上搬是安全的。
   */
   const [isExpanded, setIsExpanded] = useState(false);
+  const [playingVideo, setPlayingVideo] = useState(false);
   const lottieRef = useRef(null);
 
   useEffect(() => {
@@ -89,7 +105,6 @@ function ProjectDetail() {
     },
   };
 
-
   const emojis = ["🧭", "🔍", "🧠", "📝", "🎨", "🚀"];
 
   const iconColors = [
@@ -110,8 +125,6 @@ function ProjectDetail() {
     alt: c.alt || `Design Concept ${i + 1}`,
   }));
 
-
-
   const getGradientColor = (id, isLeft) => {
     switch (id) {
       case 1:
@@ -131,6 +144,22 @@ function ProjectDetail() {
           ? "linear-gradient(to right, #ff4d4d, #ff7070)" // 預設紅色系 - 左
           : "linear-gradient(to right, #ff8080, #ffb3b3)"; // 預設紅色系 - 右
     }
+  };
+
+  const isYouTubeUrl = (url) =>
+    typeof url === "string" && /youtube\.com|youtu\.be/.test(url);
+
+  const getYouTubeVideoId = (url) => {
+    const match = url.match(/(?:v=|youtu\.be\/|embed\/)([\w-]+)/);
+    return match ? match[1] : null;
+  };
+
+  const getYouTubeEmbedUrl = (url) => {
+    if (url.includes("/embed/")) return url;
+    const match = url.match(/(?:v=|youtu\.be\/)([\w-]+)/);
+    return match
+      ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0`
+      : url;
   };
 
   return (
@@ -226,25 +255,56 @@ function ProjectDetail() {
               />
 
               {/* Lottie 容器（動態調整邊框） */}
-              <div className="relative z-30 overflow-hidden rounded-lg border-2  flex items-center justify-center">
-                {project.img && (
-                  <Lottie
-                    // lottie-react 只在 animationData / loop 改變時才會重新初始化。
-                    // 這裡用的是 path,切換 /project/:id 時 path 變了它也不會重載,
-                    // 動畫會一直停在第一支。用 key 強制重新掛載。
-                    key={project.img}
-                    lottieRef={lottieRef}
-                    path={project.img}
-                    autoplay
-                    loop={false}
-                    onComplete={() => {
-                      setTimeout(() => {
-                        lottieRef.current?.goToAndPlay(0, true);
-                      }, 1000);
-                    }}
-                    style={{ width: "100%", height: "100%" }} // 撐滿父層
-                    rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }} // 關鍵2：像 object-cover
-                  />
+              <div className="relative z-30 overflow-hidden rounded-lg flex items-center justify-center">
+              {project.img && isYouTubeUrl(project.img) ? (
+                  <div className="w-full aspect-video relative bg-black rounded-lg overflow-hidden">
+                    {playingVideo ? (
+                      <iframe
+                        src={getYouTubeEmbedUrl(project.img)}
+                        title={project.title}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <button
+                        onClick={() => setPlayingVideo(true)}
+                        className="w-full h-full relative group"
+                        aria-label="Play video"
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${getYouTubeVideoId(project.img)}/maxresdefault.jpg`}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                          <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[16px] border-l-black border-b-[10px] border-b-transparent ml-1" />
+                          </div>
+                        </div>
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  project.img && (
+                    <Lottie
+                      key={project.img}
+                      lottieRef={lottieRef}
+                      path={project.img}
+                      autoplay
+                      loop={false}
+                      onComplete={() => {
+                        setTimeout(() => {
+                          lottieRef.current?.goToAndPlay(0, true);
+                        }, 1000);
+                      }}
+                      style={{ width: "100%", height: "100%" }}
+                      rendererSettings={{
+                        preserveAspectRatio: "xMidYMid meet",
+                      }}
+                    />
+                  )
                 )}
               </div>
             </div>

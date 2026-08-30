@@ -6,7 +6,16 @@ import Chatstat_mobile from "../assets/img/Chatstat_mobile.avif";
 // import XRVideo from "../assets/img/MP4/XR.mp4";
 import ProjectList from "./ProjectList";
 import AussieWIldlife from "../assets/img/AussieWildlife.png";
+import MoJoKing from "../assets/img/mojo.avif";
 export const projects = [
+  {
+    id: 6,
+    title: "MoJo King",
+    img: MoJoKing,
+    category: "UX Strategy & Development",
+    route: "/project/mojoking",
+    disabled: false,
+  },
   {
     id: 4,
     title: "Chatstat",

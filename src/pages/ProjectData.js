@@ -39,7 +39,7 @@ const projectsData = [
   {
     id: 1,
     title: "InSync: The Digital Picture Frame",
-    img: InsyncAnimation,
+    img: "https://www.youtube.com/watch?v=y29mrG8imNg",
     client: "Design Studio",
     platform: ["Mobile App", "Physical Products"],
     desc: "InSync is an ambient digital picture frame that enhances family coordination with seamless scheduling and interactive features.",
