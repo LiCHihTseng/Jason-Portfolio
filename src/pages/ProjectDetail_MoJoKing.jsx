@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Image as ImageIcon } from "@phosphor-icons/react";
 import Mojo_banner from "../assets/img/MP4/Mojo.mp4";
@@ -81,45 +80,6 @@ function SectionHeader({ index, name, title }) {
 // 影片播完到重播中間的停頓。
 const REPLAY_DELAY = 5000;
 
-// 影片捲到可視範圍附近才掛上 src,打開頁面時完全不會去抓這支檔案。
-function LazyVideo({ src, ...rest }) {
-  const ref = useRef(null);
-  const [load, setLoad] = useState(false);
-
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setLoad(true);
-        io.disconnect();
-      },
-      { rootMargin: "200px" }
-    );
-
-    io.observe(ref.current);
-    return () => io.disconnect();
-  }, []);
-
-  // autoPlay 要過瀏覽器的擋自動播放,muted + playsInline 兩個都不能少。
-  // loop 拿掉了:原生的 loop 是播完立刻接回去,沒有地方插入停頓。
-  // 改成聽 ended、隔 REPLAY_DELAY 再 play(),play() 遇到已結束的影片會自己倒回 0。
-  return (
-    <video
-      ref={ref}
-      src={load ? src : undefined}
-      preload="none"
-      autoPlay
-      muted
-      playsInline
-      onEnded={(event) => {
-        const video = event.currentTarget;
-        setTimeout(() => video.play().catch(() => {}), REPLAY_DELAY);
-      }}
-      {...rest}
-    />
-  );
-}
-
 // 流程箭頭。用畫的 SVG,不拿 unicode 字元充當圖示。
 function FlowArrow({ className = "" }) {
   return (
@@ -147,10 +107,19 @@ function VideoFrame({ src, background, label }) {
       className="rounded-sm overflow-hidden bg-cover bg-center px-4 py-8 sm:px-8 sm:py-12 md:px-16 md:py-20"
       style={{ backgroundImage: `url(${background})` }}
     >
-      <LazyVideo
+      {/* autoPlay 要過瀏覽器的擋自動播放,muted + playsInline 兩個都不能少。
+          loop 拿掉了:原生的 loop 播完立刻接回去,沒有地方插入那五秒停頓。 */}
+      <video
         src={src}
-        className="pointer-events-none mx-auto w-full max-w-4xl aspect-video rounded-sm object-cover shadow-2xl"
+        autoPlay
+        muted
+        playsInline
         aria-label={label}
+        onEnded={(event) => {
+          const video = event.currentTarget;
+          setTimeout(() => video.play().catch(() => {}), REPLAY_DELAY);
+        }}
+        className="pointer-events-none mx-auto w-full max-w-4xl aspect-video rounded-sm object-cover shadow-2xl"
       />
     </div>
   );
