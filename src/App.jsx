@@ -30,6 +30,9 @@ const ProjectDetailChatstatMobile = lazy(
 const ProjectDetailMoJoKing = lazy(
   () => import("./pages/ProjectDetail_MoJoKing")
 );
+const ProjectDetailAcrossports = lazy(
+  () => import("./pages/ProjectDetail_Acrossports")
+);
 const XR = lazy(() => import("./pages/XR"));
 const About = lazy(() => import("./pages/About"));
 
@@ -73,6 +76,10 @@ function AppShell() {
           <Route
             path="/project/mojoking"
             element={<ProjectDetailMoJoKing />}
+          />
+          <Route
+            path="/project/acrossports"
+            element={<ProjectDetailAcrossports />}
           />
           <Route path="/project/XR" element={<XR />} />
           <Route path="/project/:id" element={<ProjectDetail />} />

@@ -5,8 +5,9 @@ import Chatstat from "../assets/img/Chatstat.avif";
 import Chatstat_mobile from "../assets/img/Chatstat_mobile.avif";
 // import XRVideo from "../assets/img/MP4/XR.mp4";
 import ProjectList from "./ProjectList";
-import AussieWIldlife from "../assets/img/AussieWildlife.png";
+// import AussieWIldlife from "../assets/img/AussieWildlife.png";
 import MoJoKing from "../assets/img/mojo.avif";
+import Acrossports from "../assets/img/Accrossport_banner.avif";
 export const projects = [
   {
     id: 6,
@@ -33,6 +34,14 @@ export const projects = [
     disabled: false,
   },
   {
+    id: 7,
+    title: "Acrossports",
+    img: Acrossports,
+    category: "Dashboard & Development",
+    route: "/project/acrossports",
+    disabled: false,
+  },
+  {
     id: 2,
     title: "yoUQuest",
     img: yoUQuestVideo,
@@ -48,14 +57,14 @@ export const projects = [
     route: "/project/1",
     disabled: false,
   },
-  {
-    id: 3,
-    title: "AussieWildlife",
-    img: AussieWIldlife,
-    category: "RPG & Child Game",
-    route: "/project/3",
-    disabled: false,
-  },
+  // {
+  // id: 3,
+  // title: "AussieWildlife",
+  // img: AussieWIldlife,
+  // category: "RPG & Child Game",
+  // route: "/project/3",
+  // disabled: false,
+  // },
   // {
   //   id: 6,
   //   title: "IFurniture",

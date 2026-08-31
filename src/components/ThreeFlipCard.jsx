@@ -5,6 +5,8 @@ import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lottie from "lottie-react";
 import dashboard_video from "../assets/img/GIF/Dashboard.json?url";
+import mojo_video from "../assets/img/MP4/Mojo_Service.mp4";
+import openslidex_video from "../assets/img/MP4/OpenSlideX.webm";
 import lottie2 from "../assets/img/GIF/3.json?url";
 import lottie3 from "../assets/img/GIF/5.json?url";
 import lottie4 from "../assets/img/GIF/yoUQuest_card.json?url";
@@ -34,8 +36,27 @@ const LOTTIE_SEQUENCE = [
   { src: lottie2, scale: 0.97 },
   { src: lottie3, scale: 1.04 },
   { src: lottie4, scale: 1.01 },
+  { src: mojo_video, scale: 1.01 },
+  { src: openslidex_video, scale: 1.01 },
 ];
 const nextClip = (i) => (i + 1) % LOTTIE_SEQUENCE.length;
+
+// 這個序列現在混著 Lottie 與影片(mp4 / webm),兩種東西的播放介面不一樣:
+// Lottie 的 ref 是 lottie-web 的實例(play / pause / goToAndPlay),
+// video 的 ref 則是 DOM 元素(play / pause / currentTime)。
+// 下面三個小工具把差異收在一處,其餘流程不用管手上拿到的是哪一種。
+const isVideo = (src) => /\.(mp4|webm)(\?|$)/.test(src);
+const playClip = (clip) => clip?.play()?.catch?.(() => {});
+const pauseClip = (clip) => clip?.pause();
+const restartClip = (clip) => {
+  if (!clip) return;
+  // lottie-web 才有 goToAndPlay;video 只能自己把時間軸倒回去
+  if (typeof clip.goToAndPlay === "function") clip.goToAndPlay(0, true);
+  else {
+    clip.currentTime = 0;
+    playClip(clip);
+  }
+};
 
 
 export default function ScrollStory() {
@@ -75,8 +96,8 @@ export default function ScrollStory() {
       ([entry]) => {
         isLottieVisibleRef.current = entry.isIntersecting;
         const active = slotRefs[activeSlotRef.current].current;
-        if (entry.isIntersecting) active?.play();
-        else active?.pause();
+        if (entry.isIntersecting) playClip(active);
+        else pauseClip(active);
       },
       { rootMargin: "100px 0px" }
     );
@@ -90,7 +111,7 @@ export default function ScrollStory() {
   // 換到新的一層時,如果人不在這一段就別讓它自己播起來
   useEffect(() => {
     activeSlotRef.current = activeSlot;
-    if (!isLottieVisibleRef.current) slotRefs[activeSlot].current?.pause();
+    if (!isLottieVisibleRef.current) pauseClip(slotRefs[activeSlot].current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSlot]);
 
@@ -101,7 +122,7 @@ export default function ScrollStory() {
     const incoming = 1 - slot;
     setActiveSlot(incoming);
     // 接手的那層已經載好且停在第 0 幀,直接接著播就好
-    slotRefs[incoming].current?.goToAndPlay(0, true);
+    restartClip(slotRefs[incoming].current);
 
     // 剛播完的這層現在被蓋住了,趁沒人看得到把「再下一段」載進去
     setSlotClips((prev) => {
@@ -256,16 +277,36 @@ export default function ScrollStory() {
                     }`}
                     style={{ transform: `scale(${LOTTIE_SEQUENCE[clip].scale})` }}
                   >
-                    <Lottie
-                      key={clip}
-                      lottieRef={slotRefs[slot]}
-                      path={LOTTIE_SEQUENCE[clip].src}
-                      loop={false}
-                      autoplay={slot === activeSlot}
-                      onComplete={() => handleLottieComplete(slot)}
-                      className="w-full h-full"
-                      rendererSettings={{ preserveAspectRatio: "xMidYMid meet" }}
-                    />
+                    {isVideo(LOTTIE_SEQUENCE[clip].src) ? (
+                      // muted + playsInline 是自動播放的前提,兩個都不能少。
+                      // 不給 loop:播完要交棒給下一段,由 onEnded 接手。
+                      // object-contain 對應 Lottie 那邊的 xMidYMid meet,
+                      // 兩種素材在同一個 16:10 框裡的塞法才會一致。
+                      <video
+                        key={clip}
+                        ref={slotRefs[slot]}
+                        src={LOTTIE_SEQUENCE[clip].src}
+                        muted
+                        playsInline
+                        preload="auto"
+                        autoPlay={slot === activeSlot}
+                        onEnded={() => handleLottieComplete(slot)}
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <Lottie
+                        key={clip}
+                        lottieRef={slotRefs[slot]}
+                        path={LOTTIE_SEQUENCE[clip].src}
+                        loop={false}
+                        autoplay={slot === activeSlot}
+                        onComplete={() => handleLottieComplete(slot)}
+                        className="w-full h-full"
+                        rendererSettings={{
+                          preserveAspectRatio: "xMidYMid meet",
+                        }}
+                      />
+                    )}
                   </div>
                 ))}
               </div>
